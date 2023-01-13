@@ -11,24 +11,52 @@ const Content = () => {
     const [textFieldValue, setTextFieldValue] = useState('');
 
     const handleChange = useCallback((value) => setSelected(value), []);
-    const renderChildren = useCallback(
-        (isSelected) =>
-            isSelected && (
-                <TextField
-                    label="Minimum Quantity"
-                    labelHidden
-                    onChange={(value) => setTextFieldValue(value)}
-                    value={textFieldValue}
-                    autoComplete="off"
-                />
-            ),
-        [handleChange, textFieldValue],
-    );
+
     //---Choice list states ends---//
     //---Free gift choice list---//
     const [freeSelected, setFreeSelected] = useState(['hidden']);
     const freeHandleChange = useCallback((value) => setFreeSelected(value), []);
 
+
+    //---Childrens in choicelists---//
+    const renderChildren = useCallback(
+        (isSelected) =>
+            isSelected && (
+                <>
+                    <TextField
+                        label="Minimum Quantity"
+                        labelHidden
+                        onChange={(value) => setTextFieldValue(value)}
+                        value={textFieldValue}
+                        autoComplete="off"
+                    />
+                    {/* {console.log(isSelected)} */}
+                </>
+            ),
+        [handleChange, textFieldValue],
+    );
+    const specificChild = useCallback(
+        (isSelected) => {
+            console.log(isSelected)
+            return (
+                isSelected && (
+                    <>dfsa</>
+                    // <div className="Polaris-FormLayout__Item">
+                    //     {console.log(isSelected)}
+                    //     <div className="Polaris-Choice__Descriptions Polaris-Text--subdued">
+                    //         Select atleast one product
+                    //     </div>
+                    //     <div className='Polaris-Choice__Descriptions freeProducts-Bundle '>
+                    //         <ChoiceListComp selected={freeSelected} handleChange={freeHandleChange} choice={freeGift} />
+                    //     </div>
+                    // </div>
+                )
+            )
+        }
+        ,
+        [handleChange, freeSelected],
+    );
+    //---Childrens  in choicelists---//
     //---Free gift choice list---//
     const discountType = [
         {
@@ -63,7 +91,7 @@ const Content = () => {
         {
             label: 'Show only on specific product pages',
             value: 'specific',
-            renderChildren,
+            specificChild,
         },
         {
             label: 'Set start time',
@@ -132,9 +160,10 @@ const Content = () => {
                                         <span className="Polaris-TextStyle--variationStrong">
                                             Bundle Products
                                         </span>
-                                        <div className="Polaris-Labelled__HelpText" id="nameHelpText">
+                                        <div className=" Polaris-Text--subdued">
                                             Bundle offers will show inside each product page that is included in the bundle .
                                         </div>
+
                                     </div>
                                 </div>
                             </div>
@@ -209,7 +238,7 @@ const Content = () => {
                                         // }}
                                         />
                                         <div className="Polaris-FormLayout__Item">
-                                            <div className="Polaris-Choice__Descriptions Polaris-Labelled__HelpText">
+                                            <div className="Polaris-Choice__Descriptions Polaris-Text--subdued">
                                                 Select atleast one product
                                             </div>
                                             <div className='Polaris-Choice__Descriptions freeProducts-Bundle '>
@@ -217,7 +246,7 @@ const Content = () => {
                                             </div>
                                         </div>
                                         <div className="Polaris-FormLayout__Item">
-                                            <div className="Polaris-Labelled__HelpText" id="nameHelpText">
+                                            <div className="Polaris-Text--subdued" id="nameHelpText">
                                                 <strong>Please Note :</strong>   Bundle offers will show inside each product page that is included in the bundle .
                                             </div>
                                         </div>
@@ -821,7 +850,7 @@ const Content = () => {
                                                         }}
                                                     />
                                                     <div
-                                                        class="Polaris-Labelled__HelpText"
+                                                        class="Polaris-Text--subdued"
                                                         id="minutesHelpText"
                                                     >
                                                         Hours
@@ -851,7 +880,7 @@ const Content = () => {
                                                         }}
                                                     />
                                                     <div
-                                                        class="Polaris-Labelled__HelpText"
+                                                        class="Polaris-Text--subdued"
                                                         id="minutesHelpText"
                                                     >
                                                         Minutes
@@ -883,7 +912,7 @@ const Content = () => {
                                                         }}
                                                     />
                                                     <div
-                                                        class="Polaris-Labelled__HelpText"
+                                                        class="Polaris-Text--subdued"
                                                         id="minutesHelpText"
                                                     >
                                                         Hours
@@ -913,7 +942,7 @@ const Content = () => {
                                                         }}
                                                     />
                                                     <div
-                                                        class="Polaris-Labelled__HelpText"
+                                                        class="Polaris-Text--subdued"
                                                         id="minutesHelpText"
                                                     >
                                                         Minutes
