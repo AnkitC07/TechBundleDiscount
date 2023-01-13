@@ -454,8 +454,8 @@ div#accordion .card {
 .inputAndSlect {
     display: flex;
 }
-.choiceList li.Polaris-ChoiceList__ChoiceItem {
-    flex: 1 1 13.75rem;
+.choiceList li {
+    /* flex: 1 1 13.75rem; */
     margin-top: var(--p-space-4);
     margin-left: var(--p-space-5);
     max-width: calc(100% - var(--p-space-5));
