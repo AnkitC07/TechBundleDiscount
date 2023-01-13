@@ -15,36 +15,8 @@ import {
 } from "@shopify/polaris-icons";
 import Colorpicker from "../Common/ColorPicker";
 
-const ProductBadgeSettings = () => {
-  const [settings, settingState] = useState({
-    bundle_id: "",
-    BadgeHeader: "Buy more and save test",
-    BadgeDesign: {
-      BadgePosition: {
-        right: true,
-        left: false,
-      },
-      Style: {
-        round: true,
-        rectangle: false,
-      },
-      Color: "#9124d6",
-      Border: "#9124d6",
-      Font: "#9124d6",
-      Width: 40,
-      Height: 25,
-      Radius: 55,
-      FontSize: 20,
-      FontFamily: "serif",
-      FontStyle: {
-        b: true,
-        i: false,
-        u: false,
-      },
-      Desktop: "right",
-      Mobile: "left",
-    },
-  });
+const ProductBadgeSettings = ({states}) => {
+  const {settings, settingState} = states
   const [selected, setSelected] = useState("12323");
 
   const options = [
@@ -52,7 +24,6 @@ const ProductBadgeSettings = () => {
     { label: "Yesterday", value: "66556" },
     { label: "Last 7 days", value: "9999888" },
   ];
-
 
   const fontFamily = [
     { label: "Serif", value: "serif", style: { fontFamily: "serif" } },
@@ -69,7 +40,6 @@ const ProductBadgeSettings = () => {
     { label: "Cursive", value: "cursive", style: { fontFamily: "cursive" } },
     { label: "Fantasy", value: "fantasy", style: { fontFamily: "fantasy" } },
   ];
-
 
   const handleSelectChange = useCallback((value) => setSelected(value), []);
   const UpdateState = (key, value) => {
@@ -91,12 +61,21 @@ const ProductBadgeSettings = () => {
     settingState({ ...settings });
   };
 
+  const updateFontStyle = (e,key) =>{
+    const data = settings.BadgeDesign.FontStyle
+    if(e.classList.contains('Polaris-Button--primary')){
+      data[key] = false
+    }else{
+      data[key] = true
+    }
+    settingState({...settings})
+  }
   const suffixStyles = {
     minWidth: "24px",
     textAlign: "right",
-    border: '1px solid #c3c3c3',
-    padding: '4px 10px',
-    borderRadius:'7px'
+    border: "1px solid #c3c3c3",
+    padding: "4px 10px",
+    borderRadius: "7px",
   };
 
   return (
@@ -153,7 +132,9 @@ const ProductBadgeSettings = () => {
                 checked={settings.BadgeDesign.Style.round}
                 name="round"
                 onChange={(e) => {
-                  console.log(e);
+                  settings.BadgeDesign.Width = 35
+                  settings.BadgeDesign.Height = 78
+                  settings.BadgeDesign.Radius = 100
                   updateRadio("Style", "round", e);
                 }}
               />
@@ -165,6 +146,9 @@ const ProductBadgeSettings = () => {
                 name="rectangle"
                 onChange={(e) => {
                   console.log(e);
+                  settings.BadgeDesign.Width = 55
+                  settings.BadgeDesign.Height = 47
+                  settings.BadgeDesign.Radius = 0
                   updateRadio("Style", "rectangle", e);
                 }}
               />
@@ -242,18 +226,23 @@ const ProductBadgeSettings = () => {
                 updateRange("FontSize", e);
               }}
               output
-              suffix={<p style={suffixStyles}>{settings.BadgeDesign.FontSize}</p>}
+              suffix={
+                <p style={suffixStyles}>{settings.BadgeDesign.FontSize}</p>
+              }
             />
           </div>
 
           <p className="mt-4 fs-6 fw-semibold">Font Family</p>
-          <div className="mt-2"  style={{ fontFamily: settings.BadgeDesign.FontFamily }}>
+          <div
+            className="mt-2"
+            style={{ fontFamily: settings.BadgeDesign.FontFamily }}
+          >
             <Select
               options={fontFamily}
-              onChange={(e)=>{
-                const data = settings.BadgeDesign
-                data.FontFamily = e
-                settingState({...settings})
+              onChange={(e) => {
+                const data = settings.BadgeDesign;
+                data.FontFamily = e;
+                settingState({ ...settings });
               }}
               value={settings.BadgeDesign.FontFamily}
             />
@@ -262,29 +251,75 @@ const ProductBadgeSettings = () => {
           <p className="mt-4 fs-6 fw-semibold">Font Style</p>
           <div className="mt-2">
             <ButtonGroup segmented>
-              <Button>
+              <Button
+               primary={settings.BadgeDesign.FontStyle.b} 
+               onClick={(e) => {updateFontStyle(e.currentTarget,'b')}}>
                 <b>B</b>
               </Button>
-              <Button>Italic</Button>
-              <Button>Underline</Button>
+              <Button
+               primary={settings.BadgeDesign.FontStyle.i} 
+               onClick={(e) => {updateFontStyle(e.currentTarget,'i')}}>
+                <i>Italic</i>
+              </Button>
+              <Button 
+              primary={settings.BadgeDesign.FontStyle.u} 
+              onClick={(e) => {updateFontStyle(e.currentTarget,'u')}}>
+                <u>Underline</u>
+              </Button>
             </ButtonGroup>
           </div>
 
           <p className="mt-4 fs-6 fw-semibold">Desktop Alignment</p>
           <div className="mt-2">
             <ButtonGroup segmented>
-              <Button icon={TextAlignmentLeftMajor} />
-              <Button icon={TextAlignmentCenterMajor} />
-              <Button icon={TextAlignmentRightMajor} />
+              <Button
+                icon={TextAlignmentLeftMajor}
+                primary={settings.BadgeDesign.Desktop == "left"}
+                onClick={() => {
+                  updateRange("Desktop", "left");
+                }}
+              />
+              <Button
+                icon={TextAlignmentCenterMajor}
+                primary={settings.BadgeDesign.Desktop == "center"}
+                onClick={() => {
+                  updateRange("Desktop", "center");
+                }}
+              />
+              <Button
+                icon={TextAlignmentRightMajor}
+                primary={settings.BadgeDesign.Desktop == "right"}
+                onClick={() => {
+                  updateRange("Desktop", "right");
+                }}
+              />
             </ButtonGroup>
           </div>
 
           <p className="mt-4 fs-6 fw-semibold">Mobile Alignment</p>
           <div className="mt-2">
             <ButtonGroup segmented>
-              <Button icon={TextAlignmentLeftMajor} />
-              <Button icon={TextAlignmentCenterMajor} />
-              <Button icon={TextAlignmentRightMajor} />
+              <Button
+                icon={TextAlignmentLeftMajor}
+                primary={settings.BadgeDesign.Mobile == "left"}
+                onClick={() => {
+                  updateRange("Mobile", "left");
+                }}
+              />
+              <Button
+                icon={TextAlignmentCenterMajor}
+                primary={settings.BadgeDesign.Mobile == "center"}
+                onClick={() => {
+                  updateRange("Mobile", "center");
+                }}
+              />
+              <Button
+                icon={TextAlignmentRightMajor}
+                primary={settings.BadgeDesign.Mobile == "right"}
+                onClick={() => {
+                  updateRange("Mobile", "right");
+                }}
+              />
             </ButtonGroup>
           </div>
         </Card>
