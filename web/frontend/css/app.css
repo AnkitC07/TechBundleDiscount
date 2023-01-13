@@ -460,3 +460,16 @@ div#accordion .card {
     margin-left: var(--p-space-5);
     max-width: calc(100% - var(--p-space-5));
 }
+.previewStyle{
+  position: fixed;
+  width: 25%;
+}
+
+.sticky{
+  position: fixed;
+  width: 89%;
+  background: white;
+  top: 0;
+  z-index: 99999;
+  transition: 1s ease;
+}
