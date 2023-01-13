@@ -91,7 +91,7 @@ const Content = () => {
         {
             label: 'Show only on specific product pages',
             value: 'specific',
-            specificChild,
+            renderChildren:specificChild,
         },
         {
             label: 'Set start time',

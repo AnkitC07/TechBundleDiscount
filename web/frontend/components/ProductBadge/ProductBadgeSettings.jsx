@@ -83,7 +83,7 @@ const ProductBadgeSettings = ({states}) => {
       <div className="mb-5">
         <Card title="Offer Product Badge Setting" sectioned>
           <Select
-            label="Date range"
+            // label="Date range"
             options={options}
             onChange={handleSelectChange}
             value={selected}

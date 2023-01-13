@@ -473,3 +473,7 @@ div#accordion .card {
   z-index: 99999;
   transition: 1s ease;
 }
+
+.topSpace{
+  margin-top:10%!important;
+}
