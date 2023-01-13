@@ -1,0 +1,6 @@
+.box.countdown_box li a.active {
+    border-bottom: 3px solid #008060;
+}
+.box.countdown_box li:hover a {
+    border-bottom: 3px solid #008060;
+}

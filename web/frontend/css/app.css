@@ -1,0 +1,462 @@
+
+/* .check_head {
+  text-align: center;
+  margin: 30px 0 20px;
+}
+
+.check_head h1.Polaris-Heading {
+  font-size: 1.3rem;
+  font-weight: 600;
+  line-height: 1.8;
+}
+
+.check_head p {
+  margin: 0 !important;
+}
+a.count_btn {
+    color: #fff;
+    text-decoration: none;
+}
+section.footer_section {
+  margin-top: 1rem!important;
+  margin-bottom: 40px;
+  display: block;
+  width: 100%;
+  float: left;
+}
+.footer_div.flex.text-center.justify-evenly.p-16 {
+  margin-bottom: 35px;
+} */
+.cartdataclass {
+    height: 144px;
+}
+/* li a.active:after {
+  position: absolute;
+  content: '';
+  width: 100%;
+  height: 3px;
+  background: #006e52;
+  left: 0;
+  bottom: 0;
+  border-radius: 4px 4px 0px 0px;
+}
+.countdown li {
+  position: relative;
+} */
+.small-div {
+  width: 39%;
+  margin-right: 5px;
+}
+
+.row {
+  --bs-gutter-x: 0;
+}
+
+.product-page-top {
+  height: 80px;
+  background: linear-gradient(rgba(231, 231, 232, 0) 30.63%,
+      rgb(230, 230, 231) 69.79%);
+  border-radius: 8px;
+  max-width: 420px;
+  min-width: 320px;
+}
+
+.product-page-bottom {
+  height: 80px;
+  background: linear-gradient(rgba(231, 231, 232, 0) 30.63%,
+      rgb(230, 230, 231) 69.79%);
+  border-radius: 8px;
+  transform: rotate(180deg);
+  max-width: 420px;
+  min-width: 320px;
+}
+
+.product-page-wrapper {
+  margin-left: 30%;
+  position: sticky;
+  top: 20px;
+}
+
+.product-page-main {
+  margin-top: 20px;
+  max-width: 420px;
+  min-width: 320px;
+  display: flex;
+  flex-flow: column;
+  background: rgb(255, 255, 255);
+  padding-top: 30px;
+  padding-bottom: 30px;
+  border-radius: 8px;
+  border: 0px solid rgb(197, 200, 209);
+  text-align: center;
+  -webkit-box-align: center;
+  align-items: center;
+}
+
+.product-heading {
+  font-weight: bold;
+  font-size: 28px;
+  color: rgb(32, 34, 35);
+  line-height: 1;
+}
+
+.product-para {
+  font-size: 14px;
+  color: rgb(32, 34, 35);
+  padding-top: 2px;
+  line-height: 1.5;
+}
+
+.product-timer {
+  line-height: 1;
+  text-align: left;
+}
+
+/* .timer-wrapper {
+  display: grid;
+  grid-template-columns: 1fr 10px 1fr 10px 1fr 10px 1fr;
+  gap: 6px 2px;
+  place-items: center;
+  -webkit-box-align: center;
+} */
+.time {
+  color: rgb(32, 34, 35);
+  font-size: 40px;
+  font-feature-settings: 'tnum';
+  font-variant-numeric: tabular-nums;
+  font-weight: bold;
+}
+
+.timer-label {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr;
+  place-items: center;
+}
+
+.search_filter .search_box {
+  width: 100%;
+  padding: 7px;
+  padding-left: 40px;
+  border: 1.5px solid #ddd;
+  border-radius: 5px;
+}
+
+.search_filter {
+  flex: 1 1 0%;
+  position: relative;
+}
+
+.search_icon .Polaris-Icon {
+  /* width: fit-content; */
+  margin: 0;
+  position: absolute;
+  top: 10px;
+  left: 15px;
+  width: 18px;
+  height: 18px;
+}
+
+.products-list-modal {
+  display: grid;
+  grid-template-columns: 50px 75px 1fr;
+  align-items: center;
+}
+
+.checkbox-modal input[type='checkbox'] {
+  position: relative;
+  cursor: pointer;
+}
+
+.checkbox-modal input[type='checkbox']:before {
+  content: '';
+  display: block;
+  position: absolute;
+  width: 16px;
+  height: 16px;
+  top: 0;
+  left: 0;
+  border: 2px solid #555555;
+  border-radius: 3px;
+  background-color: white;
+}
+
+.checkbox-modal input[type='checkbox']:checked:after {
+  content: '';
+  display: block;
+  width: 5px;
+  height: 10px;
+  border: solid black;
+  border-width: 0 2px 2px 0;
+  -webkit-transform: rotate(45deg);
+  -ms-transform: rotate(45deg);
+  transform: rotate(45deg);
+  position: absolute;
+  top: 2px;
+  left: 6px;
+}
+
+.Polaris-Modal__Body.Polaris-Scrollable.Polaris-Scrollable--vertical {
+  position: unset;
+}
+
+.product-count-modal {
+  position: absolute;
+  bottom: 25px;
+  left: 20px;
+}
+
+.products-list-modal img {
+  width: 35px;
+  height: 35px;
+}
+
+caption.Polaris-DatePicker__Title {
+  position: absolute;
+  top: 0;
+  left: 32%;
+  font-weight: bold;
+}
+
+.wrap_timer {
+  position: fixed;
+  z-index: 9999;
+  width: 75%;
+  float: right;
+  display: flex;
+  justify-content: flex-end;
+}
+
+/* .top_product_timer {
+  border-top-left-radius: 8px;
+  border-top-right-radius: 8px;
+  margin-top: 20px;
+  display: flex;
+  gap: 10px 26px;
+  justify-content: center;
+  background: rgb(255, 255, 255);
+  padding-top: 5px;
+  padding-bottom: 5px;
+  border: 0px solid rgb(197, 200, 209);
+  align-items: center;
+} */
+/* .top_product_timer_wrapper {
+  margin-left: 3%;
+  margin-bottom: 20px;
+  position: sticky;
+  top: 20px;
+  box-shadow: rgb(0 0 0 / 5%) 0px 2px 1px, rgb(0 0 0 / 25%) 0px 0px 1px;
+  padding-bottom: 30px;
+  border-radius: 8px;
+  background-color: rgb(246, 246, 247);
+} */
+/* .timer-label div#insideTopSpacingHelpText {
+  font-size: 10px;
+}
+.top_product_timer .time {
+  font-size: 22px;
+}
+.top_product_timer h2.product-heading {
+  font-size: 16px;
+}*/
+.top-change {
+  flex-direction: column-reverse;
+}
+
+.extra-margin {
+  margin-left: 30px;
+}
+
+/* button.icon-button {
+  background: none;
+  border: none;
+  position: absolute;
+  top: 17px;
+  right: 35px;
+  font-size: 17px;
+} */
+li a.active:after {
+  position: absolute;
+  content: '';
+  width: 100%;
+  height: 3px;
+  background: #006e52;
+  left: 0;
+  bottom: 0;
+  border-radius: 4px 4px 0px 0px;
+}
+
+.countdown li {
+  position: relative;
+}
+
+a {
+  text-decoration: none;
+}
+
+table.Polaris-DatePicker__Month {
+  margin-top: 12px;
+}
+
+div#Polarispopover33 {
+  height: 260px;
+}
+
+.design .pxicon {
+  position: relative;
+}
+
+.design .px {
+  display: block !important;
+  z-index: 999;
+  color: #00000066;
+  position: absolute;
+  right: 30px;
+  top: 7px;
+}
+
+.input-number-box {
+  position: relative;
+}
+
+/* Cart Page */
+
+textarea {
+  overflow: auto;
+  padding-left: var(--p-space-3);
+  padding-right: var(--p-space-3);
+  resize: none;
+}
+
+.cBayMO {
+  font-size: 0.875rem;
+  font-weight: 400;
+  line-height: 1.25rem;
+  padding-top: 1rem;
+  margin-bottom: -13px;
+}
+
+.disable-div {
+  pointer-events: none;
+  opacity: 0.4;
+}
+
+.hide-div {
+  display: none;
+}
+
+.Polaris-TextContainer.buttonContainer {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 205px;
+}
+
+
+@media (max-width: 1150px) {
+  .Polaris-TextContainer.buttonContainer {
+    height: 200px;
+  }
+}
+
+@media (max-width: 960px) {
+  .Polaris-TextContainer.buttonContainer {
+    height: 223px;
+  }
+}
+
+@media (max-width: 400px) {
+  .Polaris-TextContainer.buttonContainer {
+    height: 163px;
+  }
+}
+
+.check_head {
+  text-align: center;
+  margin: 30px 0 20px;
+}
+
+.check_head h1.Polaris-Heading {
+  font-size: 1.3rem;
+  font-weight: 600;
+  line-height: 1.8;
+}
+
+.check_head p {
+  margin: 0 !important;
+}
+
+section.footer_section {
+  margin-bottom: 40px;
+  display: block;
+  width: 100%;
+  float: left;
+}
+
+.footer_div.flex.text-center.justify-evenly.p-16 {
+  margin-bottom: 35px;
+}
+
+.faq-wrap {
+  text-align: center;
+  margin-top: 20px;
+}
+
+div#accordion .card-header {
+  background: none;
+  padding-left: 0;
+  border-bottom: 1px solid #00a8ff5c;
+}
+
+div#accordion .card {
+  border: none;
+  background: none;
+}
+
+.faq-wrap a {
+  display: inline-flex;
+}
+
+.custom_footer_contact {
+  display: flex;
+  align-items: center;
+}
+
+.iconlookup {
+  display: inline-block;
+}
+
+.help_section h2.text-center {
+  font-size: 1.4rem;
+  font-weight: 600;
+}
+
+.Polaris-FooterHelp__Content {
+  display: inline-flex;
+  padding: 2rem 2rem 2rem 1.6rem;
+}
+
+.contactIconCss {
+  margin-top: 3px;
+  margin-right: 6px;
+}
+
+.dwxbiy {
+  display: grid;
+  grid-template-columns: 130px 200px 130px;
+  column-gap: 10px;
+  text-align: right;
+}
+
+.Polaris-Frame {
+  min-height: 0px !important;
+}
+/*----------Copied Css Ends Here--------- */
+.inputAndSlect {
+    display: flex;
+}
+.choiceList li.Polaris-ChoiceList__ChoiceItem {
+    flex: 1 1 13.75rem;
+    margin-top: var(--p-space-4);
+    margin-left: var(--p-space-5);
+    max-width: calc(100% - var(--p-space-5));
+}
