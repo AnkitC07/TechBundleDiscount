@@ -10,7 +10,7 @@ import ProductBadge from "../BundleDiscount/ProductBadge";
 const NavbarMain = ({ nav }) => {
   const [selectedTab, setTabState] = useState("Content");
   const [designSettings,designSatte] =  useState({
-    FontSize:'#008060'
+    FontColor:'#008060'
   })
   const navRender = (title) => {
     switch (title) {
