@@ -463,12 +463,13 @@ div#accordion .card {
 .previewStyle{
   position: fixed;
   width: 25%;
+  top: 69px;
 }
 
 .sticky{
   position: fixed;
   width: 89%;
-  background: white;
+  background: #f6f6f7;
   top: 0;
   z-index: 99999;
   transition: 1s ease;

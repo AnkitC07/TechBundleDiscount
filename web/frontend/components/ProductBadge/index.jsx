@@ -9,7 +9,7 @@ import { NavLink } from "react-router-dom";
 import { useEffect } from "react";
 
 const ProductBadge = () => {
-  const [sticky,stateSticky] = useState('')
+  const [sticky, stateSticky] = useState('')
   const [settings, settingState] = useState({
     bundle_id: "",
     BadgeHeader: "Buy more and save test",
@@ -40,28 +40,28 @@ const ProductBadge = () => {
     },
   });
 
-  useEffect(()=>{
+  useEffect(() => {
     window.addEventListener('scroll', (event) => {
-      if(window.scrollY >= 200){
+      if (window.scrollY >= 100) {
         stateSticky('sticky')
-      }else{
+      } else {
         stateSticky('')
       }
     });
     // return () => window.removeEventListener('scroll',()=>{});
-  },[])
+  }, [])
   return (
     <>
       <div className="container mb-5">
         <div>
-          <div className={`${sticky} d-flex align-items-center justify-content-between`}>
+          <div className={`sticky d-flex align-items-center justify-content-between`}>
             <div className="d-flex align-items-center">
               <div className="mb-3 mt-3">
                 <NavLink className="count_btn" to="/">
                   <Button
                     removeUnderline
                     icon={MobileBackArrowMajor}
-                    onClick={() => {}}
+                    onClick={() => { }}
                   ></Button>
                 </NavLink>
               </div>
@@ -74,7 +74,7 @@ const ProductBadge = () => {
             </div>
           </div>
         </div>
-        <div className="row mt-4">
+        <div className="row mt-4" style={{ marginTop: "9%!important" }}>
           <div className="col-lg-3 col-md-3 col-sm-4 col-xs-12">
             <Description
               heading={"Offer Product Badge"}
