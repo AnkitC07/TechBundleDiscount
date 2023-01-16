@@ -1,5 +1,5 @@
 import { Routes as ReactRouterRoutes, Route } from "react-router-dom";
-import ProductBadge from "./components/ProductBadge";
+import ProductBadge from "./components/BundleDiscount/ProductBadge";
 import Help from "./pages/Help";
 import Suggestions from "./pages/Suggestion";
 import BundleDiscount from "./components/BundleDiscount/BundleDiscount";
@@ -31,9 +31,9 @@ export default function Routes({ pages }) {
     <ReactRouterRoutes>
       {routeComponents}
       <Route path="*" element={<NotFound />} />
-      <Route path="/ProductBadge" element={<ProductBadge />}/>
-      <Route path="/Suggestion" element={<Suggestions />}/>
-      <Route path="/Help" element={<Help />}/>
+      <Route path="/ProductBadge" element={<ProductBadge />} />
+      <Route path="/Suggestion" element={<Suggestions />} />
+      <Route path="/Help" element={<Help />} />
       <Route path="/" element={<Homepage />} />
       <Route path="/bundleDiscount" element={<BundleDiscount />} />
     </ReactRouterRoutes>

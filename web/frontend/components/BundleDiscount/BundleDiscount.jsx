@@ -17,27 +17,13 @@ const BundleDiscount = () => {
             title: 'Placement',
             path: '',
         },
+        {
+            title: 'Badge',
+            path: '',
+        },
     ]
     const handelPublish = async () => {
-        // const body = {
-        //     type: 'Product Page',
-        //     content: content,
-        //     design: design,
-        //     placement: placement,
-        //     Html: Html,
-        //     ispublished: ispublished,
-        //     store: getShopName()
-        // }
-        // console.log(body)
-        // const res = await fetch('/api/submitProduct', {
-        //     method: 'post',
-        //     headers: {
-        //         'Content-Type': 'application/json',
-        //     },
-        //     body: JSON.stringify(body),
-        // })
-        // const data = await res.json()
-        // console.log('response', data)
+  
     }
     return (
         <section className="product_main_page">
@@ -89,26 +75,6 @@ const BundleDiscount = () => {
                                     </div>
                                 </div>
                                 <div className="Polaris-Page-Header__RightAlign">
-                                    {/* <div className="Polaris-ActionMenu">
-                                        <div className="Polaris-ActionMenu-Actions__ActionsLayout">
-                                            <div className="Polaris-ButtonGroup Polaris-ButtonGroup--extraTight">
-                                                <div className="Polaris-ButtonGroup__Item">
-                                                    <span className="Polaris-ActionMenu-SecondaryAction">
-                                                        <button
-                                                            className="Polaris-Button Polaris-Button--outline"
-                                                            type="button"
-                                                        >
-                                                            <span className="Polaris-Button__Content">
-                                                                <span className="Polaris-Button__Text">
-                                                                    Save
-                                                                </span>
-                                                            </span>
-                                                        </button>
-                                                    </span>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div> */}
                                     <div className="Polaris-Page-Header__PrimaryActionWrapper">
                                         <button
                                             className="Polaris-Button Polaris-Button--primary"

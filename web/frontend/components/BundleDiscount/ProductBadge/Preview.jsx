@@ -2,7 +2,7 @@ import { Card } from "@shopify/polaris";
 
 const Preview = ({ data }) => {
   const { Color, FontFamily, Font, FontSize, Radius, Border, Width, Height,FontStyle } =
-    data.BadgeDesign;
+    data.Design;
   const style = {
     color: Font,
     display: "flex",
@@ -40,7 +40,7 @@ const Preview = ({ data }) => {
                 style={{
                   display: "flex",
                   justifyContent: `${
-                    data.BadgeDesign.BadgePosition.right == true
+                    data.Design.BadgePosition.right == true
                       ? "flex-end"
                       : "flex-start"
                   }`,

@@ -344,7 +344,7 @@ const Content = () => {
 
     return (
         <>
-            <div className="row px-5 pb-5">
+            <div className="row px-5 pb-5 bundle_top">
                 <div className="col col-md-7">
                     <div className="Polaris-Card" style={{ maxWidth: '450px' }}>
                         <div className="Polaris-Card__Section">

@@ -1,28 +1,56 @@
-import React from 'react'
-import { NavLink, Outlet } from 'react-router-dom'
-import Pagecss from '../../css/Main_nav.module.css'
-import Content from '../BundleDiscount/Content'
-const NavbarMain = ({ nav }) => {
-    return (
-        <>
-            <div className={`countdown_box ${Pagecss.box}`}>
-                <ul className="countdown" id="navBar">
-                    {nav.map((x) => {
-                        // let idtype = id == null ? x.path : `${x.path}?id=${id}`
-                        return (
-                            <li key={x.path} id={x.title} className="countdown_tab">
-                                {/* <NavLink to={x.path} className={({ isActive }) => (isActive ? 'active' : 'inactive')} end> */}
-                                {x.title}
-                                {/* </NavLink> */}
-                            </li>
-                        )
-                    })}
-                </ul>
-                <Outlet />
-            </div>
-            <Content />
-        </>
-    )
-}
+import React, { useState } from "react";
+import { useEffect } from "react";
+import { NavLink, Outlet } from "react-router-dom";
+import Pagecss from "../../css/Main_nav.module.css";
+import Content from "../BundleDiscount/Content";
+import Design from "../BundleDiscount/Design";
+import Placement from "../BundleDiscount/Placement";
+import ProductBadge from "../BundleDiscount/ProductBadge";
 
-export default NavbarMain
+const NavbarMain = ({ nav }) => {
+  const [selectedTab, setTabState] = useState("Content");
+  const [designSettings, designSatte] = useState({
+    FontSize: '#008060'
+  })
+  const navRender = (title) => {
+    switch (title) {
+      case "Content":
+        return <Content />;
+      case "Placement":
+        return <Placement />;
+      case "Design":
+        return <Design states={{ designSettings, designSatte }} />;
+      case 'Badge':
+        return <ProductBadge />
+    }
+  };
+
+  return (
+    <>
+      <div className={`bundle_box${Pagecss.box} bundle_box`}>
+        <ul className="countdown" id="navBar">
+          {nav.map((x) => {
+            return (
+              <li
+                key={x.title}
+                id={x.title}
+                onClick={() => {
+                  setTabState(x.title);
+                }}
+                className={`countdown_tab ${x.title === selectedTab ? "NavTabActive" : ""
+                  }`}
+              >
+                {x.title}
+              </li>
+            );
+          })}
+        </ul>
+        <Outlet />
+      </div>
+      {navRender(selectedTab)}
+      {/* <Content /> */}
+    </>
+  );
+};
+
+export default NavbarMain;
