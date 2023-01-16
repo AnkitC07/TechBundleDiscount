@@ -1,7 +1,9 @@
-const Placement = () =>{
-    return(
+const Placement = () => {
+    return (
         <>
-        Placement COMP
+            <div>
+                Placement Comp
+            </div>
         </>
     )
 }

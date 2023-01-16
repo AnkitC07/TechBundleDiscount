@@ -27,8 +27,8 @@ const BundleDiscount = () => {
     }
     return (
         <section className="product_main_page">
-            <div className="container-fluid">
-                <div className="row">
+            <div className="container mb-5">
+                <div className="row sticky">
                     <div className="col-md-12">
                         <div className="Polaris-Page-Header Polaris-Page-Header--hasNavigation Polaris-Page-Header--hasActionMenu Polaris-Page-Header--mediumTitle">
                             <div className="Polaris-Page-Header__Row">
@@ -71,30 +71,10 @@ const BundleDiscount = () => {
                                         </div>
                                     </div>
                                     <div class="Polaris-Header-Title__SubTitle">
-                                        {/* <p>Timer ID: Save or Publish to show timer ID</p> */}
+                                        <p>Timer ID: Save or Publish to show timer ID</p>
                                     </div>
                                 </div>
                                 <div className="Polaris-Page-Header__RightAlign">
-                                    <div className="Polaris-ActionMenu">
-                                        <div className="Polaris-ActionMenu-Actions__ActionsLayout">
-                                            <div className="Polaris-ButtonGroup Polaris-ButtonGroup--extraTight">
-                                                <div className="Polaris-ButtonGroup__Item">
-                                                    <span className="Polaris-ActionMenu-SecondaryAction">
-                                                        <button
-                                                            className="Polaris-Button Polaris-Button--outline"
-                                                            type="button"
-                                                        >
-                                                            <span className="Polaris-Button__Content">
-                                                                <span className="Polaris-Button__Text">
-                                                                    Save
-                                                                </span>
-                                                            </span>
-                                                        </button>
-                                                    </span>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
                                     <div className="Polaris-Page-Header__PrimaryActionWrapper">
                                         <button
                                             className="Polaris-Button Polaris-Button--primary"
@@ -102,7 +82,7 @@ const BundleDiscount = () => {
                                             onClick={handelPublish}
                                         >
                                             <span className="Polaris-Button__Content">
-                                                <span className="Polaris-Button__Text">Publish</span>
+                                                <span className="Polaris-Button__Text">Save</span>
                                             </span>
                                         </button>
                                     </div>

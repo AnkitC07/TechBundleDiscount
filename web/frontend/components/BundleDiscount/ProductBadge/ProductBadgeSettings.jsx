@@ -280,12 +280,12 @@ const ProductBadgeSettings = ({states}) => {
               <Button
                primary={settings.Design.FontStyle.i} 
                onClick={(e) => {updateFontStyle(e.currentTarget,'i')}}>
-                <i>Italic</i>
+                <i>I</i>
               </Button>
               <Button 
               primary={settings.Design.FontStyle.u} 
               onClick={(e) => {updateFontStyle(e.currentTarget,'u')}}>
-                <u>Underline</u>
+                <u>U</u>
               </Button>
             </ButtonGroup>
           </div>
