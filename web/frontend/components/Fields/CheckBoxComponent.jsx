@@ -1,3 +1,4 @@
+import { RadioButton } from '@shopify/polaris'
 import React from 'react'
 
 function CheckBoxComponent(props) {
@@ -5,7 +6,7 @@ function CheckBoxComponent(props) {
     <>
       <div className="Polaris-FormLayout__Item">
         <div>
-          <label className="Polaris-Choice" htmlFor={props.id}>
+          {/* <label className="Polaris-Choice" htmlFor={props.id}>
             <span className="Polaris-Choice__Control">
               <span className="Polaris-RadioButton">
                 <input
@@ -13,7 +14,7 @@ function CheckBoxComponent(props) {
                   value={props.id}
                   name={props.name}
                   type="radio"
-                  onChange={props.onChange}
+                  onChange={}
                   className="Polaris-RadioButton__Input"
                   defaultChecked={props.checked}
                 />
@@ -21,12 +22,20 @@ function CheckBoxComponent(props) {
               </span>
             </span>
             <span className="Polaris-Choice__Label">{props.label}</span>
-          </label>
-          <div className="Polaris-Choice__Descriptions">
+          </label> */}
+          <RadioButton
+            label={props.label}
+            checked={props.checked}
+            id={props.id}
+            name={props.name}
+            helpText={props.decription}
+            onChange={props.onChange}
+          />
+          {/* <div className="Polaris-Choice__Descriptions">
             <div className="Polaris-Choice__HelpText" id="toDateHelpText">
               {props.decription}
             </div>
-          </div>
+          </div> */}
         </div>
       </div>
     </>

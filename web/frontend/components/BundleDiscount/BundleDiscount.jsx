@@ -4,6 +4,7 @@ import { useAuthenticatedFetch } from '../../hooks/useAuthenticatedFetch.js'
 import NavbarMain from '../layouts/NavbarMain.jsx'
 
 const BundleDiscount = () => {
+    
     const navdata = [
         {
             title: 'Content',
@@ -92,7 +93,7 @@ const BundleDiscount = () => {
                     </div>
                 </div>
 
-                <div className="row">
+                <div className="row ">
                     <NavbarMain nav={navdata} />
                 </div>
             </div>

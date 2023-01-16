@@ -1,5 +1,5 @@
 import { TextField } from '@shopify/polaris'
-import React, { useCallback, useState } from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 import CheckBoxComponent from '../Fields/CheckBoxComponent'
 import ChoiceListComp from '../Fields/ChoiceListComp'
 import DatePickerExample from '../Fields/DatePickerInput'
@@ -7,65 +7,9 @@ import InputComponent from '../Fields/InputComponent'
 import InputSelect from '../Fields/InputSelect'
 import SearchFilter from '../Fields/SearchFilter'
 
-const Content = () => {
-    const dates = new Date();
-    dates.setDate(dates.getDate() + 1);
-    const [bundle, setBundle] = useState({
-        offerHeader: '',
-        bundleProducts: {},
-        bundleDiscount: {
-            addDiscount: {
-                status: false,
-                discountValue: '',
-                discountType: '',
-            },
-            freeShiping: {
-                status: false,
-            },
-            freeGift: {
-                status: false,
-                freeGiftSlected: []
-            },
-            noDiscount: {
-                status: false
-            }
-        },
-        advanceSetting: {
-            customerOption: {
-                status: false
-            },
-            hideStorefront: {
-                status: false,
-            },
-            specific: {
-                status: false,
-                specificSlected: []
-            },
-            startDate: {
-                status: false,
-                date: {
-                    start: new Date(),
-                    end: new Date(),
-                }
-            },
-            endDate: {
-                status: false,
-                date: {
-                    start: new Date(dates),
-                    end: new Date(dates),
-                }
-            },
-            roundDiscount: {
-                status: false,
-                roundDiscountSelected: ''
-            },
-            targetCustomer: {
-                status: false,
-                targetCustomerSelected: []
+const Content = ({ bundle, setBundle }) => {
 
-            }
-        }
-    })
+
     // const bundle = {
     //     offerHeader: '',
     //     bundleProducts: {},
@@ -123,14 +67,14 @@ const Content = () => {
     //     }
     // }
 
-    const updateActiveDate = async (key, value) => {
-        const data = bundle.advanceSetting.startDate
-        data[key] = {
-            ...data[key],
-            date: value
-        }
-        stateModal({ ...bundle })
-    }
+    const updateRadio = (key, subkey, value) => {
+        const data = settings.Design[key];
+        Object.keys(data).forEach((x) => {
+            data[x] = false;
+        });
+        data[subkey] = true;
+        settingState({ ...settings });
+    };
     //---Advance Settings Choice list states---//
     const [selected, setSelected] = useState(['hidden']);
     const [textFieldValue, setTextFieldValue] = useState('');
@@ -171,7 +115,6 @@ const Content = () => {
             return (
                 isSelected && (
                     <div className="Polaris-FormLayout__Item">
-                        {console.log(isSelected)}
                         <div className="Polaris-Text--subdued">
                             Select atleast one product
                         </div>
@@ -196,9 +139,8 @@ const Content = () => {
                                 <DatePickerExample
                                     state1={bundle.advanceSetting.startDate.date}
                                     onChange={(e) => {
-                                        // updateActiveDate('start', e)
-
-                                        console.log(e)
+                                        bundle.advanceSetting.startDate.date = e
+                                        setBundle({ ...bundle })
                                     }}
                                 // disable={!modal.isEnabled}
                                 />
@@ -221,10 +163,11 @@ const Content = () => {
                         <div className="col-lg-8 col-md-18 col-sm-12 mt-1">
                             <div className="mb-0">
                                 <DatePickerExample
-                                // state1={modal.activePeriod.specificPeriod.start.date}
-                                // onChange={(e) => {
-                                //     updateActiveDate('start', e)
-                                // }}
+                                    state1={bundle.advanceSetting.endDate.date}
+                                    onChange={(e) => {
+                                        bundle.advanceSetting.endDate.date = e
+                                        setBundle({ ...bundle })
+                                    }}
                                 // disable={!modal.isEnabled}
                                 />
                                 <span id="end_date_err" className="err"></span>
@@ -247,14 +190,17 @@ const Content = () => {
                             <InputSelect
                                 id="round_discount"
                                 option={roundDiscountSelect}
-                            // value={content.onceItEnd}
-                            // placeholder="Unpublish timer"
-                            // onChange={(e) => {
-                            //     setContent({
-                            //         ...content,
-                            //         onceItEnd: e.target.value,
-                            //     })
-                            // }}
+                                value={bundle.advanceSetting.roundDiscount.roundDiscountSelected}
+                                // placeholder="Unpublish timer"
+                                onChange={(e) => {
+                                    bundle.advanceSetting.roundDiscount.roundDiscountSelected = e.target.value;
+                                    setBundle({ ...bundle })
+                                    // console.log(e)
+                                    // setContent({
+                                    //     ...content,
+                                    //     onceItEnd: e.target.value,
+                                    // })
+                                }}
                             />
                         </div>
                     </div>
@@ -342,9 +288,14 @@ const Content = () => {
         },
     ]
 
+    useEffect(() => {
+        console.log('Bundle=> ', bundle)
+
+    }, [bundle])
+
     return (
         <>
-            <div className="row px-5 pb-5 bundle_top">
+            <div className="row pb-5 ">
                 <div className="col col-md-7">
                     <div className="Polaris-Card" style={{ maxWidth: '450px' }}>
                         <div className="Polaris-Card__Section">
@@ -369,13 +320,13 @@ const Content = () => {
                                     <InputComponent
                                         id="name"
                                         type="text"
-                                    // default={content.productTimer}
-                                    // onChange={(e) => {
-                                    //     setContent({
-                                    //         ...content,
-                                    //         productTimer: e.target.value,
-                                    //     })
-                                    // }}
+                                        default={bundle.offerHeader}
+                                        onChange={(e) => {
+                                            setBundle({
+                                                ...bundle,
+                                                offerHeader: e.target.value,
+                                            })
+                                        }}
                                     />
 
                                 </div>
@@ -410,10 +361,11 @@ const Content = () => {
                                             name="bundleDiscount"
                                             label="Add Discount"
                                             decription=""
-                                        // checked={content.timerType == 'toDate' ? true : null}
-                                        // onChange={(e) => {
-                                        //     setContent({ ...content, timerType: e.target.value })
-                                        // }}
+                                            // checked={content.timerType == 'toDate' ? true : null}
+                                            onChange={(e) => {
+                                                console.log(e);
+                                                // updateRadio("bundleDiscount", "right", e);
+                                            }}
                                         />
                                         <div
                                             id="customPosition"

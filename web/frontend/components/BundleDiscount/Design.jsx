@@ -7,7 +7,7 @@ const Design = ({ states }) => {
   const { designSettings, designSatte } = states
   return (
     <>
-      <div className="bundle_top">
+      <div className="">
         <Card title={"General Settings"} sectioned>
           <p className="mt-4 fs-6 fw-semibold">Height</p>
           <Colorpicker

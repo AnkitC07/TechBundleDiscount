@@ -1,7 +1,7 @@
 const Placement = () => {
     return (
         <>
-            <div className="bundle_top">
+            <div >
                 Placement Comp
             </div>
         </>

@@ -77,7 +77,7 @@ const ProductBadge = () => {
             </div>
           </div>
         </div> */}
-        <div className="row topSpace">
+        <div className="row ">
           <div className="col-lg-3 col-md-3 col-sm-4 col-xs-12">
             <Description
               heading={"Offer Product Badge"}
