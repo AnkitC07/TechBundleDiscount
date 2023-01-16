@@ -72,7 +72,7 @@ const BundleDiscount = () => {
                                         </div>
                                     </div>
                                     <div class="Polaris-Header-Title__SubTitle">
-                                        {/* <p>Timer ID: Save or Publish to show timer ID</p> */}
+                                        <p>Timer ID: Save or Publish to show timer ID</p>
                                     </div>
                                 </div>
                                 <div className="Polaris-Page-Header__RightAlign">

@@ -1,7 +1,7 @@
 const Placement = () => {
     return (
         <>
-            <div >
+            <div>
                 Placement Comp
             </div>
         </>

@@ -23,7 +23,7 @@ ul#navBar {
   list-style: none;
   padding: 0;
   border-bottom: 1px solid #ddd;
-  margin-top: 6%;
+  /* margin-top: 6%; */
   margin-bottom: 0;
       width: 89%;
 }

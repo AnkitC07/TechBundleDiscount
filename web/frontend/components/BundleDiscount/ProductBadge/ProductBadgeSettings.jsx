@@ -6,6 +6,7 @@ import {
   RangeSlider,
   ButtonGroup,
   Button,
+  hsbToHex,
 } from "@shopify/polaris";
 import { useState, useCallback } from "react";
 import {
@@ -146,8 +147,19 @@ const ProductBadgeSettings = ({states}) => {
           <div className="mt-2">
             <Colorpicker
               colors={settings.Design.Color}
-              state={{ settings, settingState }}
+              state={{ settings,settingState}}
               value={"Color"}
+              pickerChanges={(e)=>{
+                console.log('update state values')
+                const data = settings.Design
+                data['Color'] = hsbToHex(e)
+                settingState({...settings})
+              }}
+              textChange={(e)=>{
+                const data = settings.Design
+                data['Color'] = e
+                settingState({...settings})
+              }}
             />
           </div>
 
@@ -157,6 +169,17 @@ const ProductBadgeSettings = ({states}) => {
               colors={settings.Design.Border}
               state={{ settings, settingState }}
               value={"Border"}
+              pickerChanges={(e)=>{
+                console.log('update state values')
+                const data = settings.Design
+                data['Border'] = hsbToHex(e)
+                settingState({...settings})
+              }}
+              textChange={(e)=>{
+                const data = settings.Design
+                data['Border'] = e
+                settingState({...settings})
+              }}
             />
           </div>
 
@@ -202,6 +225,17 @@ const ProductBadgeSettings = ({states}) => {
               colors={settings.Design.Font}
               state={{ settings, settingState }}
               value={"Font"}
+              pickerChanges={(e)=>{
+                console.log('update state values')
+                const data = settings.Design
+                data['Font'] = hsbToHex(e)
+                settingState({...settings})
+              }}
+              textChange={(e)=>{
+                const data = settings.Design
+                data['Font'] = e
+                settingState({...settings})
+              }}
             />
           </div>
 
@@ -246,12 +280,12 @@ const ProductBadgeSettings = ({states}) => {
               <Button
                primary={settings.Design.FontStyle.i} 
                onClick={(e) => {updateFontStyle(e.currentTarget,'i')}}>
-                <i>Italic</i>
+                <i>I</i>
               </Button>
               <Button 
               primary={settings.Design.FontStyle.u} 
               onClick={(e) => {updateFontStyle(e.currentTarget,'u')}}>
-                <u>Underline</u>
+                <u>U</u>
               </Button>
             </ButtonGroup>
           </div>

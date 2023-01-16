@@ -20,10 +20,6 @@ export default function App() {
             <NavigationMenu
               navigationLinks={[
                 {
-                  label: "Product Badge",
-                  destination: "/ProductBadge",
-                },
-                {
                   label: "Suggestion",
                   destination: "/Suggestion",
                 },

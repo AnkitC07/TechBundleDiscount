@@ -10,14 +10,15 @@ import ProductBadge from "../BundleDiscount/ProductBadge";
 const NavbarMain = ({ nav }) => {
   const dates = new Date();
   dates.setDate(dates.getDate() + 1);
+
   const [bundle, setBundle] = useState({
     offerHeader: '',
     bundleProducts: {},
     bundleDiscount: {
       addDiscount: {
-        status: false,
+        status: true,
         discountValue: '',
-        discountType: '',
+        discountType: '% OFF',
       },
       freeShiping: {
         status: false,
@@ -68,8 +69,30 @@ const NavbarMain = ({ nav }) => {
   })
   const [selectedTab, setTabState] = useState("Content");
   const [designSettings, designSatte] = useState({
-    FontSize: '#008060'
-  })
+    settings: {
+      FontColor: "#008060",
+      FontSize: 18,
+      FontFamily: "serif",
+      FontStyle: {
+        b: false,
+        i: false,
+        u: false,
+      },
+      Alignment: "",
+      VariantBgColor: "#008060",
+    },
+    button: {
+      bg: '#348766',
+      color: '#ffffff',
+      borderRadius: 50,
+      buttonAction: 'add to cart',
+      text: 'Grab this deal',
+      Moreoptions: 'More options',
+      Unavailablebtn: 'UNAVAILABLE',
+      UnavailableNotice: 'Unavailable, please try another option',
+      ChooseOption: 'Choose an option'
+    }
+  });
   const navRender = (title) => {
     switch (title) {
       case "Content":
@@ -78,8 +101,8 @@ const NavbarMain = ({ nav }) => {
         return <Placement />;
       case "Design":
         return <Design states={{ designSettings, designSatte }} />;
-      case 'Badge':
-        return <ProductBadge />
+      case "Badge":
+        return <ProductBadge />;
     }
   };
 
@@ -105,9 +128,7 @@ const NavbarMain = ({ nav }) => {
         </ul>
         <Outlet />
       </div>
-      <div className="topSpace">
-        {navRender(selectedTab)}
-      </div>
+      <div className="topSpace">{navRender(selectedTab)}</div>
       {/* <Content /> */}
     </>
   );
