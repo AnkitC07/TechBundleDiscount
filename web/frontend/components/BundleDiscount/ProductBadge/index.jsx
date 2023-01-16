@@ -1,5 +1,5 @@
 import "bootstrap/dist/css/bootstrap.min.css";
-import Description from "../Common/Description";
+import Description from "../../Common/Description";
 import { Button, Icon } from "@shopify/polaris";
 import { MobileBackArrowMajor } from "@shopify/polaris-icons";
 import ProductBadgeSettings from "./ProductBadgeSettings";
@@ -9,11 +9,11 @@ import { NavLink } from "react-router-dom";
 import { useEffect } from "react";
 
 const ProductBadge = () => {
-  const [sticky,stateSticky] = useState('')
+  const [sticky, stateSticky] = useState("");
   const [settings, settingState] = useState({
     bundle_id: "",
     BadgeHeader: "Buy more and save test",
-    BadgeDesign: {
+    Design: {
       BadgePosition: {
         right: true,
         left: false,
@@ -42,8 +42,10 @@ const ProductBadge = () => {
   return (
     <>
       <div className="container mb-5">
-        <div>
-          <div className={`sticky d-flex align-items-center justify-content-between `}>
+        {/* <div>
+          <div
+            className={`sticky d-flex align-items-center justify-content-between `}
+          >
             <div className="d-flex align-items-center">
               <div className="mb-3 mt-3">
                 <NavLink className="count_btn" to="/">
@@ -59,10 +61,22 @@ const ProductBadge = () => {
               </div>
             </div>
             <div>
-              <Button primary>Save</Button>
+              <div className="d-flex align-items-center">
+                <div className="mx-2">
+                  <Button plain destructive removeUnderline>
+                    Delete
+                  </Button>
+                </div>
+                <div className="mx-2">
+                  <Button>Save</Button>
+                </div>
+                <div className="mx-2">
+                  <Button primary>Publish</Button>
+                </div>
+              </div>
             </div>
           </div>
-        </div>
+        </div> */}
         <div className="row topSpace">
           <div className="col-lg-3 col-md-3 col-sm-4 col-xs-12">
             <Description

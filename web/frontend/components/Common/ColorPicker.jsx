@@ -77,7 +77,7 @@ const Colorpicker = ({ colors, state, value }) => {
                 <Popover.Section>
                   <ColorPicker
                     onChange={(e) => {
-                      const data = state.settings.BadgeDesign;
+                      const data = state.settings.Design;
                       data[value] = hsbToHex(e);
                       state.settingState({ ...state.settings });
                       setColor(e);
@@ -94,7 +94,7 @@ const Colorpicker = ({ colors, state, value }) => {
                 onChange={(e)=>{
                     const hsbV = rgbToHsb(hexToRgb(e))
                     setColor(hsbV)
-                    const data = state.settings.BadgeDesign;
+                    const data = state.settings.Design;
                     data[value] = e;
                     state.settingState({ ...state.settings });
                 }}

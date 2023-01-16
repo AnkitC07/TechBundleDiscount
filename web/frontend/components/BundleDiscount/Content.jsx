@@ -41,15 +41,6 @@ const Content = () => {
             return (
                 isSelected && (
                     <>dfsa</>
-                    // <div className="Polaris-FormLayout__Item">
-                    //     {console.log(isSelected)}
-                    //     <div className="Polaris-Choice__Descriptions Polaris-Text--subdued">
-                    //         Select atleast one product
-                    //     </div>
-                    //     <div className='Polaris-Choice__Descriptions freeProducts-Bundle '>
-                    //         <ChoiceListComp selected={freeSelected} handleChange={freeHandleChange} choice={freeGift} />
-                    //     </div>
-                    // </div>
                 )
             )
         }

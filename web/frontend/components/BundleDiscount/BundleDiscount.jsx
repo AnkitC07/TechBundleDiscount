@@ -17,27 +17,13 @@ const BundleDiscount = () => {
             title: 'Placement',
             path: '',
         },
+        {
+            title: 'Badge',
+            path: '',
+        },
     ]
     const handelPublish = async () => {
-        // const body = {
-        //     type: 'Product Page',
-        //     content: content,
-        //     design: design,
-        //     placement: placement,
-        //     Html: Html,
-        //     ispublished: ispublished,
-        //     store: getShopName()
-        // }
-        // console.log(body)
-        // const res = await fetch('/api/submitProduct', {
-        //     method: 'post',
-        //     headers: {
-        //         'Content-Type': 'application/json',
-        //     },
-        //     body: JSON.stringify(body),
-        // })
-        // const data = await res.json()
-        // console.log('response', data)
+  
     }
     return (
         <section className="product_main_page">
