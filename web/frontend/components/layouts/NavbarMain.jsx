@@ -32,6 +32,19 @@ const NavbarMain = ({ nav }) => {
       Unavailablebtn:'UNAVAILABLE',
       UnavailableNotice:'Unavailable, please try another option',
       ChooseOption:'Choose an option'
+    },
+    priceSavings:{
+      freeGift:'Free',
+      FreeShippingTag:'Free shipping',
+      FreeGiftTag:'Free',
+      SaveTag:'SAVE {{discount}}',
+      Total:'Total',
+      tagColor:"#008060",
+      priceColor:"#008060",
+      ComparePriceColor:"#008060",
+      showTotal:false,
+      ShowPriceUnit:false,
+      ShowComparePrice:false
     }
   });
   const navRender = (title) => {

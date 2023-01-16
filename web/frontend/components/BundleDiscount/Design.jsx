@@ -2,6 +2,7 @@ import {
   Button,
   ButtonGroup,
   Card,
+  Checkbox,
   hsbToHex,
   RangeSlider,
   Select,
@@ -61,9 +62,9 @@ const Design = ({ states }) => {
   ];
 
   const buttonAction = [
-    { label: "Add To Cart", value: "add to cart"},
-    { label: "Checkout", value: "checkout"}
-  ]
+    { label: "Add To Cart", value: "add to cart" },
+    { label: "Checkout", value: "checkout" },
+  ];
 
   const updateColorPicker = (key, subkey, e, type) => {
     const data = designSettings[key];
@@ -76,10 +77,10 @@ const Design = ({ states }) => {
     designSatte({ ...designSettings });
   };
 
-  const updateText = (obj,key,e) =>{
-    obj[key] = e
+  const updateText = (obj, key, e) => {
+    obj[key] = e;
     designSatte({ ...designSettings });
-  }
+  };
 
   return (
     <>
@@ -257,7 +258,9 @@ const Design = ({ states }) => {
                 }}
                 output
                 suffix={
-                  <p style={suffixStyles}>{designSettings.button.borderRadius}</p>
+                  <p style={suffixStyles}>
+                    {designSettings.button.borderRadius}
+                  </p>
                 }
               />
             </div>
@@ -265,71 +268,220 @@ const Design = ({ states }) => {
             <div className="mt-4">
               <Headings text="Button action" />
               <Select
-                  options={buttonAction}
-                  onChange={(e) => {
-                    const data = designSettings.button;
-                    data.buttonAction = e;
-                    designSatte({ ...designSettings });
-                  }}
-                  value={designSettings.button.buttonAction}
-                />
+                options={buttonAction}
+                onChange={(e) => {
+                  const data = designSettings.button;
+                  data.buttonAction = e;
+                  designSatte({ ...designSettings });
+                }}
+                value={designSettings.button.buttonAction}
+              />
             </div>
 
             <div className="mt-4">
               <Headings text="Button text" />
-              <TextField 
-              value={designSettings.button.text}
-              onChange={(e)=>{
-                updateText(designSettings.button,'text',e)
-              }}
+              <TextField
+                value={designSettings.button.text}
+                onChange={(e) => {
+                  updateText(designSettings.button, "text", e);
+                }}
               />
             </div>
 
             <div className="mt-4">
               <Headings text="More options text" />
-              <TextField 
-              value={designSettings.button.Moreoptions}
-              onChange={(e)=>{
-                updateText(designSettings.button,'Moreoptions',e)
-              }}
+              <TextField
+                value={designSettings.button.Moreoptions}
+                onChange={(e) => {
+                  updateText(designSettings.button, "Moreoptions", e);
+                }}
               />
             </div>
 
             <div className="mt-4">
               <Headings text="Unavailable button text" />
-              <TextField 
-              value={designSettings.button.Unavailablebtn}
-              onChange={(e)=>{
-                updateText(designSettings.button,'Unavailablebtn',e)
-              }}
+              <TextField
+                value={designSettings.button.Unavailablebtn}
+                onChange={(e) => {
+                  updateText(designSettings.button, "Unavailablebtn", e);
+                }}
               />
             </div>
 
             <div className="mt-4">
               <Headings text="Unavailable notice text" />
-              <TextField 
-              value={designSettings.button.UnavailableNotice}
-              onChange={(e)=>{
-                updateText(designSettings.button,'UnavailableNotice',e)
-              }}
+              <TextField
+                value={designSettings.button.UnavailableNotice}
+                onChange={(e) => {
+                  updateText(designSettings.button, "UnavailableNotice", e);
+                }}
               />
             </div>
 
             <div className="mt-4">
               <Headings text="Choose an option" />
-              <TextField 
-              value={designSettings.button.ChooseOption}
-              onChange={(e)=>{
-                updateText(designSettings.button,'ChooseOption',e)
-              }}
+              <TextField
+                value={designSettings.button.ChooseOption}
+                onChange={(e) => {
+                  updateText(designSettings.button, "ChooseOption", e);
+                }}
               />
             </div>
           </Card>
 
-            <Card title='Prices And Savings' sectioned>
+          <Card title="Prices And Savings" sectioned>
+            <div>
+            <Headings
+              text="Free gift"
+              subtext={
+                "This text will show in the cart in case the bundle incluses free gift"
+              }
+            />
+            <TextField
+              value={designSettings.priceSavings.freeGift}
+              onChange={(e) => {
+                updateText(designSettings.priceSavings, "freeGift", e);
+              }}
+            />
+            </div>
 
-            </Card>
-          
+            <div className="mt-4">
+            <Headings
+              text="Free shipping tag"
+              subtext={
+                "This text will show in case the bundle includes free shipping"
+              }
+            />
+            <TextField
+              value={designSettings.priceSavings.FreeShippingTag}
+              onChange={(e) => {
+                updateText(designSettings.priceSavings, "FreeShippingTag", e);
+              }}
+            />
+            </div>
+
+            <div className="mt-4">
+            <Headings
+              text="Free gift tag"
+              subtext={
+                "This tag will show in case the bundle includes a free gift next to the price"
+              }
+            />
+            <TextField
+              value={designSettings.priceSavings.FreeGiftTag}
+              onChange={(e) => {
+                updateText(designSettings.priceSavings, "FreeGiftTag", e);
+              }}
+            />
+            </div>
+
+            <div className="mt-4">
+            <Headings
+              text="Save tag"
+              subtext={
+                "This tag will show in case the bundle includes a free gift next to the price"
+              }
+            />
+            <TextField
+              value={designSettings.priceSavings.SaveTag}
+              onChange={(e) => {
+                updateText(designSettings.priceSavings, "SaveTag", e);
+              }}
+            />
+            </div>
+
+            <div className="mt-4">
+            <Headings
+              text="Total"
+            />
+            <TextField
+              value={designSettings.priceSavings.Total}
+              onChange={(e) => {
+                updateText(designSettings.priceSavings, "Total", e);
+              }}
+            />
+            </div>
+
+            <div className="mt-4">
+              <Headings text="Tag Color" />
+              <Colorpicker
+                colors={designSettings.priceSavings.tagColor}
+                state={{ designSettings, designSatte }}
+                value={"color"}
+                pickerChanges={(e) => {
+                  updateColorPicker("priceSavings", "tagColor", e, "color");
+                }}
+                textChange={(e) => {
+                  updateColorPicker("priceSavings", "tagColor", e, "text");
+                }}
+              />
+            </div>
+
+
+            <div className="mt-4">
+              <Headings text="Button Text Color" />
+              <Colorpicker
+                colors={designSettings.priceSavings.priceColor}
+                state={{ designSettings, designSatte }}
+                value={"color"}
+                pickerChanges={(e) => {
+                  updateColorPicker("priceSavings", "priceColor", e, "color");
+                }}
+                textChange={(e) => {
+                  updateColorPicker("priceSavings", "priceColor", e, "text");
+                }}
+              />
+            </div>
+
+
+            <div className="mt-4">
+              <Headings text="Button Text Color" />
+              <Colorpicker
+                colors={designSettings.priceSavings.ComparePriceColor}
+                state={{ designSettings, designSatte }}
+                value={"color"}
+                pickerChanges={(e) => {
+                  updateColorPicker("priceSavings", "ComparePriceColor", e, "color");
+                }}
+                textChange={(e) => {
+                  updateColorPicker("priceSavings", "ComparePriceColor", e, "text");
+                }}
+              />
+            </div>
+
+            <div className="mt-4">
+                <Checkbox 
+                   label="Show total"
+                   checked={designSettings.priceSavings.showTotal}
+                   onChange={(e)=>{
+                    designSettings.priceSavings.showTotal = e
+                    designSatte({...designSettings})
+                   }}
+                />
+            </div>
+
+            <div className="mt-4">
+                <Checkbox 
+                   label="Show price per unit"
+                   checked={designSettings.priceSavings.ShowPriceUnit}
+                   onChange={(e)=>{
+                    designSettings.priceSavings.ShowPriceUnit = e
+                    designSatte({...designSettings})
+                   }}
+                />
+            </div>
+
+            <div className="mt-4">
+                <Checkbox 
+                   label="Show compare price"
+                   checked={designSettings.priceSavings.ShowComparePrice}
+                   onChange={(e)=>{
+                    designSettings.priceSavings.ShowComparePrice = e
+                    designSatte({...designSettings})
+                   }}
+                />
+            </div>
+          </Card>
         </div>
       </div>
     </>
