@@ -8,6 +8,65 @@ import Placement from "../BundleDiscount/Placement";
 import ProductBadge from "../BundleDiscount/ProductBadge";
 
 const NavbarMain = ({ nav }) => {
+  const dates = new Date();
+  dates.setDate(dates.getDate() + 1);
+
+  const [bundle, setBundle] = useState({
+    offerHeader: '',
+    bundleProducts: {},
+    bundleDiscount: {
+      addDiscount: {
+        status: true,
+        discountValue: '',
+        discountType: '% OFF',
+      },
+      freeShiping: {
+        status: false,
+      },
+      freeGift: {
+        status: false,
+        freeGiftSlected: []
+      },
+      noDiscount: {
+        status: false
+      }
+    },
+    advanceSetting: {
+      customerOption: {
+        status: false
+      },
+      hideStorefront: {
+        status: false,
+      },
+      specific: {
+        status: false,
+        specificSlected: []
+      },
+      startDate: {
+        status: false,
+        date: {
+          start: new Date(),
+          end: new Date(),
+        }
+      },
+      endDate: {
+        status: false,
+        date: {
+          start: new Date(dates),
+          end: new Date(dates),
+        }
+      },
+      roundDiscount: {
+        status: false,
+        roundDiscountSelected: '.00'
+      },
+      targetCustomer: {
+        status: false,
+        targetCustomerSelected: []
+
+      }
+    }
+  })
   const [selectedTab, setTabState] = useState("Content");
   const [designSettings, designSatte] = useState({
     settings: {
@@ -50,7 +109,7 @@ const NavbarMain = ({ nav }) => {
   const navRender = (title) => {
     switch (title) {
       case "Content":
-        return <Content />;
+        return <Content bundle={bundle} setBundle={setBundle} />;
       case "Placement":
         return <Placement />;
       case "Design":
@@ -72,9 +131,8 @@ const NavbarMain = ({ nav }) => {
                 onClick={() => {
                   setTabState(x.title);
                 }}
-                className={`countdown_tab ${
-                  x.title === selectedTab ? "NavTabActive" : ""
-                }`}
+                className={`countdown_tab ${x.title === selectedTab ? "NavTabActive" : ""
+                  }`}
               >
                 {x.title}
               </li>

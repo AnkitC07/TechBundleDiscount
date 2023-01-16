@@ -2,7 +2,7 @@ import { Card, Filters } from "@shopify/polaris";
 import { useState, useCallback } from "react";
 
 function SearchFilter() {
-    const [queryValue, setQueryValue] = useState(null);
+    const [queryValue, setQueryValue] = useState('');
 
     const handleFiltersQueryChange = useCallback(
         (value) => setQueryValue(value),

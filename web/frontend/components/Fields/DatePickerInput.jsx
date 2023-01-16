@@ -29,7 +29,7 @@ export default function DatePickerExample(props) {
   }
   let finalDate = ''
   try {
-    console.log(typeof props.state1.end,)
+    // console.log(typeof props.state1.end,)
     const dates = new Date(props.state1.end)
     const y = dates.getFullYear()
     let m = String(dates.getMonth() + 1)
@@ -70,10 +70,10 @@ export default function DatePickerExample(props) {
             year={year}
             onChange={props.onChange}
             onMonthChange={handleMonthChange}
-          // selected={{
-          //   start: new Date(props.state1.start),
-          //   end: new Date(props.state1.end),
-          // }}
+            selected={{
+              start: new Date(props.state1.start),
+              end: new Date(props.state1.end),
+            }}
           />
         </Popover>
       </div>

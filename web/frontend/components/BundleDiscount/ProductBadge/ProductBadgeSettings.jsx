@@ -106,7 +106,7 @@ const ProductBadgeSettings = ({states}) => {
                 name="left"
                 onChange={(e) => {
                   console.log(e);
-                  updateRadio("BadgePosition", "left", e);
+                  updateRadio("BadgePosition", "left", e);  
                 }}
               />
             </div>
