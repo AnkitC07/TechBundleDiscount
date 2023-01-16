@@ -495,3 +495,23 @@ div#accordion .card {
 .bundle_top{
   margin-top: 163px !important;
 }
+.position_center {
+    position: absolute;
+    bottom: -12px;
+    left: 48%;
+    z-index: 1;
+}
+.position_relative {
+    position: relative;
+}
+.products_selected:first-child {
+    border-top: 1px solid lightgray;
+}
+.products_selected {
+    border: 1px solid lightgray;
+    padding: 20px;
+    border-top: none;
+}
+.inputAndSlect .Polaris-Select__Content {
+    width: 85px;
+}

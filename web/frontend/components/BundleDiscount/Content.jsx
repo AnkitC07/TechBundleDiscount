@@ -1,4 +1,4 @@
-import { TextField } from '@shopify/polaris'
+import { Icon, TextField } from '@shopify/polaris'
 import React, { useCallback, useEffect, useState } from 'react'
 import CheckBoxComponent from '../Fields/CheckBoxComponent'
 import ChoiceListComp from '../Fields/ChoiceListComp'
@@ -6,6 +6,10 @@ import DatePickerExample from '../Fields/DatePickerInput'
 import InputComponent from '../Fields/InputComponent'
 import InputSelect from '../Fields/InputSelect'
 import SearchFilter from '../Fields/SearchFilter'
+import TextFieldComp from '../Fields/TextFieldComp'
+import { SearchMinor, CirclePlusMajor } from '@shopify/polaris-icons';
+import ResourcePickerComp from '../Fields/ResourcePickerComp'
+import ComboBoxComp from '../Fields/ComboBoxComp'
 
 const Content = ({ bundle, setBundle }) => {
 
@@ -153,7 +157,8 @@ const Content = ({ bundle, setBundle }) => {
         (isSelected) => {
             return (
                 isSelected && (
-                    <SearchFilter />
+                    // <SearchFilter />
+                    <ComboBoxComp />
                 )
             )
         }
@@ -275,7 +280,24 @@ const Content = ({ bundle, setBundle }) => {
                                         <div className=" Polaris-Text--subdued">
                                             Bundle offers will show inside each product page that is included in the bundle .
                                         </div>
+                                        <div id="product_search_section" class="mt-5">
+                                            <div class="products_selected position_relative" data-id="product_select_box1">
 
+                                                <div class="Polaris-TextContainer">
+                                                    <TextFieldComp label={'Product #1'} prefix={<Icon source={SearchMinor} />} placeholder={'Select a product'} />
+                                                </div>
+                                                <div className="position_center ">
+                                                    <Icon
+                                                        source={CirclePlusMajor}
+                                                        color="base"
+                                                    />
+                                                </div>
+                                                {/* <svg xmlns="http://www.w3.org/2000/svg" width="30" height="25" viewBox="0 0 15 14" fill="none" class="position_center">
+                                                    <circle cx="6.5" cy="7.5" r="6.5" fill="#DDDDDD" class="pro_circle add_another_pro"></circle>
+                                                    <path d="M10 7H7V4H6V7H3V8H6V11H7V8H10V7Z" fill="#9E9999" class="pro_path add_another_pro"></path>
+                                                </svg> */}
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -300,7 +322,7 @@ const Content = ({ bundle, setBundle }) => {
                                             }}
                                         />
                                         {bundle.bundleDiscount.addDiscount.status ? <div
-                                            id="customPosition"
+                                            id="addDiscount"
                                             className="Polaris-FormLayout__Item"
                                         >
                                             <div className="inputAndSlect">
@@ -314,7 +336,7 @@ const Content = ({ bundle, setBundle }) => {
                                                     }}
                                                 />
                                                 <InputSelect
-                                                    id="onceItEnds"
+                                                    id="addDiscountSelect"
                                                     option={discountType}
                                                     value={bundle.bundleDiscount.addDiscount.discountType}
                                                     placeholder="Unpublish timer"
@@ -395,6 +417,7 @@ const Content = ({ bundle, setBundle }) => {
                     <div style={{ position: 'sticky', top: '20px' }} >
                     </div>
                 </div> */}
+                {/* <ResourcePickerComp type="Product" state1={false} /> */}
             </div>
         </>
     )
