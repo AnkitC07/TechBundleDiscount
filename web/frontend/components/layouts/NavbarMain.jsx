@@ -26,7 +26,7 @@ const NavbarMain = ({ nav, products }) => {
   });
   const [bundle, setBundle] = useState({
     offerHeader: '',
-    bundleProducts: {},
+    bundleProducts: [],
     bundleDiscount: {
       addDiscount: {
         status: true,
@@ -124,9 +124,9 @@ const NavbarMain = ({ nav, products }) => {
       case "Content":
         return <Content bundle={bundle} setBundle={setBundle} products={products} />;
       case "Placement":
-        return <Placement states={{placement, setPlacement}}/>;
+        return <Placement states={{ placement, setPlacement }} />;
       case "Design":
-        return <Design states={{ designSettings, designSatte, products }} />;
+        return <Design states={{ designSettings, designSatte }} />;
       case "Badge":
         return <ProductBadge />;
     }

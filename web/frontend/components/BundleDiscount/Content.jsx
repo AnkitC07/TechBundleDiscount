@@ -242,10 +242,18 @@ const Content = ({ bundle, setBundle, products }) => {
             renderChildren: targetDiscountChild,
         },
     ]
-
+    const bundleProductSelection = (prod) => {
+        bundle.bundleProducts = [...bundle.bundleProducts, prod]
+        setBundle({ ...bundle })
+    }
+    const bundleProductRemoval = (prod) => {
+        const index = Object.keys(bundle.bundleProducts)
+        console.log('Index', bundle.bundleProducts)
+        // bundle.bundleProducts = [...bundle.bundleProducts, prod]
+        // setBundle({ ...bundle })
+    }
     useEffect(() => {
         console.log('Bundle=> ', bundle)
-
     }, [bundle])
 
     return (
@@ -303,11 +311,13 @@ const Content = ({ bundle, setBundle, products }) => {
 
                                                     <div class="Polaris-TextContainer ">
                                                         {/* <TextFieldComp label={item} prefix={<Icon source={SearchMinor} />} placeholder={'Select a product'} /> */}
-                                                        <div className="searchBoxTag"> <ComboBoxComp products={products} /></div>
+                                                        <div className="searchBoxTag">
+                                                            <ComboBoxComp products={products} onClick={bundleProductSelection} onRemove={bundleProductRemoval} />
+                                                        </div>
 
                                                     </div>
                                                     {i === bundleDiv.length - 1 ?
-                                                        <div className="position_center pointerclass" onClick={() => { bundleDiv.push(`Product #${++i + 1}`); setBundle({ ...bundle }) }}>
+                                                        <div className="position_center pointerclass" onClick={() => { bundleDiv.push(`Product #${i + 1}`); setBundle({ ...bundle }) }}>
                                                             <Icon
                                                                 source={CirclePlusMajor}
                                                                 color="primary"
@@ -315,7 +325,7 @@ const Content = ({ bundle, setBundle, products }) => {
                                                             />
                                                         </div>
                                                         :
-                                                        <div className="position_center " >
+                                                        <div className="position_center ">
                                                             <Icon
                                                                 source={CirclePlusMajor}
                                                                 color="base"
@@ -326,7 +336,7 @@ const Content = ({ bundle, setBundle, products }) => {
                                                 </div>
                                             )}
                                             <center>
-                                                <p class="mt-4 add_another_pro ">Add another product</p>
+                                                <p class="mt-4 add_another_pro" >Add another product</p>
                                             </center>
                                         </div>
 

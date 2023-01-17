@@ -5,7 +5,7 @@ import { useState, useCallback, useMemo } from 'react';
 
 function ComboBoxComp(props) {
     // const tags = ['Rustic', 'Antique', 'Vinyl', 'Refurbished'];
-    const [selectedTags, setSelectedTags] = useState(['Rustic'])
+    const [selectedTags, setSelectedTags] = useState([])
     const [textFieldValue, setTextFieldValue] = useState('');
     const [popoverActive, setPopoverActive] = useState(false);
     const togglePopoverActive =
@@ -16,6 +16,7 @@ function ComboBoxComp(props) {
     );
     const removeTag = useCallback(
         (tag) => () => {
+            props.onRemove(tag)
             setSelectedTags((previousTags) =>
                 previousTags.filter((previousTag) => previousTag !== tag),
             );
@@ -30,9 +31,14 @@ function ComboBoxComp(props) {
                 ))}
             </Stack>
         ) : null;
-    const handelCheck = (id) => [
-        console.log('checking', id)
-    ]
+    const handelCheck = (x) => {
+        props.onClick(x)
+        console.log('checking', x.title)
+        // selectedTags = [`${x.title}`]
+        setSelectedTags([`${x.title}`])
+    }
+
+
 
     return (
         <>
@@ -52,14 +58,16 @@ function ComboBoxComp(props) {
                 <div className="product_show">
                     <ul className="products_li selected_pro">
                         {props.products.map((x, i) =>
-                            <li 
-                            className='selected_pro'
-                            onClick={(e)=>{
-                                handelCheck(x.id)
-                              setTimeout(()=>{
-                                togglePopoverActive()
-                              },200)
-                            }} >
+                            <li
+                                key={x.id}
+                                className='selected_pro'
+                                onClick={(e) => {
+                                    handelCheck(x)
+
+                                    setTimeout(() => {
+                                        togglePopoverActive()
+                                    }, 200)
+                                }} >
                                 <div className="selected_pro product_list save_bar_display_block" id={x.id} data-pro_id={x.id} data-pro_title={x.title}>
                                     <div className="selected_pro pro_image">
                                         <img src={x.image ? x.image.src : 'no_image.png'} className="imgae_res selected_pro" />
