@@ -1,23 +1,29 @@
 .container {
   max-width: 960px;
 }
+
 .timertype_section .col-md-4 {
   margin-bottom: 20px;
   padding-right: 25px;
 }
+
 .timertype_section img {
   margin-bottom: 20px;
 }
+
 a.count_btn {
   color: #fff;
   text-decoration: none;
 }
+
 .timertype_section p {
   margin-bottom: 20px;
 }
+
 .product_main_page .container-fluid {
   padding: 0 30px;
 }
+
 ul#navBar {
   display: flex;
   list-style: none;
@@ -25,18 +31,21 @@ ul#navBar {
   border-bottom: 1px solid #ddd;
   /* margin-top: 6%; */
   margin-bottom: 0;
-      width: 89%;
+  width: 95%;
 }
+
 ul#navBar li {
   margin: 0 10px;
 }
-ul#navBar li  {
+
+ul#navBar li {
   text-decoration: none;
   color: #202223;
   display: inline-block;
   padding: 15px;
   cursor: pointer;
 }
+
 .w-24 {
   width: 24%;
 }

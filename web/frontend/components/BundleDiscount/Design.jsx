@@ -8,7 +8,6 @@ import {
   Select,
   TextField,
 } from "@shopify/polaris";
-import { useEffect } from "react";
 import { useState } from "react";
 import Colorpicker from "../Common/ColorPicker";
 import Headings from "../Common/Heading";
@@ -20,6 +19,7 @@ import {
 
 const Design = ({ states }) => {
   const { designSettings, designSatte } = states;
+  const [open, setOpen] = useState(true)
 
   const UpdateState = (obj, key, value) => {
     const data = obj;
@@ -84,8 +84,11 @@ const Design = ({ states }) => {
 
   return (
     <>
+
+
       <div className="row mb-5">
         <div className="col-lg-6 col-md-6 col-sm-6">
+
           <Card title={"General Settings"} sectioned>
             <div>
               <Headings text={"Font Color"} />
@@ -331,75 +334,73 @@ const Design = ({ states }) => {
 
           <Card title="Prices And Savings" sectioned>
             <div>
-            <Headings
-              text="Free gift"
-              subtext={
-                "This text will show in the cart in case the bundle incluses free gift"
-              }
-            />
-            <TextField
-              value={designSettings.priceSavings.freeGift}
-              onChange={(e) => {
-                updateText(designSettings.priceSavings, "freeGift", e);
-              }}
-            />
+              <Headings
+                text="Free gift"
+                subtext={
+                  "This text will show in the cart in case the bundle incluses free gift"
+                }
+              />
+              <TextField
+                value={designSettings.priceSavings.freeGift}
+                onChange={(e) => {
+                  updateText(designSettings.priceSavings, "freeGift", e);
+                }}
+              />
             </div>
 
             <div className="mt-4">
-            <Headings
-              text="Free shipping tag"
-              subtext={
-                "This text will show in case the bundle includes free shipping"
-              }
-            />
-            <TextField
-              value={designSettings.priceSavings.FreeShippingTag}
-              onChange={(e) => {
-                updateText(designSettings.priceSavings, "FreeShippingTag", e);
-              }}
-            />
+              <Headings
+                text="Free shipping tag"
+                subtext={
+                  "This text will show in case the bundle includes free shipping"
+                }
+              />
+              <TextField
+                value={designSettings.priceSavings.FreeShippingTag}
+                onChange={(e) => {
+                  updateText(designSettings.priceSavings, "FreeShippingTag", e);
+                }}
+              />
             </div>
 
             <div className="mt-4">
-            <Headings
-              text="Free gift tag"
-              subtext={
-                "This tag will show in case the bundle includes a free gift next to the price"
-              }
-            />
-            <TextField
-              value={designSettings.priceSavings.FreeGiftTag}
-              onChange={(e) => {
-                updateText(designSettings.priceSavings, "FreeGiftTag", e);
-              }}
-            />
+              <Headings
+                text="Free gift tag"
+                subtext={
+                  "This tag will show in case the bundle includes a free gift next to the price"
+                }
+              />
+              <TextField
+                value={designSettings.priceSavings.FreeGiftTag}
+                onChange={(e) => {
+                  updateText(designSettings.priceSavings, "FreeGiftTag", e);
+                }}
+              />
             </div>
 
             <div className="mt-4">
-            <Headings
-              text="Save tag"
-              subtext={
-                "This tag will show in case the bundle includes a free gift next to the price"
-              }
-            />
-            <TextField
-              value={designSettings.priceSavings.SaveTag}
-              onChange={(e) => {
-                updateText(designSettings.priceSavings, "SaveTag", e);
-              }}
-            />
+              <Headings
+                text="Save tag"
+                subtext={
+                  "This tag will show in case the bundle includes a free gift next to the price"
+                }
+              />
+              <TextField
+                value={designSettings.priceSavings.SaveTag}
+                onChange={(e) => {
+                  updateText(designSettings.priceSavings, "SaveTag", e);
+                }}
+              />
             </div>
 
             <div className="mt-4">
-            <Headings
-              text="Total"
-            />
-            <TextField
-              value={designSettings.priceSavings.Total}
-              onChange={(e) => {
-                updateText(designSettings.priceSavings, "Total", e);
-              }}
-            />
+              <Headings text="Total" />
+              <TextField
+                value={designSettings.priceSavings.Total}
+                onChange={(e) => {
+                  updateText(designSettings.priceSavings, "Total", e);
+                }}
+              />
             </div>
 
             <div className="mt-4">
@@ -417,7 +418,6 @@ const Design = ({ states }) => {
               />
             </div>
 
-
             <div className="mt-4">
               <Headings text="Button Text Color" />
               <Colorpicker
@@ -433,7 +433,6 @@ const Design = ({ states }) => {
               />
             </div>
 
-
             <div className="mt-4">
               <Headings text="Button Text Color" />
               <Colorpicker
@@ -441,45 +440,55 @@ const Design = ({ states }) => {
                 state={{ designSettings, designSatte }}
                 value={"color"}
                 pickerChanges={(e) => {
-                  updateColorPicker("priceSavings", "ComparePriceColor", e, "color");
+                  updateColorPicker(
+                    "priceSavings",
+                    "ComparePriceColor",
+                    e,
+                    "color"
+                  );
                 }}
                 textChange={(e) => {
-                  updateColorPicker("priceSavings", "ComparePriceColor", e, "text");
+                  updateColorPicker(
+                    "priceSavings",
+                    "ComparePriceColor",
+                    e,
+                    "text"
+                  );
                 }}
               />
             </div>
 
             <div className="mt-4">
-                <Checkbox 
-                   label="Show total"
-                   checked={designSettings.priceSavings.showTotal}
-                   onChange={(e)=>{
-                    designSettings.priceSavings.showTotal = e
-                    designSatte({...designSettings})
-                   }}
-                />
+              <Checkbox
+                label="Show total"
+                checked={designSettings.priceSavings.showTotal}
+                onChange={(e) => {
+                  designSettings.priceSavings.showTotal = e;
+                  designSatte({ ...designSettings });
+                }}
+              />
             </div>
 
             <div className="mt-4">
-                <Checkbox 
-                   label="Show price per unit"
-                   checked={designSettings.priceSavings.ShowPriceUnit}
-                   onChange={(e)=>{
-                    designSettings.priceSavings.ShowPriceUnit = e
-                    designSatte({...designSettings})
-                   }}
-                />
+              <Checkbox
+                label="Show price per unit"
+                checked={designSettings.priceSavings.ShowPriceUnit}
+                onChange={(e) => {
+                  designSettings.priceSavings.ShowPriceUnit = e;
+                  designSatte({ ...designSettings });
+                }}
+              />
             </div>
 
             <div className="mt-4">
-                <Checkbox 
-                   label="Show compare price"
-                   checked={designSettings.priceSavings.ShowComparePrice}
-                   onChange={(e)=>{
-                    designSettings.priceSavings.ShowComparePrice = e
-                    designSatte({...designSettings})
-                   }}
-                />
+              <Checkbox
+                label="Show compare price"
+                checked={designSettings.priceSavings.ShowComparePrice}
+                onChange={(e) => {
+                  designSettings.priceSavings.ShowComparePrice = e;
+                  designSatte({ ...designSettings });
+                }}
+              />
             </div>
           </Card>
         </div>

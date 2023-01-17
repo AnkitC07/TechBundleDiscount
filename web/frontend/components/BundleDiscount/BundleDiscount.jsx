@@ -28,7 +28,7 @@ const BundleDiscount = () => {
     }
     return (
         <section className="product_main_page">
-            <div className="container mb-5">
+            <div className="containerCustom mb-5">
                 <div className="row sticky">
                     <div className="col-md-12">
                         <div className="Polaris-Page-Header Polaris-Page-Header--hasNavigation Polaris-Page-Header--hasActionMenu Polaris-Page-Header--mediumTitle">

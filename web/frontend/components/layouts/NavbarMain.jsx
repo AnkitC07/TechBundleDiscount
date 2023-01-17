@@ -7,6 +7,7 @@ import Design from "../BundleDiscount/Design";
 import Placement from "../BundleDiscount/Placement";
 import ProductBadge from "../BundleDiscount/ProductBadge";
 
+
 const NavbarMain = ({ nav }) => {
   const dates = new Date();
   dates.setDate(dates.getDate() + 1);
