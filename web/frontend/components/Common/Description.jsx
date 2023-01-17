@@ -4,16 +4,16 @@ const Description = ({ heading, description, link }) => {
   return (
       <div>
         <div>
-          <p className="fs-6 fw-semibold">{heading}</p>
+          <p className="Polaris-TextStyle--variationStrong">{heading}</p>
         </div>
         <div>
-          <p className="fst-normal lh-sm mt-2 text-secondary">
+          <p className="Polaris-Text--regular lh-sm mt-2 text-secondary">
             {description}
           </p>
         </div>
         <div className="mt-2">
           <Button plain removeUnderline>
-            <p className="d-flex align-items-center">
+            <p className="d-flex align-items-center Polaris-Text--regular">
               <div>
                 <Icon source={PlayCircleMajor} color="base" />
               </div>

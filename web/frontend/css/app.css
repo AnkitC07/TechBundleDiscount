@@ -468,7 +468,7 @@ div#accordion .card {
 
 .sticky{
   position: fixed;
-  width: 89%;
+  width: 95%;
   background: #f6f6f7;
   top: 0;
   z-index: 99999;
@@ -529,9 +529,34 @@ div#accordion .card {
 .selected_product_list{
   display: grid;
 }
-.searchBoxTag div#PolarisTextField43-VerticalContent {
+.searchBoxTag .Polaris-TextField__VerticalContent {
     overflow: hidden;
     display: flex;
     padding: 0;
     margin: 0 5px;
+}
+.product_main_page{
+  /* background-color: white; */
+}
+.containerCustom{
+  width: 95%;
+  margin: 0 auto;
+}
+
+@media only screen and (max-width: 768px) {
+  .previewStyle {
+    top:50%;
+    width: 100%;
+    position: static;
+  }
+  .container{
+    margin: 0px 2.5%!important;
+    max-width: 95%!important;
+  }
+  .sticky{
+    width: 95%;
+  }
+  .Polaris-Page-Header--mediumTitle:not(.Polaris-Page-Header--noBreadcrumbs) .Polaris-Page-Header__Row{
+    display: flex!important;
+  }
 }

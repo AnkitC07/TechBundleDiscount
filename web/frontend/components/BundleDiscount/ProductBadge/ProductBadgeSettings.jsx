@@ -86,7 +86,7 @@ const ProductBadgeSettings = ({states}) => {
           />
         </Card>
         <Card title="Badge Design" sectioned>
-          <p className="fs-6 fw-semibold">Position</p>
+          <p className="Polaris-TextStyle--variationStrong">Position</p>
           <div className="mt-2 row">
             <div className="col-6">
               <RadioButton
@@ -112,7 +112,7 @@ const ProductBadgeSettings = ({states}) => {
             </div>
           </div>
 
-          <p className="mt-4 fs-6 fw-semibold">Style</p>
+          <p className="mt-4 Polaris-TextStyle--variationStrong">Style</p>
           <div className="mt-2 row">
             <div className="col-6">
               <RadioButton
@@ -143,7 +143,7 @@ const ProductBadgeSettings = ({states}) => {
             </div>
           </div>
 
-          <p className="mt-4 fs-6 fw-semibold">Color</p>
+          <p className="mt-4 Polaris-TextStyle--variationStrong">Color</p>
           <div className="mt-2">
             <Colorpicker
               colors={settings.Design.Color}
@@ -163,7 +163,7 @@ const ProductBadgeSettings = ({states}) => {
             />
           </div>
 
-          <p className="mt-4 fs-6 fw-semibold">Border Color</p>
+          <p className="mt-4 Polaris-TextStyle--variationStrong">Border Color</p>
           <div className="mt-2">
             <Colorpicker
               colors={settings.Design.Border}
@@ -183,7 +183,7 @@ const ProductBadgeSettings = ({states}) => {
             />
           </div>
 
-          <p className="mt-4 fs-6 fw-semibold">Width</p>
+          <p className="mt-4 Polaris-TextStyle--variationStrong">Width</p>
           <div className="mt-2">
             <RangeSlider
               value={settings.Design.Width}
@@ -195,7 +195,7 @@ const ProductBadgeSettings = ({states}) => {
             />
           </div>
 
-          <p className="mt-4 fs-6 fw-semibold">Height</p>
+          <p className="mt-4 Polaris-TextStyle--variationStrong">Height</p>
           <div className="mt-2">
             <RangeSlider
               value={settings.Design.Height}
@@ -207,7 +207,7 @@ const ProductBadgeSettings = ({states}) => {
             />
           </div>
 
-          <p className="mt-4 fs-6 fw-semibold">Radius</p>
+          <p className="mt-4 Polaris-TextStyle--variationStrong">Radius</p>
           <div className="mt-2">
             <RangeSlider
               value={settings.Design.Radius}
@@ -219,7 +219,7 @@ const ProductBadgeSettings = ({states}) => {
             />
           </div>
 
-          <p className="mt-4 fs-6 fw-semibold">Font Color</p>
+          <p className="mt-4 Polaris-TextStyle--variationStrong">Font Color</p>
           <div className="mt-2">
             <Colorpicker
               colors={settings.Design.Font}
@@ -239,7 +239,7 @@ const ProductBadgeSettings = ({states}) => {
             />
           </div>
 
-          <p className="mt-4 fs-6 fw-semibold">Font Size</p>
+          <p className="mt-4 Polaris-TextStyle--variationStrong">Font Size</p>
           <div className="mt-2">
             <RangeSlider
               value={settings.Design.FontSize}
@@ -253,7 +253,7 @@ const ProductBadgeSettings = ({states}) => {
             />
           </div>
 
-          <p className="mt-4 fs-6 fw-semibold">Font Family</p>
+          <p className="mt-4 Polaris-TextStyle--variationStrong">Font Family</p>
           <div
             className="mt-2"
             style={{ fontFamily: settings.Design.FontFamily }}
@@ -269,7 +269,7 @@ const ProductBadgeSettings = ({states}) => {
             />
           </div>
 
-          <p className="mt-4 fs-6 fw-semibold">Font Style</p>
+          <p className="mt-4 Polaris-TextStyle--variationStrong">Font Style</p>
           <div className="mt-2">
             <ButtonGroup segmented>
               <Button
@@ -290,7 +290,7 @@ const ProductBadgeSettings = ({states}) => {
             </ButtonGroup>
           </div>
 
-          <p className="mt-4 fs-6 fw-semibold">Desktop Alignment</p>
+          <p className="mt-4 Polaris-TextStyle--variationStrong">Desktop Alignment</p>
           <div className="mt-2">
             <ButtonGroup segmented>
               <Button
@@ -317,7 +317,7 @@ const ProductBadgeSettings = ({states}) => {
             </ButtonGroup>
           </div>
 
-          <p className="mt-4 fs-6 fw-semibold">Mobile Alignment</p>
+          <p className="mt-4 Polaris-TextStyle--variationStrong">Mobile Alignment</p>
           <div className="mt-2">
             <ButtonGroup segmented>
               <Button
