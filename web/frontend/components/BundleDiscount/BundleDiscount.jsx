@@ -1,10 +1,26 @@
 import { Button } from '@shopify/polaris'
-import React, { useContext } from 'react'
+import React, { useContext, useEffect } from 'react'
+import { useState } from 'react'
 import { NavLink } from 'react-router-dom'
 import { useAuthenticatedFetch } from '../../hooks/useAuthenticatedFetch.js'
 import NavbarMain from '../layouts/NavbarMain.jsx'
 
 const BundleDiscount = () => {
+    const fetch = useAuthenticatedFetch()
+    const [products, productsState] = useState([])
+    const [lastId, lastIdState] = useState(0)
+    useEffect(() => {
+        fetch(`/api/products?id=${lastId}`)
+            .then(res => res.json())
+            .then(x => {
+                console.log(x, "products ids")
+                const len = x.length - 1
+                const id = x[len].id
+                const pro = products.concat(x)
+                productsState(pro)
+                lastIdState(id)
+            }).catch(err => { })
+    }, [lastId])
 
     const navdata = [
         {
@@ -27,6 +43,7 @@ const BundleDiscount = () => {
     const handelPublish = async () => {
 
     }
+
     return (
         <section className="product_main_page">
             <div className="containerCustom mb-5">
@@ -137,7 +154,7 @@ const BundleDiscount = () => {
                 </div>
 
                 <div className="row ">
-                    <NavbarMain nav={navdata} />
+                    <NavbarMain nav={navdata} products={products} />
                 </div>
             </div>
         </section>

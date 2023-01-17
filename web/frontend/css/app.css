@@ -534,6 +534,7 @@ div#accordion .card {
     display: flex;
     padding: 0;
     margin: 0 5px;
+    gap: 0px 20px;
 }
 .product_main_page{
   /* background-color: white; */
@@ -559,4 +560,43 @@ div#accordion .card {
   .Polaris-Page-Header--mediumTitle:not(.Polaris-Page-Header--noBreadcrumbs) .Polaris-Page-Header__Row{
     display: flex!important;
   }
+}
+ .products_li {
+    padding: 0px;
+}
+
+.products_li li {
+    display: inline;
+}
+
+.product_list:hover {
+    background: #f5f2f2;
+    cursor: pointer;
+}
+
+.products_li {
+    overflow-y: scroll;
+    border: 1px solid lightgray;
+    max-height: 300px;
+}
+
+.imgae_res {
+    width: 69px;
+}
+
+.product_title {
+    margin-left: 20px;
+}
+
+.product_list {
+    display: flex;
+    align-items: center;
+    padding: 20px 0;
+}
+
+.pro_image {
+    margin-left: 20px;
+}
+.product_show {
+    margin-top: 0px !important;
 }

@@ -1,4 +1,4 @@
-import { Checkbox, Icon, TextField } from '@shopify/polaris'
+import { Button, Checkbox, Icon, Popover, TextField } from '@shopify/polaris'
 import React, { useCallback, useEffect, useState } from 'react'
 import CheckBoxComponent from '../Fields/CheckBoxComponent'
 import ChoiceListComp from '../Fields/ChoiceListComp'
@@ -11,400 +11,9 @@ import { SearchMinor, CirclePlusMajor } from '@shopify/polaris-icons';
 import ResourcePickerComp from '../Fields/ResourcePickerComp'
 import ComboBoxComp from '../Fields/ComboBoxComp'
 
-const Content = ({ bundle, setBundle }) => {
+const Content = ({ bundle, setBundle, products }) => {
 
-    const product = [
-        {
-            "id": 7666904072442,
-            "title": "Example T-Shirt",
-            "body_html": "Awesome!",
-            "vendor": "Acme",
-            "product_type": "Shirts",
-            "created_at": "2022-07-05T10:03:15+05:30",
-            "handle": "example-t-shirt",
-            "updated_at": "2022-08-19T18:08:39+05:30",
-            "published_at": "2022-07-05T10:03:14+05:30",
-            "template_suffix": "",
-            "status": "active",
-            "published_scope": "web",
-            "tags": "mens t-shirt example",
-            "admin_graphql_api_id": "gid://shopify/Product/7666904072442",
-            "variants": [
-                {
-                    "id": 42954711892218,
-                    "product_id": 7666904072442,
-                    "title": "Lithograph",
-                    "price": "25.00",
-                    "sku": "shirt",
-                    "position": 1,
-                    "inventory_policy": "continue",
-                    "compare_at_price": null,
-                    "fulfillment_service": "manual",
-                    "inventory_management": "shopify",
-                    "option1": "Lithograph",
-                    "option2": null,
-                    "option3": null,
-                    "created_at": "2022-07-05T10:03:16+05:30",
-                    "updated_at": "2022-08-19T14:49:15+05:30",
-                    "taxable": true,
-                    "barcode": "",
-                    "grams": 3629,
-                    "image_id": 37680601334010,
-                    "weight": 3629,
-                    "weight_unit": "g",
-                    "inventory_item_id": 45050420134138,
-                    "inventory_quantity": -10,
-                    "old_inventory_quantity": -10,
-                    "requires_shipping": true,
-                    "admin_graphql_api_id": "gid://shopify/ProductVariant/42954711892218"
-                },
-                {
-                    "id": 42954711924986,
-                    "product_id": 7666904072442,
-                    "title": "Small",
-                    "price": "19.99",
-                    "sku": "shirt",
-                    "position": 2,
-                    "inventory_policy": "continue",
-                    "compare_at_price": "24.99",
-                    "fulfillment_service": "manual",
-                    "inventory_management": "shopify",
-                    "option1": "Small",
-                    "option2": null,
-                    "option3": null,
-                    "created_at": "2022-07-05T10:03:16+05:30",
-                    "updated_at": "2022-08-19T16:16:02+05:30",
-                    "taxable": true,
-                    "barcode": "",
-                    "grams": 200,
-                    "image_id": null,
-                    "weight": 200,
-                    "weight_unit": "g",
-                    "inventory_item_id": 45050420166906,
-                    "inventory_quantity": -2,
-                    "old_inventory_quantity": -2,
-                    "requires_shipping": true,
-                    "admin_graphql_api_id": "gid://shopify/ProductVariant/42954711924986"
-                },
-                {
-                    "id": 42954711957754,
-                    "product_id": 7666904072442,
-                    "title": "Medium",
-                    "price": "19.99",
-                    "sku": "example-shirt-m",
-                    "position": 3,
-                    "inventory_policy": "continue",
-                    "compare_at_price": "24.99",
-                    "fulfillment_service": "manual",
-                    "inventory_management": "shopify",
-                    "option1": "Medium",
-                    "option2": null,
-                    "option3": null,
-                    "created_at": "2022-07-05T10:03:16+05:30",
-                    "updated_at": "2022-08-18T11:51:23+05:30",
-                    "taxable": true,
-                    "barcode": "",
-                    "grams": 200,
-                    "image_id": null,
-                    "weight": 200,
-                    "weight_unit": "g",
-                    "inventory_item_id": 45050420199674,
-                    "inventory_quantity": 1,
-                    "old_inventory_quantity": 1,
-                    "requires_shipping": true,
-                    "admin_graphql_api_id": "gid://shopify/ProductVariant/42954711957754"
-                }
-            ],
-            "options": [
-                {
-                    "id": 9748493697274,
-                    "product_id": 7666904072442,
-                    "name": "Title",
-                    "position": 1,
-                    "values": [
-                        "Lithograph",
-                        "Small",
-                        "Medium"
-                    ]
-                }
-            ],
-            "images": [
-                {
-                    "id": 37484196593914,
-                    "product_id": 7666904072442,
-                    "position": 1,
-                    "created_at": "2022-07-05T10:03:15+05:30",
-                    "updated_at": "2022-07-05T10:03:15+05:30",
-                    "alt": null,
-                    "width": 5000,
-                    "height": 3335,
-                    "src": "https://cdn.shopify.com/s/files/1/0653/7094/7834/products/green-t-shirt.jpg?v=1656995595",
-                    "variant_ids": [],
-                    "admin_graphql_api_id": "gid://shopify/ProductImage/37484196593914"
-                },
-                {
-                    "id": 37680601334010,
-                    "product_id": 7666904072442,
-                    "position": 2,
-                    "created_at": "2022-08-09T10:00:26+05:30",
-                    "updated_at": "2022-08-09T10:00:26+05:30",
-                    "alt": null,
-                    "width": 285,
-                    "height": 177,
-                    "src": "https://cdn.shopify.com/s/files/1/0653/7094/7834/products/download.jpg?v=1660019426",
-                    "variant_ids": [
-                        42954711892218
-                    ],
-                    "admin_graphql_api_id": "gid://shopify/ProductImage/37680601334010"
-                }
-            ],
-            "image": {
-                "id": 37484196593914,
-                "product_id": 7666904072442,
-                "position": 1,
-                "created_at": "2022-07-05T10:03:15+05:30",
-                "updated_at": "2022-07-05T10:03:15+05:30",
-                "alt": null,
-                "width": 5000,
-                "height": 3335,
-                "src": "https://cdn.shopify.com/s/files/1/0653/7094/7834/products/green-t-shirt.jpg?v=1656995595",
-                "variant_ids": [],
-                "admin_graphql_api_id": "gid://shopify/ProductImage/37484196593914"
-            }
-        },
-        {
-            "id": 7666904137978,
-            "title": "Exampleaaaaa",
-            "body_html": "",
-            "vendor": "Acme",
-            "product_type": "Pants",
-            "created_at": "2022-07-05T10:03:18+05:30",
-            "handle": "example-pants",
-            "updated_at": "2022-08-18T11:51:44+05:30",
-            "published_at": "2022-07-05T10:03:51+05:30",
-            "template_suffix": "",
-            "status": "active",
-            "published_scope": "web",
-            "tags": "mens pants example",
-            "admin_graphql_api_id": "gid://shopify/Product/7666904137978",
-            "variants": [
-                {
-                    "id": 42954712219898,
-                    "product_id": 7666904137978,
-                    "title": "Jeans, W32H34",
-                    "price": "49.99",
-                    "sku": "jeans",
-                    "position": 1,
-                    "inventory_policy": "continue",
-                    "compare_at_price": "57.99",
-                    "fulfillment_service": "manual",
-                    "inventory_management": "shopify",
-                    "option1": "Jeans, W32H34",
-                    "option2": null,
-                    "option3": null,
-                    "created_at": "2022-07-05T10:03:18+05:30",
-                    "updated_at": "2022-08-18T11:51:38+05:30",
-                    "taxable": true,
-                    "barcode": "",
-                    "grams": 1250,
-                    "image_id": null,
-                    "weight": 1250,
-                    "weight_unit": "g",
-                    "inventory_item_id": 45050420461818,
-                    "inventory_quantity": 1,
-                    "old_inventory_quantity": 1,
-                    "requires_shipping": true,
-                    "admin_graphql_api_id": "gid://shopify/ProductVariant/42954712219898"
-                },
-                {
-                    "id": 43072019792122,
-                    "product_id": 7666904137978,
-                    "title": "black",
-                    "price": "49.99",
-                    "sku": "jeans",
-                    "position": 2,
-                    "inventory_policy": "continue",
-                    "compare_at_price": "57.99",
-                    "fulfillment_service": "manual",
-                    "inventory_management": "shopify",
-                    "option1": "black",
-                    "option2": null,
-                    "option3": null,
-                    "created_at": "2022-08-02T15:01:27+05:30",
-                    "updated_at": "2022-08-18T11:51:44+05:30",
-                    "taxable": true,
-                    "barcode": "",
-                    "grams": 1250,
-                    "image_id": null,
-                    "weight": 1250,
-                    "weight_unit": "g",
-                    "inventory_item_id": 45167996928250,
-                    "inventory_quantity": 1,
-                    "old_inventory_quantity": 1,
-                    "requires_shipping": true,
-                    "admin_graphql_api_id": "gid://shopify/ProductVariant/43072019792122"
-                }
-            ],
-            "options": [
-                {
-                    "id": 9748493795578,
-                    "product_id": 7666904137978,
-                    "name": "Title",
-                    "position": 1,
-                    "values": [
-                        "Jeans, W32H34",
-                        "black"
-                    ]
-                }
-            ],
-            "images": [
-                {
-                    "id": 37484196790522,
-                    "product_id": 7666904137978,
-                    "position": 1,
-                    "created_at": "2022-07-05T10:03:18+05:30",
-                    "updated_at": "2022-07-05T10:03:18+05:30",
-                    "alt": null,
-                    "width": 5000,
-                    "height": 3333,
-                    "src": "https://cdn.shopify.com/s/files/1/0653/7094/7834/products/distressed-kids-jeans.jpg?v=1656995598",
-                    "variant_ids": [],
-                    "admin_graphql_api_id": "gid://shopify/ProductImage/37484196790522"
-                }
-            ],
-            "image": {
-                "id": 37484196790522,
-                "product_id": 7666904137978,
-                "position": 1,
-                "created_at": "2022-07-05T10:03:18+05:30",
-                "updated_at": "2022-07-05T10:03:18+05:30",
-                "alt": null,
-                "width": 5000,
-                "height": 3333,
-                "src": "https://cdn.shopify.com/s/files/1/0653/7094/7834/products/distressed-kids-jeans.jpg?v=1656995598",
-                "variant_ids": [],
-                "admin_graphql_api_id": "gid://shopify/ProductImage/37484196790522"
-            }
-        },
-        {
-            "id": 7862048358650,
-            "title": "hoddie",
-            "body_html": "",
-            "vendor": "ankit_learning_store",
-            "product_type": "",
-            "created_at": "2022-12-07T14:08:38+05:30",
-            "handle": "hoddie",
-            "updated_at": "2022-12-07T14:08:40+05:30",
-            "published_at": "2022-12-07T14:08:39+05:30",
-            "template_suffix": "",
-            "status": "active",
-            "published_scope": "web",
-            "tags": "",
-            "admin_graphql_api_id": "gid://shopify/Product/7862048358650",
-            "variants": [
-                {
-                    "id": 43747803529466,
-                    "product_id": 7862048358650,
-                    "title": "Default Title",
-                    "price": "12.00",
-                    "sku": "",
-                    "position": 1,
-                    "inventory_policy": "continue",
-                    "compare_at_price": null,
-                    "fulfillment_service": "manual",
-                    "inventory_management": "shopify",
-                    "option1": "Default Title",
-                    "option2": null,
-                    "option3": null,
-                    "created_at": "2022-12-07T14:08:38+05:30",
-                    "updated_at": "2022-12-07T14:08:38+05:30",
-                    "taxable": true,
-                    "barcode": "",
-                    "grams": 0,
-                    "image_id": null,
-                    "weight": 0,
-                    "weight_unit": "kg",
-                    "inventory_item_id": 45811859718394,
-                    "inventory_quantity": 0,
-                    "old_inventory_quantity": 0,
-                    "requires_shipping": true,
-                    "admin_graphql_api_id": "gid://shopify/ProductVariant/43747803529466"
-                }
-            ],
-            "options": [
-                {
-                    "id": 9982520033530,
-                    "product_id": 7862048358650,
-                    "name": "Title",
-                    "position": 1,
-                    "values": [
-                        "Default Title"
-                    ]
-                }
-            ],
-            "images": [],
-            "image": null
-        },
-        {
-            "id": 7695918563578,
-            "title": "short sleeves T-shirt",
-            "body_html": "White coloured plain",
-            "vendor": "ankit_learning_store",
-            "product_type": "Clothing",
-            "created_at": "2022-08-02T14:39:38+05:30",
-            "handle": "short-sleeves-t-shirt",
-            "updated_at": "2022-08-18T11:52:04+05:30",
-            "published_at": "2022-08-02T14:39:39+05:30",
-            "template_suffix": "",
-            "status": "active",
-            "published_scope": "web",
-            "tags": "",
-            "admin_graphql_api_id": "gid://shopify/Product/7695918563578",
-            "variants": [
-                {
-                    "id": 43071981420794,
-                    "product_id": 7695918563578,
-                    "title": "Default Title",
-                    "price": "450.00",
-                    "sku": "shirt",
-                    "position": 1,
-                    "inventory_policy": "continue",
-                    "compare_at_price": "500.00",
-                    "fulfillment_service": "manual",
-                    "inventory_management": "shopify",
-                    "option1": "Default Title",
-                    "option2": null,
-                    "option3": null,
-                    "created_at": "2022-08-02T14:39:38+05:30",
-                    "updated_at": "2022-08-18T11:52:04+05:30",
-                    "taxable": true,
-                    "barcode": "",
-                    "grams": 100,
-                    "image_id": null,
-                    "weight": 0.1,
-                    "weight_unit": "kg",
-                    "inventory_item_id": 45167958360314,
-                    "inventory_quantity": 0,
-                    "old_inventory_quantity": 0,
-                    "requires_shipping": true,
-                    "admin_graphql_api_id": "gid://shopify/ProductVariant/43071981420794"
-                }
-            ],
-            "options": [
-                {
-                    "id": 9785619644666,
-                    "product_id": 7695918563578,
-                    "name": "Title",
-                    "position": 1,
-                    "values": [
-                        "Default Title"
-                    ]
-                }
-            ],
-            "images": [],
-            "image": null
-        }
-    ]
+
     const [bundleDiv, setbundleDiv] = useState(['Product #1', 'Product #2'])
     const updateRadio = (key) => {
         const data = bundle.bundleDiscount;
@@ -414,6 +23,8 @@ const Content = ({ bundle, setBundle }) => {
         data[key].status = true
         setBundle({ ...bundle })
     };
+
+
     //---Advance Settings Choice list states---//
     const [selected, setSelected] = useState(['hidden']);
     const [textFieldValue, setTextFieldValue] = useState('');
@@ -692,7 +303,8 @@ const Content = ({ bundle, setBundle }) => {
 
                                                     <div class="Polaris-TextContainer ">
                                                         {/* <TextFieldComp label={item} prefix={<Icon source={SearchMinor} />} placeholder={'Select a product'} /> */}
-                                                        <div className="searchBoxTag"> <ComboBoxComp /></div>
+                                                        <div className="searchBoxTag"> <ComboBoxComp products={products} /></div>
+
                                                     </div>
                                                     {i === bundleDiv.length - 1 ?
                                                         <div className="position_center pointerclass" onClick={() => { bundleDiv.push(`Product #${++i + 1}`); setBundle({ ...bundle }) }}>
@@ -858,3 +470,40 @@ const Content = ({ bundle, setBundle }) => {
 }
 
 export default Content
+
+
+// {
+//     product.map((x, i) => < div className="product_show" >
+//         <ul className="products_li ">
+//             <li>
+//                 <div className="product_list save_bar_display_block" id={x.id} data-pro_id={x.id} data-pro_title={x.title}>
+//                     <div className="pro_image">
+//                         <img src="https://cdn.shopify.com/s/files/1/0611/0704/4519/products/menswear-blue-zip-up-jacket_925x_f19390e8-603a-415d-8c24-f19ffd72a869.jpg?v=1663217139" className="imgae_res" />
+//                     </div>
+//                     <div className="product_title"><span>{x.title}</span></div>
+//                 </div>
+//             </li>
+//         </ul>
+//     </div >)
+    // < div className = "product_show" >
+    //     <ul className="products_li ">
+    //         <li>
+    //             <div className="product_list save_bar_display_block" id="7457737867431" data-pro_id="7457737867431" data-pro_title="Zipped Jacket">
+    //                 <div className="pro_image">
+    //                     <img src="https://cdn.shopify.com/s/files/1/0611/0704/4519/products/menswear-blue-zip-up-jacket_925x_f19390e8-603a-415d-8c24-f19ffd72a869.jpg?v=1663217139" className="imgae_res" />
+    //                 </div>
+    //                 <div className="product_title"><span>Zipped Jacket</span></div>
+    //             </div>
+    //         </li>
+
+    //         <li>
+    //             <div className="product_list save_bar_display_block" id="7506032263335" data-pro_id="7506032263335" data-pro_title="Product Bundle Testing B - with Variants">
+    //                 <div className="pro_image">
+    //                     <img src="https://cdn.shopify.com/s/files/1/0611/0704/4519/products/PreOrder_lite.jpg?v=1666937213" className="imgae_res" />
+    //                 </div>
+    //                 <div className="product_title"><span>Product Bundle Testing B - with Variants</span></div>
+    //             </div>
+    //         </li>
+    //     </ul>
+    // </div >
+// }    

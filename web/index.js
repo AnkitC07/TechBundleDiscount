@@ -34,6 +34,21 @@ app.use("/api/*", shopify.validateAuthenticatedSession());
 
 app.use(express.json());
 
+app.get("/api/products", async (req, res) => {
+  try {
+    const id = req.query.id;
+    const countData = await shopify.api.rest.Product.all({
+      session: res.locals.shopify.session,
+      since_id: id,
+      limit: 5,
+      fields: "title,image,id",
+    });
+    res.status(200).send(countData);
+  } catch (err) {
+    res.status(200).send({ error: err });
+  }
+});
+
 app.get("/api/products/count", async (_req, res) => {
   const countData = await shopify.api.rest.Product.count({
     session: res.locals.shopify.session,
@@ -41,7 +56,7 @@ app.get("/api/products/count", async (_req, res) => {
   const webhook = await shopify.api.rest.Webhook.all({
     session: res.locals.shopify.session,
   });
-  console.log(webhook,"reading webhooks")
+  console.log(webhook, "reading webhooks");
   res.status(200).send(countData);
 });
 

@@ -8,7 +8,7 @@ import Placement from "../BundleDiscount/Placement";
 import ProductBadge from "../BundleDiscount/ProductBadge";
 
 
-const NavbarMain = ({ nav }) => {
+const NavbarMain = ({ nav, products }) => {
   const dates = new Date();
   dates.setDate(dates.getDate() + 1);
 
@@ -110,11 +110,11 @@ const NavbarMain = ({ nav }) => {
   const navRender = (title) => {
     switch (title) {
       case "Content":
-        return <Content bundle={bundle} setBundle={setBundle} />;
+        return <Content bundle={bundle} setBundle={setBundle} products={products} />;
       case "Placement":
         return <Placement />;
       case "Design":
-        return <Design states={{ designSettings, designSatte }} />;
+        return <Design states={{ designSettings, designSatte, products }} />;
       case "Badge":
         return <ProductBadge />;
     }
