@@ -9,7 +9,9 @@ function TextFieldComp(props) {
   return (
     <TextField
       type={props.type}
+      label={props.label}
       suffix={props.suffix}
+      prefix={props.prefix}
       value={props.value}
       onChange={props.onChange}
       autoComplete="off"

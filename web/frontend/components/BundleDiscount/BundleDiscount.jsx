@@ -1,6 +1,6 @@
+import { Button } from '@shopify/polaris'
 import React, { useContext } from 'react'
-import { useState } from 'react'
-import { useEffect } from 'react'
+import { useState,useEffect } from 'react'
 import { NavLink } from 'react-router-dom'
 import { useAuthenticatedFetch } from '../../hooks/useAuthenticatedFetch.js'
 import NavbarMain from '../layouts/NavbarMain.jsx'
@@ -41,8 +41,9 @@ const BundleDiscount = () => {
         },
     ]
     const handelPublish = async () => {
-  
+
     }
+
     return (
         <section className="product_main_page">
             <div className="containerCustom mb-5">
@@ -93,16 +94,58 @@ const BundleDiscount = () => {
                                     </div>
                                 </div>
                                 <div className="Polaris-Page-Header__RightAlign">
-                                    <div className="Polaris-Page-Header__PrimaryActionWrapper">
-                                        <button
-                                            className="Polaris-Button Polaris-Button--primary"
-                                            type="button"
-                                            onClick={handelPublish}
-                                        >
-                                            <span className="Polaris-Button__Content">
-                                                <span className="Polaris-Button__Text">Save</span>
-                                            </span>
-                                        </button>
+                                    <div class="Polaris-ActionMenu">
+                                        <div class="Polaris-ActionMenu-Actions__ActionsLayout">
+                                            <div class="Polaris-ButtonGroup Polaris-ButtonGroup--extraTight">
+                                                {/* {id != null ? <> */}
+                                                <div class="Polaris-ButtonGroup__Item">
+                                                    <span class="Polaris-ActionMenu-SecondaryAction Polaris-ActionMenu-SecondaryAction--destructive">
+                                                        <button class="Polaris-Button Polaris-Button--outline" aria-disabled="false" type="button"
+                                                            onClick={() => {
+                                                                // deleteBtn(id)
+                                                            }}
+                                                        >
+                                                            <span class="Polaris-Button__Content">
+                                                                <span class="Polaris-Button__Text">Delete</span>
+                                                            </span>
+                                                        </button>
+                                                    </span>
+                                                </div>
+                                                <div class="Polaris-ButtonGroup__Item">
+                                                    <span class="Polaris-ActionMenu-SecondaryAction">
+                                                        <button class="Polaris-Button Polaris-Button--outline" aria-disabled="false" type="button">
+                                                            <span class="Polaris-Button__Content">
+                                                                <span class="Polaris-Button__Text">Duplicate</span>
+                                                            </span>
+                                                        </button>
+                                                    </span>
+                                                </div>
+                                                {/* </> : ''} */}
+
+                                                <div class="Polaris-ButtonGroup__Item">
+                                                    <span class="Polaris-ActionMenu-SecondaryAction">
+                                                        <button
+                                                            class="Polaris-Button Polaris-Button--outline"
+                                                            type="button"
+                                                            onClick={handelPublish}
+                                                        >
+                                                            <span class="Polaris-Button__Content">
+                                                                <span class="Polaris-Button__Text">Save</span>
+                                                            </span>
+                                                        </button>
+                                                    </span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="Polaris-Page-Header__PrimaryActionWrapper">
+                                        <Button
+                                            primary
+                                            onClick={() => {
+                                                handelPublish("unPublished")
+                                            }}
+                                        //  loading={btnLoading}
+                                        >Publish</Button>
                                     </div>
                                 </div>
                             </div>
@@ -111,7 +154,7 @@ const BundleDiscount = () => {
                 </div>
 
                 <div className="row ">
-                    <NavbarMain nav={navdata} />
+                    <NavbarMain nav={navdata} products={products} />
                 </div>
             </div>
         </section>

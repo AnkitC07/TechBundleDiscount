@@ -1,4 +1,4 @@
-import { TextField } from '@shopify/polaris'
+import { Button, Checkbox, Icon, Popover, TextField } from '@shopify/polaris'
 import React, { useCallback, useEffect, useState } from 'react'
 import CheckBoxComponent from '../Fields/CheckBoxComponent'
 import ChoiceListComp from '../Fields/ChoiceListComp'
@@ -6,10 +6,15 @@ import DatePickerExample from '../Fields/DatePickerInput'
 import InputComponent from '../Fields/InputComponent'
 import InputSelect from '../Fields/InputSelect'
 import SearchFilter from '../Fields/SearchFilter'
+import TextFieldComp from '../Fields/TextFieldComp'
+import { SearchMinor, CirclePlusMajor } from '@shopify/polaris-icons';
+import ResourcePickerComp from '../Fields/ResourcePickerComp'
+import ComboBoxComp from '../Fields/ComboBoxComp'
 
-const Content = ({ bundle, setBundle }) => {
+const Content = ({ bundle, setBundle, products }) => {
 
 
+    const [bundleDiv, setbundleDiv] = useState(['Product #1', 'Product #2'])
     const updateRadio = (key) => {
         const data = bundle.bundleDiscount;
         Object.keys(data).forEach(x => {
@@ -18,6 +23,8 @@ const Content = ({ bundle, setBundle }) => {
         data[key].status = true
         setBundle({ ...bundle })
     };
+
+
     //---Advance Settings Choice list states---//
     const [selected, setSelected] = useState(['hidden']);
     const [textFieldValue, setTextFieldValue] = useState('');
@@ -50,20 +57,32 @@ const Content = ({ bundle, setBundle }) => {
             value: '.99',
         },
     ]
-
+    const handleSpecificCheck = (value) => {
+        bundle.advanceSetting.specific.specificSlected = [...bundle.advanceSetting.specific.specificSlected, value]
+    };
     //---Childrens in choicelists---//
     const specificChild = useCallback(
         (isSelected) => {
             return (
                 isSelected && (
-
-                    bundle.bundleDiscount.freeGift.freeGiftSlected == 1 ?
+                    <>
+                        {/* // bundle.bundleDiscount.freeGift.freeGiftSlected.length == 0 ? */}
                         <div className=" Polaris-Text--subdued mt-2">
                             Select atleast one product
-                        </div> : <div className='f'>
-                            <ChoiceListComp selected={freeSelected} handleChange={freeHandleChange} choice={freeGift} />
                         </div>
+                        {/* //  : */}
+                        <div className='selected_product_list'>
+                            {/* <ChoiceListComp selected={freeSelected} handleChange={freeHandleChange} choice={freeGift} /> */}
+                            {bundle.bundleDiscount.freeGift.freeGiftSlected.map((x, i) =>
+                                <Checkbox
+                                    label={`Product #${i + 1}`}
+                                    checked={bundle.advanceSetting.specific.specificSlected[i]}
+                                    onChange={() => handleSpecificCheck()}
+                                />
+                            )}
 
+                        </div>
+                    </>
                 )
             )
         }
@@ -153,7 +172,10 @@ const Content = ({ bundle, setBundle }) => {
         (isSelected) => {
             return (
                 isSelected && (
-                    <SearchFilter />
+                    // <SearchFilter />
+                    <div className="searchBoxTag">
+                        <ComboBoxComp />
+                    </div>
                 )
             )
         }
@@ -229,8 +251,8 @@ const Content = ({ bundle, setBundle }) => {
     return (
         <>
             <div className="row pb-5">
-                <div className="col col-md-7">
-                    <div className="Polaris-Card" style={{ maxWidth: '450px' }}>
+                <div className="ol-lg-6 col-md-6 col-sm-6">
+                    <div className="Polaris-Card" >
                         <div className="Polaris-Card__Section">
                             <div className="Polaris-FormLayout">
                                 <div className="Polaris-FormLayout__Item">
@@ -275,6 +297,38 @@ const Content = ({ bundle, setBundle }) => {
                                         <div className=" Polaris-Text--subdued">
                                             Bundle offers will show inside each product page that is included in the bundle .
                                         </div>
+                                        <div id="product_search_section" class="mt-5">
+                                            {bundleDiv.map((item, i) =>
+                                                <div class="products_selected position_relative" data-id="product_select_box1">
+
+                                                    <div class="Polaris-TextContainer ">
+                                                        {/* <TextFieldComp label={item} prefix={<Icon source={SearchMinor} />} placeholder={'Select a product'} /> */}
+                                                        <div className="searchBoxTag"> <ComboBoxComp products={products} /></div>
+
+                                                    </div>
+                                                    {i === bundleDiv.length - 1 ?
+                                                        <div className="position_center pointerclass" onClick={() => { bundleDiv.push(`Product #${++i + 1}`); setBundle({ ...bundle }) }}>
+                                                            <Icon
+                                                                source={CirclePlusMajor}
+                                                                color="primary"
+
+                                                            />
+                                                        </div>
+                                                        :
+                                                        <div className="position_center " >
+                                                            <Icon
+                                                                source={CirclePlusMajor}
+                                                                color="base"
+
+                                                            />
+                                                        </div>
+                                                    }
+                                                </div>
+                                            )}
+                                            <center>
+                                                <p class="mt-4 add_another_pro ">Add another product</p>
+                                            </center>
+                                        </div>
 
                                     </div>
                                 </div>
@@ -300,7 +354,7 @@ const Content = ({ bundle, setBundle }) => {
                                             }}
                                         />
                                         {bundle.bundleDiscount.addDiscount.status ? <div
-                                            id="customPosition"
+                                            id="addDiscount"
                                             className="Polaris-FormLayout__Item"
                                         >
                                             <div className="inputAndSlect">
@@ -314,7 +368,7 @@ const Content = ({ bundle, setBundle }) => {
                                                     }}
                                                 />
                                                 <InputSelect
-                                                    id="onceItEnds"
+                                                    id="addDiscountSelect"
                                                     option={discountType}
                                                     value={bundle.bundleDiscount.addDiscount.discountType}
                                                     placeholder="Unpublish timer"
@@ -348,12 +402,26 @@ const Content = ({ bundle, setBundle }) => {
                                         />
                                         {bundle.bundleDiscount.freeGift.status ? <>
                                             <div className="Polaris-FormLayout__Item">
-                                                {bundle.bundleDiscount.freeGift.freeGiftSlected == 0 ? <div className="Polaris-Choice__Descriptions Polaris-Text--subdued">
+                                                {/* {bundle.bundleDiscount.freeGift.freeGiftSlected == 0 ? */}
+                                                <div className="Polaris-Choice__Descriptions Polaris-Text--subdued">
                                                     Select atleast one product
-                                                </div> : <div className='Polaris-Choice__Descriptions freeProducts-Bundle '>
-                                                    <ChoiceListComp selected={freeSelected} handleChange={freeHandleChange} choice={freeGift} />
-                                                </div>}
+                                                </div>
+                                                {/* //  : */}
+                                                <div className='Polaris-Choice__Descriptions freeProducts-Bundle '>
+                                                    <div className='selected_product_list'>
+                                                        {/* <ChoiceListComp selected={freeSelected} handleChange={freeHandleChange} choice={freeGift} /> */}
+                                                        {bundle.bundleDiscount.freeGift.freeGiftSlected.map((x, i) =>
+                                                            <Checkbox
+                                                                label={`Product #${i + 1}`}
+                                                                checked={bundle.advanceSetting.specific.specificSlected[i]}
+                                                                onChange={() => handleSpecificCheck()}
+                                                            />
+                                                        )}
+                                                    </div>
+                                                </div>
+                                                {/* // } */}
                                             </div>
+
                                             <div className="Polaris-FormLayout__Item">
                                                 <div className="Polaris-Text--subdued" id="nameHelpText">
                                                     <strong>Please Note :</strong>   Bundle offers will show inside each product page that is included in the bundle .
@@ -395,9 +463,47 @@ const Content = ({ bundle, setBundle }) => {
                     <div style={{ position: 'sticky', top: '20px' }} >
                     </div>
                 </div> */}
+                {/* <ResourcePickerComp type="Product" state1={false} /> */}
             </div>
         </>
     )
 }
 
 export default Content
+
+
+// {
+//     product.map((x, i) => < div className="product_show" >
+//         <ul className="products_li ">
+//             <li>
+//                 <div className="product_list save_bar_display_block" id={x.id} data-pro_id={x.id} data-pro_title={x.title}>
+//                     <div className="pro_image">
+//                         <img src="https://cdn.shopify.com/s/files/1/0611/0704/4519/products/menswear-blue-zip-up-jacket_925x_f19390e8-603a-415d-8c24-f19ffd72a869.jpg?v=1663217139" className="imgae_res" />
+//                     </div>
+//                     <div className="product_title"><span>{x.title}</span></div>
+//                 </div>
+//             </li>
+//         </ul>
+//     </div >)
+    // < div className = "product_show" >
+    //     <ul className="products_li ">
+    //         <li>
+    //             <div className="product_list save_bar_display_block" id="7457737867431" data-pro_id="7457737867431" data-pro_title="Zipped Jacket">
+    //                 <div className="pro_image">
+    //                     <img src="https://cdn.shopify.com/s/files/1/0611/0704/4519/products/menswear-blue-zip-up-jacket_925x_f19390e8-603a-415d-8c24-f19ffd72a869.jpg?v=1663217139" className="imgae_res" />
+    //                 </div>
+    //                 <div className="product_title"><span>Zipped Jacket</span></div>
+    //             </div>
+    //         </li>
+
+    //         <li>
+    //             <div className="product_list save_bar_display_block" id="7506032263335" data-pro_id="7506032263335" data-pro_title="Product Bundle Testing B - with Variants">
+    //                 <div className="pro_image">
+    //                     <img src="https://cdn.shopify.com/s/files/1/0611/0704/4519/products/PreOrder_lite.jpg?v=1666937213" className="imgae_res" />
+    //                 </div>
+    //                 <div className="product_title"><span>Product Bundle Testing B - with Variants</span></div>
+    //             </div>
+    //         </li>
+    //     </ul>
+    // </div >
+// }    

@@ -8,7 +8,7 @@ import Placement from "../BundleDiscount/Placement";
 import ProductBadge from "../BundleDiscount/ProductBadge";
 
 
-const NavbarMain = ({ nav }) => {
+const NavbarMain = ({ nav, products }) => {
   const dates = new Date();
   dates.setDate(dates.getDate() + 1);
   const [placement, setPlacement] = useState({
@@ -38,7 +38,7 @@ const NavbarMain = ({ nav }) => {
       },
       freeGift: {
         status: false,
-        freeGiftSlected: []
+        freeGiftSlected: [7666904072442, 7666904137978]
       },
       noDiscount: {
         status: false
@@ -94,39 +94,39 @@ const NavbarMain = ({ nav }) => {
       Alignment: "",
       VariantBgColor: "#008060",
     },
-    button:{
-      bg:'#348766',
-      color:'#ffffff',
-      borderRadius:50,
-      buttonAction:'add to cart',
-      text:'Grab this deal',
-      Moreoptions:'More options',
-      Unavailablebtn:'UNAVAILABLE',
-      UnavailableNotice:'Unavailable, please try another option',
-      ChooseOption:'Choose an option'
+    button: {
+      bg: '#348766',
+      color: '#ffffff',
+      borderRadius: 50,
+      buttonAction: 'add to cart',
+      text: 'Grab this deal',
+      Moreoptions: 'More options',
+      Unavailablebtn: 'UNAVAILABLE',
+      UnavailableNotice: 'Unavailable, please try another option',
+      ChooseOption: 'Choose an option'
     },
-    priceSavings:{
-      freeGift:'Free',
-      FreeShippingTag:'Free shipping',
-      FreeGiftTag:'Free',
-      SaveTag:'SAVE {{discount}}',
-      Total:'Total',
-      tagColor:"#008060",
-      priceColor:"#008060",
-      ComparePriceColor:"#008060",
-      showTotal:false,
-      ShowPriceUnit:false,
-      ShowComparePrice:false
+    priceSavings: {
+      freeGift: 'Free',
+      FreeShippingTag: 'Free shipping',
+      FreeGiftTag: 'Free',
+      SaveTag: 'SAVE {{discount}}',
+      Total: 'Total',
+      tagColor: "#008060",
+      priceColor: "#008060",
+      ComparePriceColor: "#008060",
+      showTotal: false,
+      ShowPriceUnit: false,
+      ShowComparePrice: false
     }
   });
   const navRender = (title) => {
     switch (title) {
       case "Content":
-        return <Content bundle={bundle} setBundle={setBundle} />;
+        return <Content bundle={bundle} setBundle={setBundle} products={products} />;
       case "Placement":
         return <Placement states={{placement, setPlacement}}/>;
       case "Design":
-        return <Design states={{ designSettings, designSatte }} />;
+        return <Design states={{ designSettings, designSatte, products }} />;
       case "Badge":
         return <ProductBadge />;
     }
