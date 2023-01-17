@@ -462,7 +462,7 @@ div#accordion .card {
 }
 .previewStyle{
   position: fixed;
-  width: 25%;
+  width: 28%;
   top: 163px;
 }
 
@@ -496,7 +496,7 @@ div#accordion .card {
   margin-top: 163px !important;
 }
 .product_main_page{
-  background-color: white;
+  /* background-color: white; */
 }
 .containerCustom{
   width: 95%;

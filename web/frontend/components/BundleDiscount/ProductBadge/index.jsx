@@ -43,7 +43,7 @@ const ProductBadge = () => {
     <>
       <div className="mb-5">
         <div className="row">
-          <div className="col-lg-2 col-md-3 col-sm-12 col-xs-12">
+          <div className="col-lg-3 col-md-3 col-sm-12 col-xs-12">
             <div className="descriptionProductBadge">
             <Description
               heading={"Offer Product Badge"}
@@ -51,10 +51,10 @@ const ProductBadge = () => {
             />
             </div>
           </div>
-          <div className="col-lg-5 col-md-4 col-sm-7 col-xs-12">
+          <div className="col-lg-4 col-md-4 col-sm-6 col-xs-12">
             <ProductBadgeSettings states={{ settings, settingState }} />
           </div>
-          <div className="col-lg-5 col-md-5 col-sm-5 col-xs-12">
+          <div className="col-lg-5 col-md-5 col-sm-6 col-xs-12">
             <Preview data={settings} />
           </div>
         </div>

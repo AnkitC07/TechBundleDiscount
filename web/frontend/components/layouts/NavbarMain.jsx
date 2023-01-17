@@ -11,7 +11,19 @@ import ProductBadge from "../BundleDiscount/ProductBadge";
 const NavbarMain = ({ nav }) => {
   const dates = new Date();
   dates.setDate(dates.getDate() + 1);
-
+  const [placement, setPlacement] = useState({
+    selectProduct: {
+      allProducts: true,
+      specificProducts: false,
+      allCollections: false,
+      specificCollections: false,
+      allProductsWithTags: false,
+      customPosition: false,
+    },
+    specificProducts: [],
+    specificCollection: [],
+    tags: "",
+  });
   const [bundle, setBundle] = useState({
     offerHeader: '',
     bundleProducts: {},
@@ -112,7 +124,7 @@ const NavbarMain = ({ nav }) => {
       case "Content":
         return <Content bundle={bundle} setBundle={setBundle} />;
       case "Placement":
-        return <Placement />;
+        return <Placement states={{placement, setPlacement}}/>;
       case "Design":
         return <Design states={{ designSettings, designSatte }} />;
       case "Badge":
