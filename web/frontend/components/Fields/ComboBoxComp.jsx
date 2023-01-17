@@ -3,30 +3,38 @@ import { SearchMinor } from '@shopify/polaris-icons';
 import { useState, useCallback, useMemo } from 'react';
 
 function ComboBoxComp() {
-    const tags = ['Rustic', 'Antique', 'Vinyl', 'Refurbished'];
+    // const tags = ['Rustic', 'Antique', 'Vinyl', 'Refurbished'];
+    const [selectedTags, setSelectedTags] = useState(['Rustic', 'Antique', 'Vinyl', 'Refurbished'])
     const [textFieldValue, setTextFieldValue] = useState('');
 
     const handleTextFieldChange = useCallback(
         (value) => setTextFieldValue(value),
         [],
     );
-
+    const removeTag = useCallback(
+        (tag) => () => {
+            setSelectedTags((previousTags) =>
+                previousTags.filter((previousTag) => previousTag !== tag),
+            );
+        },
+        [],
+    );
     const verticalContentMarkup =
-        tags.length > 0 ? (
+        selectedTags.length > 0 ? (
             <Stack spacing="extraTight" alignment="center">
-                {tags.map((tag) => (
-                    <Tag key={tag}>{tag}</Tag>
+                {selectedTags.map((tag) => (
+                    <Tag key={tag} onRemove={removeTag(tag)}>{tag}</Tag>
                 ))}
             </Stack>
         ) : null;
 
     return (
         <TextField
-            label="Tags"
+            // label="Tags"
             prefix={''}
             value={textFieldValue}
             onChange={handleTextFieldChange}
-            placeholder="Search tags"
+            placeholder="Select a product"
             autoComplete="off"
             verticalContent={verticalContentMarkup}
         />

@@ -509,9 +509,29 @@ div#accordion .card {
 }
 .products_selected {
     border: 1px solid lightgray;
-    padding: 20px;
+    padding: 30px;
     border-top: none;
 }
 .inputAndSlect .Polaris-Select__Content {
     width: 85px;
+}
+.searchBoxTag span.Polaris-Tag__TagText {
+    font-size: 15px;
+}
+.add_another_pro {
+    fill: #377E62;
+    color: #377E62;
+    cursor: pointer;
+}
+.pointerclass {
+    cursor: pointer;
+} 
+.selected_product_list{
+  display: grid;
+}
+.searchBoxTag div#PolarisTextField43-VerticalContent {
+    overflow: hidden;
+    display: flex;
+    padding: 0;
+    margin: 0 5px;
 }
