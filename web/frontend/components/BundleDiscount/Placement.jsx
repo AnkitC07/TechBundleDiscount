@@ -148,7 +148,7 @@ const Placement = ({states}) => {
                     }}
                   />
                   <div
-                    className="Polaris-Labelled__HelpText  "
+                    className="Polaris-Labelled__HelpText"
                     id="insideTopSpacingHelpText"
                     style={{ paddingLeft: "50px" }}
                   >

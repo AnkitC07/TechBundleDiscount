@@ -7,6 +7,7 @@ import serveStatic from "serve-static";
 import shopify from "./shopify.js";
 import productCreator from "./product-creator.js";
 import GDPRWebhookHandlers from "./gdpr.js";
+import { title } from "process";
 
 const PORT = parseInt(process.env.BACKEND_PORT || process.env.PORT, 10);
 
@@ -34,29 +35,22 @@ app.use("/api/*", shopify.validateAuthenticatedSession());
 
 app.use(express.json());
 
-app.get("/api/products/count", async (_req, res) => {
-  const countData = await shopify.api.rest.Product.count({
+
+
+app.get("/api/products", async (req, res) => {
+  try{
+    const id = req.query.id
+  const countData = await shopify.api.rest.Product.all({
     session: res.locals.shopify.session,
+    since_id:id,
+    limit:5,
+    fields:'title,image,id'
   });
-  const webhook = await shopify.api.rest.Webhook.all({
-    session: res.locals.shopify.session,
-  });
-  console.log(webhook,"reading webhooks")
   res.status(200).send(countData);
-});
-
-app.get("/api/products/create", async (_req, res) => {
-  let status = 200;
-  let error = null;
-
-  try {
-    await productCreator(res.locals.shopify.session);
-  } catch (e) {
-    console.log(`Failed to process products/create: ${e.message}`);
-    status = 500;
-    error = e.message;
+  }catch(err){
+    res.status(200).send({error:err});
   }
-  res.status(status).send({ success: status === 200, error });
+  
 });
 
 app.use(serveStatic(STATIC_PATH, { index: false }));

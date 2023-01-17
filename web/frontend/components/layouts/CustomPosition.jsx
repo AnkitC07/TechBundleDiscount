@@ -6,7 +6,7 @@ const CustomPosition = ({
   return (
     <>
       <div className="Polaris-Card__Section">
-        <span className="Polaris-TextStyle--variationStrong">Timer ID</span>
+        <span className="Polaris-Text--root Polaris-Text--headingMd Polaris-Text--semibold">Timer ID</span>
         <div className="Polaris-TextContainer" style={{ marginTop: "5px" }}>
           <p>{id == undefined?"Save or Publish to show timer ID":id}</p>
         </div>
@@ -21,7 +21,7 @@ const CustomPosition = ({
       </div>
 
       <div id="timer-card" className={`Polaris-Card__Section ${checked == true?'':"hide-div"}`}>
-        <span className="Polaris-TextStyle--variationStrong">
+        <span className="Polaris-Text--root Polaris-Text--headingMd Polaris-Text--semibold">
           Timer code snippet
         </span>
         <div className="Polaris-TextContainer" style={{ marginTop: "5px" }}>

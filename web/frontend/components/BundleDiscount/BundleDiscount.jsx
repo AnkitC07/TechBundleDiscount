@@ -1,10 +1,27 @@
 import React, { useContext } from 'react'
+import { useState } from 'react'
+import { useEffect } from 'react'
 import { NavLink } from 'react-router-dom'
 import { useAuthenticatedFetch } from '../../hooks/useAuthenticatedFetch.js'
 import NavbarMain from '../layouts/NavbarMain.jsx'
 
 const BundleDiscount = () => {
-    
+    const fetch = useAuthenticatedFetch()
+    const [products,productsState] = useState([])
+    const [lastId,lastIdState] = useState(0)
+    useEffect(()=>{
+        fetch(`/api/products?id=${lastId}`)
+        .then(res=>res.json())
+        .then(x=>{
+            console.log(x,"products ids")
+            const len = x.length-1
+            const id = x[len].id
+            const pro = products.concat(x)
+            productsState(pro)
+            lastIdState(id)
+        }).catch(err=>{})
+    },[lastId])
+    console.log(products,'products ids checking')
     const navdata = [
         {
             title: 'Content',
