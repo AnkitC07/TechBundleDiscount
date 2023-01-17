@@ -168,7 +168,7 @@ const Placement = ({states}) => {
       </div>
       <div>
         <ResourcePickerComp
-          type="Collection"
+          type="Product"
           state1={open}
           state2={setOpen}
           onSelection={(e) => {

@@ -12,9 +12,8 @@ import ResourcePickerComp from '../Fields/ResourcePickerComp'
 import ComboBoxComp from '../Fields/ComboBoxComp'
 
 const Content = ({ bundle, setBundle, products }) => {
+    const [bundleDiv, setbundleDiv] = useState(bundle.bundleProducts)
 
-
-    const [bundleDiv, setbundleDiv] = useState(['Product #1', 'Product #2'])
     const updateRadio = (key) => {
         const data = bundle.bundleDiscount;
         Object.keys(data).forEach(x => {

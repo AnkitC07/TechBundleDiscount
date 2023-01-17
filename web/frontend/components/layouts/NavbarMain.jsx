@@ -26,7 +26,7 @@ const NavbarMain = ({ nav, products }) => {
   });
   const [bundle, setBundle] = useState({
     offerHeader: '',
-    bundleProducts: {},
+    bundleProducts: ['',''],
     bundleDiscount: {
       addDiscount: {
         status: true,
@@ -119,16 +119,45 @@ const NavbarMain = ({ nav, products }) => {
       ShowComparePrice: false
     }
   });
+  const [settings, settingState] = useState({
+    bundle_id: "",
+    BadgeHeader: "Buy more and save test",
+    Design: {
+      BadgePosition: {
+        right: true,
+        left: false,
+      },
+      Style: {
+        round: true,
+        rectangle: false,
+      },
+      Color: "#008060",
+      Border: "#008060",
+      Font: "#ffffff",
+      Width: 70,
+      Height: 40,
+      Radius: 55,
+      FontSize: 18,
+      FontFamily: "serif",
+      FontStyle: {
+        b: true,
+        i: false,
+        u: false,
+      },
+      Desktop: "right",
+      Mobile: "left",
+    },
+  });
   const navRender = (title) => {
     switch (title) {
       case "Content":
         return <Content bundle={bundle} setBundle={setBundle} products={products} />;
       case "Placement":
-        return <Placement states={{placement, setPlacement}}/>;
+        return <Placement states={{placement, setPlacement,bundle, setBundle}}/>;
       case "Design":
-        return <Design states={{ designSettings, designSatte, products }} />;
+        return <Design states={{ designSettings, designSatte,bundle, setBundle }} />;
       case "Badge":
-        return <ProductBadge />;
+        return <ProductBadge states={{settings, settingState}}/>;
     }
   };
 

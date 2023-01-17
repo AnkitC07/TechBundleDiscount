@@ -9,6 +9,8 @@ const BundleDiscount = () => {
     const fetch = useAuthenticatedFetch()
     const [products,productsState] = useState([])
     const [lastId,lastIdState] = useState(0)
+
+
     useEffect(()=>{
         fetch(`/api/products?id=${lastId}`)
         .then(res=>res.json())
@@ -21,6 +23,7 @@ const BundleDiscount = () => {
             lastIdState(id)
         }).catch(err=>{})
     },[lastId])
+
     console.log(products,'products ids checking')
     const navdata = [
         {

@@ -39,7 +39,11 @@ function ComboBoxComp(props) {
             <TextField
                 // label="Tags"
                 onFocus={togglePopoverActive}
-                // onBlur={togglePopoverActive}
+                onBlur={()=>{
+                    setTimeout(()=>{
+                        setPopoverActive(false)
+                    },200)
+                }}
                 prefix={''}
                 value={textFieldValue}
                 onChange={handleTextFieldChange}
@@ -56,9 +60,6 @@ function ComboBoxComp(props) {
                             className='selected_pro'
                             onClick={(e)=>{
                                 handelCheck(x.id)
-                              setTimeout(()=>{
-                                togglePopoverActive()
-                              },200)
                             }} >
                                 <div className="selected_pro product_list save_bar_display_block" id={x.id} data-pro_id={x.id} data-pro_title={x.title}>
                                     <div className="selected_pro pro_image">
