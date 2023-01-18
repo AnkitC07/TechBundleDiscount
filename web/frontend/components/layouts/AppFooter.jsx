@@ -2,7 +2,7 @@ import React from "react";
 
 export const AppFooter = () => {
     return (
-        <section class="footer_section">
+        <section class="footer_section mt-5">
             <div class="footer_div flex text-center justify-evenly p-16">
                 <span class="text-2xl">
                     Need Help?{" "}

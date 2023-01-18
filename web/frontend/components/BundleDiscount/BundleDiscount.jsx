@@ -5,6 +5,7 @@ import { NavLink } from 'react-router-dom'
 import { useAuthenticatedFetch } from '../../hooks/useAuthenticatedFetch.js'
 import NavbarMain from '../layouts/NavbarMain.jsx'
 
+
 const BundleDiscount = () => {
     const fetch = useAuthenticatedFetch()
     const [products,productsState] = useState([])
@@ -18,7 +19,7 @@ const BundleDiscount = () => {
             console.log(x,"products ids")
             const len = x.length-1
             const id = x[len].id
-            const pro = products.concat(x)
+            const pro = products.concat(x.reverse())
             productsState(pro)
             lastIdState(id)
         }).catch(err=>{})
