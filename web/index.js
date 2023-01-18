@@ -43,7 +43,7 @@ app.get("/api/products", async (req, res) => {
   const countData = await shopify.api.rest.Product.all({
     session: res.locals.shopify.session,
     since_id:id,
-    limit:5,
+    limit:250,
     fields:'title,image,id'
   });
   res.status(200).send(countData);

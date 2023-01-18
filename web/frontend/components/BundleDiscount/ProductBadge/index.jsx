@@ -8,37 +8,8 @@ import { useState } from "react";
 import { NavLink } from "react-router-dom";
 import { useEffect } from "react";
 
-const ProductBadge = () => {
-  const [sticky, stateSticky] = useState("");
-  const [settings, settingState] = useState({
-    bundle_id: "",
-    BadgeHeader: "Buy more and save test",
-    Design: {
-      BadgePosition: {
-        right: true,
-        left: false,
-      },
-      Style: {
-        round: true,
-        rectangle: false,
-      },
-      Color: "#008060",
-      Border: "#008060",
-      Font: "#ffffff",
-      Width: 70,
-      Height: 40,
-      Radius: 55,
-      FontSize: 18,
-      FontFamily: "serif",
-      FontStyle: {
-        b: true,
-        i: false,
-        u: false,
-      },
-      Desktop: "right",
-      Mobile: "left",
-    },
-  });
+const ProductBadge = ({states}) => {
+  const {settings, settingState} = states
   return (
     <>
       <div className="mb-5">

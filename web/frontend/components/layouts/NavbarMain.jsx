@@ -7,7 +7,6 @@ import Design from "../BundleDiscount/Design";
 import Placement from "../BundleDiscount/Placement";
 import ProductBadge from "../BundleDiscount/ProductBadge";
 
-
 const NavbarMain = ({ nav, products }) => {
   const dates = new Date();
   dates.setDate(dates.getDate() + 1);
@@ -25,61 +24,60 @@ const NavbarMain = ({ nav, products }) => {
     tags: "",
   });
   const [bundle, setBundle] = useState({
-    offerHeader: '',
-    bundleProducts: [],
+    offerHeader: "",
+    bundleProducts: [],     
     bundleDiscount: {
       addDiscount: {
         status: true,
-        discountValue: '',
-        discountType: '% OFF',
+        discountValue: "",
+        discountType: "% OFF",
       },
       freeShiping: {
         status: false,
       },
       freeGift: {
         status: false,
-        freeGiftSlected: [7666904072442, 7666904137978]
+        freeGiftSlected: [7666904072442, 7666904137978],
       },
       noDiscount: {
-        status: false
-      }
+        status: false,
+      },
     },
     advanceSetting: {
       customerOption: {
-        status: false
+        status: false,
       },
       hideStorefront: {
         status: false,
       },
       specific: {
         status: false,
-        specificSlected: []
+        specificSlected: [],
       },
       startDate: {
         status: false,
         date: {
           start: new Date(),
           end: new Date(),
-        }
+        },
       },
       endDate: {
         status: false,
         date: {
           start: new Date(dates),
           end: new Date(dates),
-        }
+        },
       },
       roundDiscount: {
         status: false,
-        roundDiscountSelected: '.00'
+        roundDiscountSelected: ".00",
       },
       targetCustomer: {
         status: false,
-        targetCustomerSelected: []
-
-      }
-    }
-  })
+        targetCustomerSelected: [],
+      },
+    },
+  });
   const [selectedTab, setTabState] = useState("Content");
   const [designSettings, designSatte] = useState({
     settings: {
@@ -95,40 +93,75 @@ const NavbarMain = ({ nav, products }) => {
       VariantBgColor: "#008060",
     },
     button: {
-      bg: '#348766',
-      color: '#ffffff',
+      bg: "#348766",
+      color: "#ffffff",
       borderRadius: 50,
-      buttonAction: 'add to cart',
-      text: 'Grab this deal',
-      Moreoptions: 'More options',
-      Unavailablebtn: 'UNAVAILABLE',
-      UnavailableNotice: 'Unavailable, please try another option',
-      ChooseOption: 'Choose an option'
+      buttonAction: "add to cart",
+      text: "Grab this deal",
+      Moreoptions: "More options",
+      Unavailablebtn: "UNAVAILABLE",
+      UnavailableNotice: "Unavailable, please try another option",
+      ChooseOption: "Choose an option",
     },
     priceSavings: {
-      freeGift: 'Free',
-      FreeShippingTag: 'Free shipping',
-      FreeGiftTag: 'Free',
-      SaveTag: 'SAVE {{discount}}',
-      Total: 'Total',
+      freeGift: "Free",
+      FreeShippingTag: "Free shipping",
+      FreeGiftTag: "Free",
+      SaveTag: "SAVE {{discount}}",
+      Total: "Total",
       tagColor: "#008060",
       priceColor: "#008060",
       ComparePriceColor: "#008060",
       showTotal: false,
       ShowPriceUnit: false,
-      ShowComparePrice: false
-    }
+      ShowComparePrice: false,
+    },
+  });
+  const [settings, settingState] = useState({
+    bundle_id: "",
+    BadgeHeader: "Buy more and save test",
+    Design: {
+      BadgePosition: {
+        right: true,
+        left: false,
+      },
+      Style: {
+        round: true,
+        rectangle: false,
+      },
+      Color: "#008060",
+      Border: "#008060",
+      Font: "#ffffff",
+      Width: 70,
+      Height: 40,
+      Radius: 55,
+      FontSize: 18,
+      FontFamily: "serif",
+      FontStyle: {
+        b: true,
+        i: false,
+        u: false,
+      },
+      Desktop: "right",
+      Mobile: "left",
+    },
   });
   const navRender = (title) => {
     switch (title) {
       case "Content":
-        return <Content bundle={bundle} setBundle={setBundle} products={products} />;
+        return (
+          <Content bundle={bundle} setBundle={setBundle} products={products} />
+        );
       case "Placement":
-        return <Placement states={{ placement, setPlacement }} />;
+        return (
+          <Placement states={{ placement, setPlacement, bundle, setBundle }} />
+        );
       case "Design":
-        return <Design states={{ designSettings, designSatte }} />;
+        return (
+          <Design states={{ designSettings, designSatte, bundle, setBundle }} />
+        );
       case "Badge":
-        return <ProductBadge />;
+        return <ProductBadge states={{ settings, settingState }} />;
     }
   };
 
@@ -144,8 +177,9 @@ const NavbarMain = ({ nav, products }) => {
                 onClick={() => {
                   setTabState(x.title);
                 }}
-                className={`countdown_tab ${x.title === selectedTab ? "NavTabActive" : ""
-                  }`}
+                className={`countdown_tab ${
+                  x.title === selectedTab ? "NavTabActive" : ""
+                }`}
               >
                 {x.title}
               </li>
