@@ -378,9 +378,9 @@ export default function BundlePreview({bundle}) {
     ]
 
     // console.log(bundle,"checking values")
-  useEffect(()=>{
-    // console.log('update values..............')
-  },[bundle])
+  // useEffect(()=>{
+  //   // console.log('update values..............')
+  // },[bundle])
 
   return (
     <div className="BundlepreviewStyle">
@@ -492,11 +492,12 @@ const BundlePreviewPro = ({ bundle }) => {
 };
 
 const Variants = ({ v,bundle}) => {
+  console.log("checking bundles updated variants")
   return (
     <>
       <div style={{ margin: "10px 0px", width: "100%" }}>
         <select style={{ width: "100%", padding: "5px" }}>
-          {bundle.advanceSetting.customerOption.status == true?"true optoons display":''}
+          {bundle.advanceSetting.customerOption.status == true?<option selected disabled>Choose an option</option>:''}
           {v.map((x, i) => {
             return <option value={x.id}>{x.title}</option>;
           })}
