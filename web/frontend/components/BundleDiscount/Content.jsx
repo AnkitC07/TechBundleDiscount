@@ -20,16 +20,16 @@ import ComboBoxComp from "../Fields/ComboBoxComp";
 import BundlePreview from "./BundlePreview";
 
 const Content = ({ bundle, setBundle, products }) => {
-  // const [bundleDiv, setbundleDiv] = useState(
-  //   bundle.bundleProducts.length == 0
-  //     ? ["", ""]
-  //     : bundle.bundleProducts.length > 0 && bundle.bundleProducts.length < 2
-  //     ? [...bundle.bundleProducts, ""]
-  //     : [...bundle.bundleProducts]
-  // );
-  // bundle.bundleProducts = bundleDiv;
+  const [bundleDiv, setbundleDiv] = useState(
+    bundle.bundleProducts.length == 0
+      ? ["", ""]
+      : bundle.bundleProducts.length > 0 && bundle.bundleProducts.length < 2
+      ? [...bundle.bundleProducts, ""]
+      : [...bundle.bundleProducts]
+  );
+  bundle.bundleProducts = bundleDiv;
 
-  const [bundleDiv, setbundleDiv] = useState(bundle.bundleProducts);
+  // const [bundleDiv, setbundleDiv] = useState(bundle.bundleProducts);
 
   useEffect(() => {
     setbundleDiv(bundle.bundleProducts);

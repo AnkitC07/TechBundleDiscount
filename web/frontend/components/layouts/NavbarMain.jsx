@@ -164,7 +164,7 @@ const NavbarMain = ({ nav, products }) => {
           <Design states={{ designSettings, designSatte, bundle, setBundle }} />
         );
       case "Badge":
-        return <ProductBadge states={{ settings, settingState }} />;
+        return <ProductBadge states={{ settings, settingState,bundle }} />;
     }
   };
 
