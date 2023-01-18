@@ -37,7 +37,7 @@ const NavbarMain = ({ nav, products }) => {
       },
       freeGift: {
         status: false,
-        freeGiftSlected: [7666904072442, 7666904137978],
+        freeGiftSlected: [],
       },
       noDiscount: {
         status: false,

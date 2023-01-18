@@ -21,12 +21,11 @@ function ComboBoxComp(props) {
     (value) => setTextFieldValue(value),
     []
   );
-//   console.log(props.bundle.bundleProducts.length);
+
   const removeTag = () => {
     props.bundle.bundleProducts.splice(props.i - 1, 1);
   };
 
-  console.log(props.bundle.bundleProducts[props.i - 1] == '',"checking values")
   const verticalContentMarkup =
     props.bundle.bundleProducts.length > 0 && props.bundle.bundleProducts[props.i - 1] !== ''? (
       <Stack spacing="extraTight" alignment="center">

@@ -640,3 +640,8 @@ div#accordion .card {
 .product_show {
   margin-top: 0px !important;
 }
+
+.previewScroll{
+  height: 350px;
+  overflow-y: auto;
+}

@@ -44,7 +44,7 @@ app.get("/api/products", async (req, res) => {
     session: res.locals.shopify.session,
     since_id:id,
     limit:250,
-    fields:'title,image,id'
+    fields:'title,image,id,price,variants,options'
   });
   res.status(200).send(countData);
   }catch(err){

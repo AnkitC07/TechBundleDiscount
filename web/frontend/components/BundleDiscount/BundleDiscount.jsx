@@ -15,7 +15,7 @@ const BundleDiscount = () => {
     fetch(`/api/products?id=${lastId}`)
       .then((res) => res.json())
       .then((x) => {
-        console.log(x,"products ids")
+        // console.log(x,"products ids")
         const len = x.length - 1;
         const id = x[len].id;
         const pro = products.concat(x);

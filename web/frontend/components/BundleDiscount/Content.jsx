@@ -1,4 +1,11 @@
-import { Button, Checkbox, Icon, Popover, TextField } from "@shopify/polaris";
+import {
+  Button,
+  Card,
+  Checkbox,
+  Icon,
+  Popover,
+  TextField,
+} from "@shopify/polaris";
 import React, { useCallback, useEffect, useState } from "react";
 import CheckBoxComponent from "../Fields/CheckBoxComponent";
 import ChoiceListComp from "../Fields/ChoiceListComp";
@@ -13,7 +20,21 @@ import ComboBoxComp from "../Fields/ComboBoxComp";
 import BundlePreview from "./BundlePreview";
 
 const Content = ({ bundle, setBundle, products }) => {
+  // const [bundleDiv, setbundleDiv] = useState(
+  //   bundle.bundleProducts.length == 0
+  //     ? ["", ""]
+  //     : bundle.bundleProducts.length > 0 && bundle.bundleProducts.length < 2
+  //     ? [...bundle.bundleProducts, ""]
+  //     : [...bundle.bundleProducts]
+  // );
+  // bundle.bundleProducts = bundleDiv;
+
   const [bundleDiv, setbundleDiv] = useState(bundle.bundleProducts);
+
+  useEffect(() => {
+    setbundleDiv(bundle.bundleProducts);
+  }, [bundle]);
+
   const updateRadio = (key) => {
     const data = bundle.bundleDiscount;
     Object.keys(data).forEach((x) => {
@@ -22,171 +43,36 @@ const Content = ({ bundle, setBundle, products }) => {
     data[key].status = true;
     setBundle({ ...bundle });
   };
-
-  //---Advance Settings Choice list states---//
-  const [selected, setSelected] = useState(["hidden"]);
-  const [textFieldValue, setTextFieldValue] = useState("");
-
-  const handleChange = useCallback((value) => setSelected(value), []);
-
+  // const [selected, setSelected] = useState(["hidden"]);
   //---Choice list states ends---//
   //---Free gift choice list---//
-  const [freeSelected, setFreeSelected] = useState(["hidden"]);
-  const freeHandleChange = useCallback((value) => setFreeSelected(value), []);
-  const roundDiscountSelect = [
-    {
-      data: ".00",
-      value: ".00",
-    },
-    {
-      data: ".49",
-      value: ".49",
-    },
-    {
-      data: ".50",
-      value: ".50",
-    },
-    {
-      data: ".95",
-      value: ".95",
-    },
-    {
-      data: ".99",
-      value: ".99",
-    },
-  ];
-  const handleSpecificCheck = (value) => {
-    bundle.advanceSetting.specific.specificSlected = [
-      ...bundle.advanceSetting.specific.specificSlected,
-      value,
-    ];
+
+ 
+
+  const handleFreeGift = (value, status) => {
+    console.log(status);
+    if (status == true) {
+      bundle.bundleDiscount.freeGift.freeGiftSlected = [
+        ...bundle.bundleDiscount.freeGift.freeGiftSlected,
+        value,
+      ];
+    } else {
+      let deleted = bundle.bundleDiscount.freeGift.freeGiftSlected;
+      const index = deleted.findIndex((x) => x == value);
+      deleted.splice(index, 1);
+      bundle.bundleDiscount.freeGift.freeGiftSlected = deleted;
+    }
+
+    setBundle({ ...bundle });
   };
-  //---Childrens in choicelists---//
-  const specificChild = useCallback(
-    (isSelected) => {
-      return (
-        isSelected && (
-          <>
-            {/* // bundle.bundleDiscount.freeGift.freeGiftSlected.length == 0 ? */}
-            <div className=" Polaris-Text--subdued mt-2">
-              Select atleast one product
-            </div>
-            {/* //  : */}
-            <div className="selected_product_list">
-              {/* <ChoiceListComp selected={freeSelected} handleChange={freeHandleChange} choice={freeGift} /> */}
-              {bundle.bundleDiscount.freeGift.freeGiftSlected.map((x, i) => (
-                <Checkbox
-                  label={`Product #${i + 1}`}
-                  checked={bundle.advanceSetting.specific.specificSlected[i]}
-                  onChange={() => handleSpecificCheck()}
-                />
-              ))}
-            </div>
-          </>
-        )
-      );
-    },
-    [handleChange, freeSelected]
-  );
-  const startDateChild = useCallback(
-    (isSelected) => {
-      return (
-        isSelected && (
-          <div className="row">
-            <div className="col-lg-8 col-md-18 col-sm-12 mt-1">
-              <div className="mb-1">
-                <DatePickerExample
-                  state1={bundle.advanceSetting.startDate.date}
-                  onChange={(e) => {
-                    bundle.advanceSetting.startDate.date = e;
-                    setBundle({ ...bundle });
-                  }}
-                  // disable={!modal.isEnabled}
-                />
-                <span id="start_date_err" className="err"></span>
-              </div>
-            </div>
-          </div>
-        )
-      );
-    },
-    [handleChange]
-  );
-  const endDateChild = useCallback(
-    (isSelected) => {
-      return (
-        isSelected && (
-          <div className="row">
-            <div className="col-lg-8 col-md-18 col-sm-12 mt-1">
-              <div className="mb-0">
-                <DatePickerExample
-                  state1={bundle.advanceSetting.endDate.date}
-                  onChange={(e) => {
-                    bundle.advanceSetting.endDate.date = e;
-                    setBundle({ ...bundle });
-                  }}
-                  // disable={!modal.isEnabled}
-                />
-                <span id="end_date_err" className="err"></span>
-              </div>
-            </div>
-          </div>
-        )
-      );
-    },
-    [handleChange]
-  );
-  const roundDiscountChild = useCallback(
-    (isSelected) => {
-      return (
-        isSelected && (
-          <div className="row">
-            <div className="col-lg-8 col-md-18 col-sm-12 mt-1">
-              <InputSelect
-                id="round_discount"
-                option={roundDiscountSelect}
-                value={
-                  bundle.advanceSetting.roundDiscount.roundDiscountSelected
-                }
-                // placeholder="Unpublish timer"
-                onChange={(e) => {
-                  bundle.advanceSetting.roundDiscount.roundDiscountSelected =
-                    e.target.value;
-                  setBundle({ ...bundle });
-                  // console.log(e)
-                  // setContent({
-                  //     ...content,
-                  //     onceItEnd: e.target.value,
-                  // })
-                }}
-              />
-            </div>
-          </div>
-        )
-      );
-    },
-    [handleChange]
-  );
-  const targetDiscountChild = useCallback(
-    (isSelected) => {
-      return (
-        isSelected && (
-          // <SearchFilter />
-          <div className="searchBoxTag">
-            <ComboBoxComp />
-          </div>
-        )
-      );
-    },
-    [handleChange]
-  );
+
   //---Childrens  in choicelists---//
   //---Free gift choice list---//
   const discountType = [
     {
       data: "% OFF",
       value: "% OFF",
-      selected,
+      selected: "true",
     },
     {
       data: "$ OFF",
@@ -197,47 +83,6 @@ const Content = ({ bundle, setBundle, products }) => {
     {
       label: `Product #1`,
       value: "1",
-    },
-  ];
-  const choiceListArray = [
-    {
-      label: "Customer must choose an option",
-      value: "choose an option",
-      helpText:
-        "Show “choose an option” inside the variant selection and block the main button until variants are manually selected",
-    },
-    {
-      label: "Hide from storefront",
-      value: "hide",
-      helpText:
-        "Check this box if you want to hide the offer widget in the storefront, but apply discounts based on these rules.",
-    },
-    {
-      label: "Show only on specific product pages",
-      value: "specific",
-      renderChildren: specificChild,
-    },
-    {
-      label: "Set start time",
-      value: "startTime",
-      renderChildren: startDateChild,
-    },
-    {
-      label: "Set end time",
-      value: "endTime",
-      renderChildren: endDateChild,
-    },
-    {
-      label: "Round discounted prices",
-      value: "roundDiscount",
-      renderChildren: roundDiscountChild,
-    },
-    {
-      label: "Target customers",
-      value: "target",
-      helpText:
-        "To enable this feature, please create customer tags to customers your customer in “Customer” menu",
-      renderChildren: targetDiscountChild,
     },
   ];
 
@@ -305,7 +150,11 @@ const Content = ({ bundle, setBundle, products }) => {
                               {/* <TextFieldComp label={item} prefix={<Icon source={SearchMinor} />} placeholder={'Select a product'} /> */}
                               <div className="searchBoxTag">
                                 {" "}
-                                <ComboBoxComp bundle={bundle} i={i+1} products={products} />
+                                <ComboBoxComp
+                                  bundle={bundle}
+                                  i={i + 1}
+                                  products={products}
+                                />
                               </div>
                             </div>
                             {i === bundleDiv.length - 1 ? (
@@ -425,18 +274,15 @@ const Content = ({ bundle, setBundle, products }) => {
                             <div className="Polaris-Choice__Descriptions freeProducts-Bundle ">
                               <div className="selected_product_list">
                                 {/* <ChoiceListComp selected={freeSelected} handleChange={freeHandleChange} choice={freeGift} /> */}
-                                {bundle.bundleDiscount.freeGift.freeGiftSlected.map(
-                                  (x, i) => (
-                                    <Checkbox
-                                      label={`Product #${i + 1}`}
-                                      checked={
-                                        bundle.advanceSetting.specific
-                                          .specificSlected[i]
-                                      }
-                                      onChange={() => handleSpecificCheck()}
-                                    />
-                                  )
-                                )}
+                                {bundle.bundleProducts.map((x, i) => (
+                                  <Checkbox
+                                    label={`Product #${i + 1}`}
+                                    checked={bundle.bundleDiscount.freeGift.freeGiftSlected.includes(
+                                      x.id
+                                    )}
+                                    onChange={(e) => handleFreeGift(x.id, e)}
+                                  />
+                                ))}
                               </div>
                             </div>
                             {/* // } */}
@@ -480,11 +326,12 @@ const Content = ({ bundle, setBundle, products }) => {
                       </span>
                     </div>
                     <div className="advanceChoiceList choiceList">
-                      <ChoiceListComp
+                      {/* <ChoiceListComp
                         selected={selected}
                         handleChange={handleChange}
                         choice={choiceListArray}
-                      />
+                      /> */}
+                      <AdvanceSettings bundle={bundle} setBundle={setBundle} />
                     </div>
                   </div>
                 </div>
@@ -493,7 +340,7 @@ const Content = ({ bundle, setBundle, products }) => {
           </div>
         </div>
         <div className="col-lg-6 col-md-6 col-sm-6">
-          <BundlePreview />
+          <BundlePreview bundle={bundle} />
         </div>
 
         {/* <div className="col col-md-5" id='productTimer' ref={ref}>
@@ -506,5 +353,227 @@ const Content = ({ bundle, setBundle, products }) => {
   );
 };
 
-export default Content;
+const AdvanceSettings = ({ bundle, setBundle }) => {
 
+
+  const roundDiscountSelect = [
+    {
+      data: ".00",
+      value: ".00",
+    },
+    {
+      data: ".49",
+      value: ".49",
+    },
+    {
+      data: ".50",
+      value: ".50",
+    },
+    {
+      data: ".95",
+      value: ".95",
+    },
+    {
+      data: ".99",
+      value: ".99",
+    },
+  ];
+  //---Childrens in choicelists---//
+  const specificChild = () => {
+    return (
+        <>
+          <div className=" Polaris-Text--subdued mt-2">
+            Select atleast one product
+          </div>
+          <div className="selected_product_list">
+            {bundle.bundleProducts.map((x, i) => (
+              <Checkbox
+                label={`Product #${i + 1}`}
+                checked={bundle.advanceSetting.specific.specificSlected.includes(
+                  x.id
+                )}
+                onChange={(e) => handleSpecificCheck(x.id, e)}
+              />
+            ))}
+          </div>
+        </>
+    );
+  };
+
+  const startDateChild = () => {
+      return (
+          <div className="row">
+            <div className="col-lg-8 col-md-18 col-sm-12 mt-1">
+              <div className="mb-1">
+                <DatePickerExample
+                  state1={bundle.advanceSetting.startDate.date}
+                  onChange={(e) => {
+                    bundle.advanceSetting.startDate.date = e;
+                    setBundle({ ...bundle });
+                  }}
+                  // disable={!modal.isEnabled}
+                />
+                <span id="start_date_err" className="err"></span>
+              </div>
+            </div>
+          </div>
+        )
+    }
+
+  const endDateChild = () =>{
+      return (
+          <div className="row">
+            <div className="col-lg-8 col-md-18 col-sm-12 mt-1">
+              <div className="mb-0">
+                <DatePickerExample
+                  state1={bundle.advanceSetting.endDate.date}
+                  onChange={(e) => {
+                    bundle.advanceSetting.endDate.date = e;
+                    setBundle({ ...bundle });
+                  }}
+                  // disable={!modal.isEnabled}
+                />
+                <span id="end_date_err" className="err"></span>
+              </div>
+            </div>
+          </div>
+        )
+    }
+
+  const roundDiscountChild = () =>{
+      return (
+          <div className="row">
+            <div className="col-lg-8 col-md-18 col-sm-12 mt-1">
+              <InputSelect
+                id="round_discount"
+                option={roundDiscountSelect}
+                value={
+                  bundle.advanceSetting.roundDiscount.roundDiscountSelected
+                }
+                // placeholder="Unpublish timer"
+                onChange={(e) => {
+                  bundle.advanceSetting.roundDiscount.roundDiscountSelected =
+                    e.target.value;
+                  setBundle({ ...bundle });
+                  // console.log(e)
+                  // setContent({
+                  //     ...content,
+                  //     onceItEnd: e.target.value,
+                  // })
+                }}
+              />
+            </div>
+          </div>
+      );
+    }
+
+
+  const targetDiscountChild = () =>{
+      return (
+          <div className="searchBoxTag">
+            Customers
+          </div>
+      )
+    }
+
+
+  const handleSpecificCheck = (value, status) => {
+    if (status == true) {
+      bundle.advanceSetting.specific.specificSlected = [
+        ...bundle.advanceSetting.specific.specificSlected,
+        value,
+      ];
+    } else {
+      let deleted = bundle.advanceSetting.specific.specificSlected;
+      const index = deleted.findIndex((x) => x == value);
+      deleted.splice(index, 1);
+      bundle.advanceSetting.specific.specificSlected = deleted;
+    }
+    setBundle({ ...bundle });
+  };
+
+
+  const choiceListArray = [
+    {
+      label: "Customer must choose an option",
+      value: "choose an option",
+      helpText:
+        "Show “choose an option” inside the variant selection and block the main button until variants are manually selected",
+      checked: bundle.advanceSetting.customerOption.status,
+      key:'customerOption'
+    },
+    {
+      label: "Hide from storefront",
+      value: "hide",
+      helpText:
+        "Check this box if you want to hide the offer widget in the storefront, but apply discounts based on these rules.",
+      checked:bundle.advanceSetting.hideStorefront.status,
+      key:'hideStorefront'
+    },
+    {
+      label: "Show only on specific product pages",
+      value: "specific",
+      renderChildren: specificChild,
+      checked:bundle.advanceSetting.specific.status,
+      key:'specific'
+    },
+    {
+      label: "Set start time",
+      value: "startTime",
+      renderChildren: startDateChild,
+      checked:bundle.advanceSetting.startDate.status,
+      key:'startDate'
+    },
+    {
+      label: "Set end time",
+      value: "endTime",
+      renderChildren: endDateChild,
+      checked:bundle.advanceSetting.endDate.status,
+      key:'endDate'
+    },
+    {
+      label: "Round discounted prices",
+      value: "roundDiscount",
+      renderChildren: roundDiscountChild,
+      checked:bundle.advanceSetting.roundDiscount.status,
+      key:'roundDiscount'
+    },
+    {
+      label: "Target customers",
+      value: "target",
+      helpText:
+        "To enable this feature, please create customer tags to customers your customer in “Customer” menu",
+      renderChildren: targetDiscountChild,
+      checked:bundle.advanceSetting.targetCustomer.status,
+      key:'targetCustomer'
+    },
+  ];
+
+  const UpdateStatus = (key,status) =>{
+    bundle.advanceSetting[key].status = status
+    setBundle({...bundle})
+  }
+  return (
+    <>
+      <Card sectioned>
+        {choiceListArray.map((x,i) => {
+          return (
+            <div className="mb-3" key={`000${i}`}>
+              <Checkbox
+                label={x.label}
+                checked={x.checked}
+                helpText={x.helpText}
+                onChange={(e)=> UpdateStatus(`${x.key}`,e)}
+              />
+              {
+                bundle.advanceSetting[x.key].status == true? x.renderChildren == undefined ? "" : <x.renderChildren />:''
+              }
+            </div>
+          );
+        })}
+      </Card>
+    </>
+  );
+};
+
+export default Content;
