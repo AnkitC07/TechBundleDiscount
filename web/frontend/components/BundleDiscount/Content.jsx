@@ -12,7 +12,6 @@ import ResourcePickerComp from "../Fields/ResourcePickerComp";
 import ComboBoxComp from "../Fields/ComboBoxComp";
 
 const Content = ({ bundle, setBundle, products }) => {
-  console.log(bundle.bundleProducts.length, bundle.bundleProducts);
   const [bundleDiv, setbundleDiv] = useState(
     bundle.bundleProducts.length == 0
       ? ["", ""]

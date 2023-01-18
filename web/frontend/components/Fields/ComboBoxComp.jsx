@@ -21,7 +21,7 @@ function ComboBoxComp(props) {
     (value) => setTextFieldValue(value),
     []
   );
-//   console.log(props.bundle.bundleProducts.length);
+  //   console.log(props.bundle.bundleProducts.length);
   const removeTag = () => {
     props.bundle.bundleProducts.splice(props.i - 1, 1);
   };
@@ -29,10 +29,14 @@ function ComboBoxComp(props) {
     props.bundle.bundleProducts.length > 0 ? (
       <Stack spacing="extraTight" alignment="center">
         {/* {selectedTags.map((tag) => ( */}
+        {props.bundle.bundleProducts[props.i - 1] !== "" ? (
+          <Tag
+            onRemove={() => removeTag(props.bundle.bundleProducts[props.i - 1])}
+          >
+            {props.bundle.bundleProducts[props.i - 1]?.title}
+          </Tag>
+        ) : null}
 
-        <Tag onRemove={removeTag(props.bundle.bundleProducts[props.i - 1])}>
-          {props.bundle.bundleProducts[props.i - 1]?.title}
-        </Tag>
         {/* ))} */}
       </Stack>
     ) : null;
