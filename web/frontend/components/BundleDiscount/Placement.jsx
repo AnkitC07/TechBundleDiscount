@@ -3,9 +3,10 @@ import CheckBoxComponent from "../Fields/CheckBoxComponent";
 import InputComponent from "../Fields/InputComponent";
 import ResourcePickerComp from "../Fields/ResourcePickerComp";
 import CustomPosition from "../layouts/CustomPosition";
+import BundlePreview from "./BundlePreview";
 
-const Placement = ({states}) => {
-    const {placement, setPlacement} = states
+const Placement = ({ states }) => {
+  const { placement, setPlacement } = states;
   const id = null;
   const [open, setOpen] = useState(false);
   const [openc, setOpenc] = useState(false);
@@ -23,9 +24,9 @@ const Placement = ({states}) => {
 
   return (
     <>
-      <div className="row px-4 py-3">
-        <div className="col col-md-7">
-          <div className="Polaris-Card" style={{ maxWidth: "360px" }}>
+      <div className="row">
+        <div className="col-lg-6 col-md-6 ">
+          <div className="Polaris-Card" style={{ maxWidth: "500px" }}>
             <div className="Polaris-Card__Section">
               <div className="sc-bczRLJ czvMoD">
                 <div className="Polaris-FormLayout">
@@ -162,8 +163,8 @@ const Placement = ({states}) => {
             <CustomPosition id={id} checked={selectedPro.customPosition} />
           </div>
         </div>
-        <div className="col col-md-5">
-          {/* <Timerbadge design={design} content={content} /> */}
+        <div className="col-lg-6 col-md-5">
+          <BundlePreview />
         </div>
       </div>
       <div>

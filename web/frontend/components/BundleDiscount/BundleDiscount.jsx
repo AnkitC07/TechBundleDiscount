@@ -14,7 +14,7 @@ const BundleDiscount = () => {
     fetch(`/api/products?id=${lastId}`)
       .then((res) => res.json())
       .then((x) => {
-        // console.log(x,"products ids")
+        console.log(x, "products ids");
         const len = x.length - 1;
         const id = x[len].id;
         const pro = products.concat(x);
@@ -24,7 +24,7 @@ const BundleDiscount = () => {
       .catch((err) => {});
   }, [lastId]);
 
-//   console.log(products, "products ids checking");
+  //   console.log(products, "products ids checking");
   const navdata = [
     {
       title: "Content",
@@ -166,7 +166,11 @@ const BundleDiscount = () => {
         </div>
 
         <div className="row ">
-          <NavbarMain nav={navdata} products={products} />
+          <NavbarMain
+            nav={navdata}
+            products={products}
+            productsState={productsState}
+          />
         </div>
       </div>
     </section>

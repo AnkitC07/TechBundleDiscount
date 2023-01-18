@@ -10,8 +10,9 @@ import TextFieldComp from "../Fields/TextFieldComp";
 import { SearchMinor, CirclePlusMajor } from "@shopify/polaris-icons";
 import ResourcePickerComp from "../Fields/ResourcePickerComp";
 import ComboBoxComp from "../Fields/ComboBoxComp";
+import BundlePreview from "./BundlePreview";
 
-const Content = ({ bundle, setBundle, products }) => {
+const Content = ({ bundle, setBundle, products, productsState }) => {
   const [bundleDiv, setbundleDiv] = useState(
     bundle.bundleProducts.length == 0
       ? ["", ""]
@@ -246,271 +247,274 @@ const Content = ({ bundle, setBundle, products }) => {
       renderChildren: targetDiscountChild,
     },
   ];
-  const bundleProductSelection = (prod) => {
-    bundle.bundleProducts = [...bundle.bundleProducts, prod];
-    setBundle({ ...bundle });
-  };
-  const bundleProductRemoval = (prod) => {
-    const index = Object.keys(bundle.bundleProducts);
-    console.log("Index", bundle.bundleProducts);
-    // bundle.bundleProducts = [...bundle.bundleProducts, prod]
-    // setBundle({ ...bundle })
-  };
+
   useEffect(() => {
     console.log("Bundle=> ", bundle);
-    console.log("BundleDiv=> ", bundleDiv);
   }, [bundle]);
 
   return (
     <>
       <div className="row pb-5">
-        <div className="ol-lg-6 col-md-6 col-sm-6">
-          <div className="Polaris-Card">
-            <div className="Polaris-Card__Section">
-              <div className="Polaris-FormLayout">
-                <div className="Polaris-FormLayout__Item">
-                  <span className="Polaris-TextStyle--variationStrong">
-                    Bundle Offer Detail
-                  </span>
-                </div>
-                <div className="Polaris-FormLayout__Item">
-                  <div className="Polaris-Labelled__LabelWrapper">
-                    <div className="Polaris-Label">
-                      <label
-                        id="nameLabel"
-                        htmlFor="name"
-                        className="Polaris-Label__Text"
-                      >
-                        Offer header
-                      </label>
-                    </div>
-                  </div>
-                  <InputComponent
-                    id="name"
-                    type="text"
-                    default={bundle.offerHeader}
-                    onChange={(e) => {
-                      setBundle({
-                        ...bundle,
-                        offerHeader: e.target.value,
-                      });
-                    }}
-                  />
-                </div>
-              </div>
-            </div>
-            <div className="Polaris-Card__Section">
-              <div className="sc-bczRLJ czvMoD">
+        <div className="col-lg-6 col-md-6 col-sm-6">
+          <div className="customCard">
+            <div className="Polaris-Card">
+              <div className="Polaris-Card__Section">
                 <div className="Polaris-FormLayout">
                   <div className="Polaris-FormLayout__Item">
                     <span className="Polaris-TextStyle--variationStrong">
-                      Bundle Products
+                      Bundle Offer Detail
                     </span>
-                    <div className=" Polaris-Text--subdued">
-                      Bundle offers will show inside each product page that is
-                      included in the bundle .
-                    </div>
-                    <div id="product_search_section" class="mt-5">
-                      {/* {console.log(bundleDiv.length)} */}
-                      {bundleDiv.map((item, i) => (
-                        <div
-                          class="products_selected position_relative"
-                          data-id="product_select_box1"
+                  </div>
+                  <div className="Polaris-FormLayout__Item">
+                    <div className="Polaris-Labelled__LabelWrapper">
+                      <div className="Polaris-Label">
+                        <label
+                          id="nameLabel"
+                          htmlFor="name"
+                          className="Polaris-Label__Text"
                         >
-                          <div class="Polaris-TextContainer ">
-                            {/* <TextFieldComp label={item} prefix={<Icon source={SearchMinor} />} placeholder={'Select a product'} /> */}
-                            <div className="searchBoxTag">
-                              <ComboBoxComp
-                                i={i + 1}
-                                products={products}
-                                setBundle={setBundle}
-                                bundle={bundle}
-                              />
-                            </div>
-                          </div>
-                          {i === bundleDiv.length - 1 ? (
-                            <div
-                              className="position_center pointerclass"
-                              onClick={() => {
-                                setbundleDiv([...bundleDiv, ""]);
-                              }}
-                            >
-                              <Icon source={CirclePlusMajor} color="primary" />
-                            </div>
-                          ) : (
-                            <div className="position_center ">
-                              <Icon source={CirclePlusMajor} color="base" />
-                            </div>
-                          )}
-                        </div>
-                      ))}
-                      <center>
-                        <p
-                          class="mt-4 add_another_pro"
-                          onClick={() => {
-                            setbundleDiv([...bundleDiv, ""]);
-                          }}
-                        >
-                          Add another product
-                        </p>
-                      </center>
+                          Offer header
+                        </label>
+                      </div>
                     </div>
+                    <InputComponent
+                      id="name"
+                      type="text"
+                      default={bundle.offerHeader}
+                      onChange={(e) => {
+                        setBundle({
+                          ...bundle,
+                          offerHeader: e.target.value,
+                        });
+                      }}
+                    />
                   </div>
                 </div>
               </div>
-            </div>
-            <div className="Polaris-Card__Section">
-              <div className="sc-bczRLJ czvMoD">
-                <div className="Polaris-FormLayout">
-                  <div>
+              <div className="Polaris-Card__Section">
+                <div className="sc-bczRLJ czvMoD">
+                  <div className="Polaris-FormLayout">
                     <div className="Polaris-FormLayout__Item">
                       <span className="Polaris-TextStyle--variationStrong">
-                        Bundle discount
+                        Bundle Products
                       </span>
-                    </div>
-                    <CheckBoxComponent
-                      id="adddiscount"
-                      name="bundleDiscount"
-                      label="Add Discount"
-                      decription=""
-                      checked={bundle.bundleDiscount.addDiscount.status}
-                      onChange={(e) => {
-                        updateRadio("addDiscount");
-                      }}
-                    />
-                    {bundle.bundleDiscount.addDiscount.status ? (
-                      <div
-                        id="addDiscount"
-                        className="Polaris-FormLayout__Item"
-                      >
-                        <div className="inputAndSlect">
-                          <InputComponent
-                            type={"number"}
-                            placeholder={"10"}
-                            default={
-                              bundle.bundleDiscount.addDiscount.discountValue
-                            }
-                            onChange={(e) => {
-                              bundle.bundleDiscount.addDiscount.discountValue =
-                                e.target.value;
-                              setBundle({ ...bundle });
-                            }}
-                          />
-                          <InputSelect
-                            id="addDiscountSelect"
-                            option={discountType}
-                            value={
-                              bundle.bundleDiscount.addDiscount.discountType
-                            }
-                            placeholder="Unpublish timer"
-                            onChange={(e) => {
-                              bundle.bundleDiscount.addDiscount.discountType =
-                                e.target.value;
-                              setBundle({ ...bundle });
-                            }}
-                          />
-                        </div>
+                      <div className=" Polaris-Text--subdued">
+                        Bundle offers will show inside each product page that is
+                        included in the bundle .
                       </div>
-                    ) : (
-                      ""
-                    )}
-
-                    <CheckBoxComponent
-                      id="freeship"
-                      name="bundleDiscount"
-                      label="Free Shipping"
-                      decription="Free shipping cannot be combined with other types of discounts."
-                      checked={bundle.bundleDiscount.freeShiping.status}
-                      onChange={(e) => {
-                        updateRadio("freeShiping");
-                      }}
-                    />
-                    <CheckBoxComponent
-                      id="freegift"
-                      name="bundleDiscount"
-                      label="Free Gift"
-                      decription="Select a bundle product you want to give free."
-                      checked={bundle.bundleDiscount.freeGift.status}
-                      onChange={(e) => {
-                        updateRadio("freeGift");
-                      }}
-                    />
-                    {bundle.bundleDiscount.freeGift.status ? (
-                      <>
-                        <div className="Polaris-FormLayout__Item">
-                          {/* {bundle.bundleDiscount.freeGift.freeGiftSlected == 0 ? */}
-                          <div className="Polaris-Choice__Descriptions Polaris-Text--subdued">
-                            Select atleast one product
-                          </div>
-                          {/* //  : */}
-                          <div className="Polaris-Choice__Descriptions freeProducts-Bundle ">
-                            <div className="selected_product_list">
-                              {/* <ChoiceListComp selected={freeSelected} handleChange={freeHandleChange} choice={freeGift} /> */}
-                              {bundle.bundleDiscount.freeGift.freeGiftSlected.map(
-                                (x, i) => (
-                                  <Checkbox
-                                    label={`Product #${i + 1}`}
-                                    checked={
-                                      bundle.advanceSetting.specific
-                                        .specificSlected[i]
-                                    }
-                                    onChange={() => handleSpecificCheck()}
-                                  />
-                                )
-                              )}
-                            </div>
-                          </div>
-                          {/* // } */}
-                        </div>
-
-                        <div className="Polaris-FormLayout__Item">
+                      <div id="product_search_section" class="mt-5">
+                        {bundleDiv.map((item, i) => (
                           <div
-                            className="Polaris-Text--subdued"
-                            id="nameHelpText"
+                            class="products_selected position_relative"
+                            data-id="product_select_box1"
+                            key={i.toString()}
                           >
-                            <strong>Please Note :</strong> Bundle offers will
-                            show inside each product page that is included in
-                            the bundle .
+                            <button></button>
+                            <div class="Polaris-TextContainer ">
+                              {/* <TextFieldComp label={item} prefix={<Icon source={SearchMinor} />} placeholder={'Select a product'} /> */}
+                              <div className="searchBoxTag">
+                                {" "}
+                                <ComboBoxComp
+                                  bundle={bundle}
+                                  i={i + 1}
+                                  products={products}
+                                  productsState={productsState}
+                                  setBundle={setBundle}
+                                />
+                              </div>
+                            </div>
+                            {i === bundleDiv.length - 1 ? (
+                              <div
+                                className="position_center pointerclass"
+                                onClick={() => {
+                                  bundleDiv.push("");
+                                  setBundle({ ...bundle });
+                                }}
+                              >
+                                <Icon
+                                  source={CirclePlusMajor}
+                                  color="primary"
+                                />
+                              </div>
+                            ) : (
+                              <div className="position_center ">
+                                <Icon source={CirclePlusMajor} color="base" />
+                              </div>
+                            )}
                           </div>
-                        </div>
-                      </>
-                    ) : (
-                      ""
-                    )}
-
-                    <CheckBoxComponent
-                      id="nodiscount"
-                      name="bundleDiscount"
-                      label="No Discount"
-                      decription=""
-                      checked={bundle.bundleDiscount.noDiscount.status}
-                      onChange={(e) => {
-                        updateRadio("noDiscount");
-                      }}
-                    />
+                        ))}
+                        <center>
+                          <p
+                            class="mt-4 add_another_pro"
+                            onClick={() => {
+                              bundleDiv.push("");
+                              setBundle({ ...bundle });
+                            }}
+                          >
+                            Add another product
+                          </p>
+                        </center>
+                      </div>
+                    </div>
                   </div>
                 </div>
               </div>
-            </div>
-            <div className="Polaris-Card__Section">
-              <div className="sc-bczRLJ czvMoD">
-                <div className="Polaris-FormLayout">
-                  <div className="Polaris-FormLayout__Item">
-                    <span className="Polaris-TextStyle--variationStrong">
-                      Advanced settings
-                    </span>
+              <div className="Polaris-Card__Section">
+                <div className="sc-bczRLJ czvMoD">
+                  <div className="Polaris-FormLayout">
+                    <div>
+                      <div className="Polaris-FormLayout__Item">
+                        <span className="Polaris-TextStyle--variationStrong">
+                          Bundle discount
+                        </span>
+                      </div>
+                      <CheckBoxComponent
+                        id="adddiscount"
+                        name="bundleDiscount"
+                        label="Add Discount"
+                        decription=""
+                        checked={bundle.bundleDiscount.addDiscount.status}
+                        onChange={(e) => {
+                          updateRadio("addDiscount");
+                        }}
+                      />
+                      {bundle.bundleDiscount.addDiscount.status ? (
+                        <div
+                          id="addDiscount"
+                          className="Polaris-FormLayout__Item"
+                        >
+                          <div className="inputAndSlect">
+                            <InputComponent
+                              type={"number"}
+                              placeholder={"10"}
+                              default={
+                                bundle.bundleDiscount.addDiscount.discountValue
+                              }
+                              onChange={(e) => {
+                                bundle.bundleDiscount.addDiscount.discountValue =
+                                  e.target.value;
+                                setBundle({ ...bundle });
+                              }}
+                            />
+                            <InputSelect
+                              id="addDiscountSelect"
+                              option={discountType}
+                              value={
+                                bundle.bundleDiscount.addDiscount.discountType
+                              }
+                              placeholder="Unpublish timer"
+                              onChange={(e) => {
+                                bundle.bundleDiscount.addDiscount.discountType =
+                                  e.target.value;
+                                setBundle({ ...bundle });
+                              }}
+                            />
+                          </div>
+                        </div>
+                      ) : (
+                        ""
+                      )}
+
+                      <CheckBoxComponent
+                        id="freeship"
+                        name="bundleDiscount"
+                        label="Free Shipping"
+                        decription="Free shipping cannot be combined with other types of discounts."
+                        checked={bundle.bundleDiscount.freeShiping.status}
+                        onChange={(e) => {
+                          updateRadio("freeShiping");
+                        }}
+                      />
+                      <CheckBoxComponent
+                        id="freegift"
+                        name="bundleDiscount"
+                        label="Free Gift"
+                        decription="Select a bundle product you want to give free."
+                        checked={bundle.bundleDiscount.freeGift.status}
+                        onChange={(e) => {
+                          updateRadio("freeGift");
+                        }}
+                      />
+                      {bundle.bundleDiscount.freeGift.status ? (
+                        <>
+                          <div className="Polaris-FormLayout__Item">
+                            {/* {bundle.bundleDiscount.freeGift.freeGiftSlected == 0 ? */}
+                            <div className="Polaris-Choice__Descriptions Polaris-Text--subdued">
+                              Select atleast one product
+                            </div>
+                            {/* //  : */}
+                            <div className="Polaris-Choice__Descriptions freeProducts-Bundle ">
+                              <div className="selected_product_list">
+                                {/* <ChoiceListComp selected={freeSelected} handleChange={freeHandleChange} choice={freeGift} /> */}
+                                {bundle.bundleDiscount.freeGift.freeGiftSlected.map(
+                                  (x, i) => (
+                                    <Checkbox
+                                      label={`Product #${i + 1}`}
+                                      checked={
+                                        bundle.advanceSetting.specific
+                                          .specificSlected[i]
+                                      }
+                                      onChange={() => handleSpecificCheck()}
+                                    />
+                                  )
+                                )}
+                              </div>
+                            </div>
+                            {/* // } */}
+                          </div>
+
+                          <div className="Polaris-FormLayout__Item">
+                            <div
+                              className="Polaris-Text--subdued"
+                              id="nameHelpText"
+                            >
+                              <strong>Please Note :</strong> Bundle offers will
+                              show inside each product page that is included in
+                              the bundle .
+                            </div>
+                          </div>
+                        </>
+                      ) : (
+                        ""
+                      )}
+
+                      <CheckBoxComponent
+                        id="nodiscount"
+                        name="bundleDiscount"
+                        label="No Discount"
+                        decription=""
+                        checked={bundle.bundleDiscount.noDiscount.status}
+                        onChange={(e) => {
+                          updateRadio("noDiscount");
+                        }}
+                      />
+                    </div>
                   </div>
-                  <div className="advanceChoiceList choiceList">
-                    <ChoiceListComp
-                      selected={selected}
-                      handleChange={handleChange}
-                      choice={choiceListArray}
-                    />
+                </div>
+              </div>
+              <div className="Polaris-Card__Section">
+                <div className="sc-bczRLJ czvMoD">
+                  <div className="Polaris-FormLayout">
+                    <div className="Polaris-FormLayout__Item">
+                      <span className="Polaris-TextStyle--variationStrong">
+                        Advanced settings
+                      </span>
+                    </div>
+                    <div className="advanceChoiceList choiceList">
+                      <ChoiceListComp
+                        selected={selected}
+                        handleChange={handleChange}
+                        choice={choiceListArray}
+                      />
+                    </div>
                   </div>
                 </div>
               </div>
             </div>
           </div>
+        </div>
+        <div className="col-lg-6 col-md-6 col-sm-6">
+          <BundlePreview />
         </div>
 
         {/* <div className="col col-md-5" id='productTimer' ref={ref}>
@@ -524,39 +528,3 @@ const Content = ({ bundle, setBundle, products }) => {
 };
 
 export default Content;
-
-// {
-//     product.map((x, i) => < div className="product_show" >
-//         <ul className="products_li ">
-//             <li>
-//                 <div className="product_list save_bar_display_block" id={x.id} data-pro_id={x.id} data-pro_title={x.title}>
-//                     <div className="pro_image">
-//                         <img src="https://cdn.shopify.com/s/files/1/0611/0704/4519/products/menswear-blue-zip-up-jacket_925x_f19390e8-603a-415d-8c24-f19ffd72a869.jpg?v=1663217139" className="imgae_res" />
-//                     </div>
-//                     <div className="product_title"><span>{x.title}</span></div>
-//                 </div>
-//             </li>
-//         </ul>
-//     </div >)
-// < div className = "product_show" >
-//     <ul className="products_li ">
-//         <li>
-//             <div className="product_list save_bar_display_block" id="7457737867431" data-pro_id="7457737867431" data-pro_title="Zipped Jacket">
-//                 <div className="pro_image">
-//                     <img src="https://cdn.shopify.com/s/files/1/0611/0704/4519/products/menswear-blue-zip-up-jacket_925x_f19390e8-603a-415d-8c24-f19ffd72a869.jpg?v=1663217139" className="imgae_res" />
-//                 </div>
-//                 <div className="product_title"><span>Zipped Jacket</span></div>
-//             </div>
-//         </li>
-
-//         <li>
-//             <div className="product_list save_bar_display_block" id="7506032263335" data-pro_id="7506032263335" data-pro_title="Product Bundle Testing B - with Variants">
-//                 <div className="pro_image">
-//                     <img src="https://cdn.shopify.com/s/files/1/0611/0704/4519/products/PreOrder_lite.jpg?v=1666937213" className="imgae_res" />
-//                 </div>
-//                 <div className="product_title"><span>Product Bundle Testing B - with Variants</span></div>
-//             </div>
-//         </li>
-//     </ul>
-// </div >
-// }

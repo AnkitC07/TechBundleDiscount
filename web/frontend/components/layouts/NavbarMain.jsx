@@ -7,7 +7,7 @@ import Design from "../BundleDiscount/Design";
 import Placement from "../BundleDiscount/Placement";
 import ProductBadge from "../BundleDiscount/ProductBadge";
 
-const NavbarMain = ({ nav, products }) => {
+const NavbarMain = ({ nav, products, productsState }) => {
   const dates = new Date();
   dates.setDate(dates.getDate() + 1);
   const [placement, setPlacement] = useState({
@@ -25,7 +25,7 @@ const NavbarMain = ({ nav, products }) => {
   });
   const [bundle, setBundle] = useState({
     offerHeader: "",
-    bundleProducts: [],     
+    bundleProducts: ["", ""],
     bundleDiscount: {
       addDiscount: {
         status: true,
@@ -78,7 +78,9 @@ const NavbarMain = ({ nav, products }) => {
       },
     },
   });
+
   const [selectedTab, setTabState] = useState("Content");
+
   const [designSettings, designSatte] = useState({
     settings: {
       FontColor: "#008060",
@@ -117,6 +119,7 @@ const NavbarMain = ({ nav, products }) => {
       ShowComparePrice: false,
     },
   });
+
   const [settings, settingState] = useState({
     bundle_id: "",
     BadgeHeader: "Buy more and save test",
@@ -150,7 +153,12 @@ const NavbarMain = ({ nav, products }) => {
     switch (title) {
       case "Content":
         return (
-          <Content bundle={bundle} setBundle={setBundle} products={products} />
+          <Content
+            bundle={bundle}
+            setBundle={setBundle}
+            products={products}
+            productsState={productsState}
+          />
         );
       case "Placement":
         return (
