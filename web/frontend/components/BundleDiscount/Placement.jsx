@@ -24,7 +24,7 @@ const Placement = ({states}) => {
 
   return (
     <>
-      <div className="row px-4 py-3">
+      <div className="row">
         <div className="col-lg-6 col-md-7">
           <div className="Polaris-Card" style={{ maxWidth: "360px" }}>
             <div className="Polaris-Card__Section">

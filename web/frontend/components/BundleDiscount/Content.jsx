@@ -305,7 +305,7 @@ const Content = ({ bundle, setBundle, products }) => {
                               {/* <TextFieldComp label={item} prefix={<Icon source={SearchMinor} />} placeholder={'Select a product'} /> */}
                               <div className="searchBoxTag">
                                 {" "}
-                                <ComboBoxComp products={products} />
+                                <ComboBoxComp bundle={bundle} i={i+1} products={products} />
                               </div>
                             </div>
                             {i === bundleDiv.length - 1 ? (
@@ -508,38 +508,3 @@ const Content = ({ bundle, setBundle, products }) => {
 
 export default Content;
 
-// {
-//     product.map((x, i) => < div className="product_show" >
-//         <ul className="products_li ">
-//             <li>
-//                 <div className="product_list save_bar_display_block" id={x.id} data-pro_id={x.id} data-pro_title={x.title}>
-//                     <div className="pro_image">
-//                         <img src="https://cdn.shopify.com/s/files/1/0611/0704/4519/products/menswear-blue-zip-up-jacket_925x_f19390e8-603a-415d-8c24-f19ffd72a869.jpg?v=1663217139" className="imgae_res" />
-//                     </div>
-//                     <div className="product_title"><span>{x.title}</span></div>
-//                 </div>
-//             </li>
-//         </ul>
-//     </div >)
-// < div className = "product_show" >
-//     <ul className="products_li ">
-//         <li>
-//             <div className="product_list save_bar_display_block" id="7457737867431" data-pro_id="7457737867431" data-pro_title="Zipped Jacket">
-//                 <div className="pro_image">
-//                     <img src="https://cdn.shopify.com/s/files/1/0611/0704/4519/products/menswear-blue-zip-up-jacket_925x_f19390e8-603a-415d-8c24-f19ffd72a869.jpg?v=1663217139" className="imgae_res" />
-//                 </div>
-//                 <div className="product_title"><span>Zipped Jacket</span></div>
-//             </div>
-//         </li>
-
-//         <li>
-//             <div className="product_list save_bar_display_block" id="7506032263335" data-pro_id="7506032263335" data-pro_title="Product Bundle Testing B - with Variants">
-//                 <div className="pro_image">
-//                     <img src="https://cdn.shopify.com/s/files/1/0611/0704/4519/products/PreOrder_lite.jpg?v=1666937213" className="imgae_res" />
-//                 </div>
-//                 <div className="product_title"><span>Product Bundle Testing B - with Variants</span></div>
-//             </div>
-//         </li>
-//     </ul>
-// </div >
-// }
