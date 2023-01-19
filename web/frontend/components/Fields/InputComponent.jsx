@@ -1,19 +1,20 @@
-import React, { useEffect, useRef } from 'react'
+import React, { useEffect, useRef } from "react";
 function InputComponent(props) {
   // const def = props.default
   // console.log(def)
-  useEffect(() => { }, [props])
+  useEffect(() => {}, [props]);
 
   return (
     <>
       <div
-
         className="Polaris-Connected__Item Polaris-Connected__Item--primary"
-        style={{ marginRight: '2px' }}
+        style={{ marginRight: "2px" }}
       >
         <div className="Polaris-TextField Polaris-TextField--hasValue ">
           <input
             id={props.id}
+            min={props.min}
+            max={props.max}
             className="Polaris-TextField__Input"
             type={props.type}
             defaultValue={props.default}
@@ -28,7 +29,7 @@ function InputComponent(props) {
         </div>
       </div>
     </>
-  )
+  );
 }
 
-export default InputComponent
+export default InputComponent;

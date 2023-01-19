@@ -11,7 +11,7 @@ import { SearchMinor, CirclePlusMajor } from "@shopify/polaris-icons";
 import ResourcePickerComp from "../Fields/ResourcePickerComp";
 import ComboBoxComp from "../Fields/ComboBoxComp";
 import BundlePreview from "./BundlePreview";
-
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 const Content = ({ bundle, setBundle, products, productsState }) => {
   const [bundleDiv, setbundleDiv] = useState(
     bundle.bundleProducts.length == 0
@@ -252,6 +252,21 @@ const Content = ({ bundle, setBundle, products, productsState }) => {
     console.log("Bundle=> ", bundle);
   }, [bundle]);
 
+  const removeTag = (i) => {
+    if (bundle.bundleProducts[i] != "") {
+      productsState([bundle.bundleProducts[i], ...products]);
+      if (i == 0 || i == 1) {
+        bundle.bundleProducts[i] = "";
+      } else {
+        bundle.bundleProducts.splice(i, 1);
+      }
+    } else {
+      bundle.bundleProducts.splice(i, 1);
+    }
+    setBundle({ ...bundle });
+    console.log("bundle", bundle.bundleProducts);
+    console.log(products, "Products");
+  };
   return (
     <>
       <div className="row pb-5">
@@ -309,7 +324,15 @@ const Content = ({ bundle, setBundle, products, productsState }) => {
                             data-id="product_select_box1"
                             key={i.toString()}
                           >
-                            <button></button>
+                            {i > 1 ? (
+                              <i
+                                onClick={() => removeTag(i)}
+                                class="fa-solid fa-trash"
+                              ></i>
+                            ) : (
+                              ""
+                            )}
+
                             <div class="Polaris-TextContainer ">
                               {/* <TextFieldComp label={item} prefix={<Icon source={SearchMinor} />} placeholder={'Select a product'} /> */}
                               <div className="searchBoxTag">
@@ -320,6 +343,7 @@ const Content = ({ bundle, setBundle, products, productsState }) => {
                                   products={products}
                                   productsState={productsState}
                                   setBundle={setBundle}
+                                  removeTag={removeTag}
                                 />
                               </div>
                             </div>
@@ -386,6 +410,8 @@ const Content = ({ bundle, setBundle, products, productsState }) => {
                           <div className="inputAndSlect">
                             <InputComponent
                               type={"number"}
+                              min={0}
+                              max={"100"}
                               placeholder={"10"}
                               default={
                                 bundle.bundleDiscount.addDiscount.discountValue

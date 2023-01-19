@@ -12,9 +12,13 @@
     "deploy": "shopify app deploy"
   },
   "dependencies": {
+    "@fortawesome/free-regular-svg-icons": "^6.2.1",
+    "@fortawesome/free-solid-svg-icons": "^6.2.1",
+    "@fortawesome/react-fontawesome": "^0.2.0",
     "@shopify/app": "3.32.0",
     "@shopify/app-bridge-react": "^3.7.0",
-    "@shopify/cli": "3.32.0"
+    "@shopify/cli": "3.32.0",
+    "font-awesome": "^4.7.0"
   },
   "author": "TIS-90"
 }

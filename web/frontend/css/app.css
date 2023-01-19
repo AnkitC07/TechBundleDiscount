@@ -640,3 +640,9 @@ div#accordion .card {
 .product_show {
   margin-top: 0px !important;
 }
+.products_selected i.fa-solid.fa-trash {
+    position: absolute;
+    top: 20px;
+    right: 25px;
+    font-size: 16px;
+}

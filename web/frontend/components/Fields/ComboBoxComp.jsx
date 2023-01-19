@@ -33,25 +33,12 @@ function ComboBoxComp(props) {
     // return () => clearTimeout(getData);
   };
 
-  const removeTag = () => {
-    props.productsState([
-      props.bundle.bundleProducts[props.i - 1],
-      ...props.products,
-    ]);
-    if (props.i - 1 == 0 || props.i - 1 == 1) {
-      props.bundle.bundleProducts[props.i - 1] = "";
-    } else {
-      props.bundle.bundleProducts.splice(props.i - 1, 1);
-    }
-    console.log(props.products, "Products");
-  };
-
   const verticalContentMarkup =
     props.bundle.bundleProducts.length > 0 ? (
       <Stack spacing="extraTight" alignment="center">
         {/* {selectedTags.map((tag) => ( */}
         {props.bundle.bundleProducts[props.i - 1] !== "" ? (
-          <Tag onRemove={() => removeTag()}>
+          <Tag onRemove={() => props.removeTag(props.i - 1)}>
             {props.bundle.bundleProducts[props.i - 1]?.title}
           </Tag>
         ) : null}
@@ -98,21 +85,21 @@ function ComboBoxComp(props) {
   //     }
   //   }, [textFieldValue]);
 
-  useEffect(() => {
-    props.products.sort(function (a, b) {
-      const nameA = a.title.toUpperCase(); // ignore upper and lowercase
-      const nameB = b.title.toUpperCase(); // ignore upper and lowercase
-      // sort in an ascending order
-      if (nameA < nameB) {
-        return -1;
-      }
-      if (nameA > nameB) {
-        return 1;
-      }
-      // names must be equal
-      return 0;
-    });
-  }, [props.products]);
+  // useEffect(() => {
+  //   props.products.sort(function (a, b) {
+  //     const nameA = a.title.toUpperCase(); // ignore upper and lowercase
+  //     const nameB = b.title.toUpperCase(); // ignore upper and lowercase
+  //     // sort in an ascending order
+  //     if (nameA < nameB) {
+  //       return -1;
+  //     }
+  //     if (nameA > nameB) {
+  //       return 1;
+  //     }
+  //     // names must be equal
+  //     return 0;
+  //   });
+  // }, [props.products]);  
 
   return (
     <>
