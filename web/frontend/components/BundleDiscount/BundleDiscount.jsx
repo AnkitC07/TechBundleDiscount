@@ -9,6 +9,7 @@ const BundleDiscount = () => {
   const fetch = useAuthenticatedFetch();
   const [products, productsState] = useState([]);
   const [lastId, lastIdState] = useState(0);
+  const [currency, setCurrency] = useState("");
 
   useEffect(() => {
     fetch(`/api/products?id=${lastId}`)
@@ -23,7 +24,12 @@ const BundleDiscount = () => {
       })
       .catch((err) => {});
   }, [lastId]);
-
+  useEffect(() => {
+    fetch("/api/getCurrency")
+      .then((res) => res.json())
+      .then((data) => setCurrency(data.cur))
+      .catch((err) => console.log(err));
+  }, []);
   //   console.log(products, "products ids checking");
   const navdata = [
     {
@@ -170,6 +176,7 @@ const BundleDiscount = () => {
             nav={navdata}
             products={products}
             productsState={productsState}
+            currency={currency}
           />
         </div>
       </div>

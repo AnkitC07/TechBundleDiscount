@@ -19,7 +19,7 @@ import {
 import BundlePreview from "./BundlePreview";
 
 const Design = ({ states }) => {
-  const { designSettings, designSatte } = states;
+  const { designSettings,bundle, designSatte } = states;
   const [open, setOpen] = useState(true);
 
   const UpdateState = (obj, key, value) => {
@@ -507,7 +507,7 @@ const Design = ({ states }) => {
           </div>
         </div>
         <div className="col-lg-6 col-md-6 col-sm-6">
-          <BundlePreview />
+          <BundlePreview bundle={bundle}/>
         </div>
       </div>
     </>

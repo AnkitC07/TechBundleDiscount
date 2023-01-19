@@ -645,4 +645,19 @@ div#accordion .card {
     top: 20px;
     right: 25px;
     font-size: 16px;
+    cursor: pointer;
+}
+
+.previewScroll{
+  height: 350px;
+  overflow-y: auto;
+}
+.price_cut{
+    white-space: nowrap;
+    text-decoration: line-through;
+    text-align: right;
+    font-size: 15px;
+    line-height: 21px;
+    font-family: inherit;
+    color: rgb(144, 149, 155);
 }

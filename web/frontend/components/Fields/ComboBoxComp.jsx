@@ -71,7 +71,6 @@ function ComboBoxComp(props) {
     props.setBundle({ ...props.bundle });
   };
 
-  console.log(props.products, "Main Products");
   //     useEffect(() => {
   //     if (textFieldValue != "") {
   //       const getData = setTimeout(() => {

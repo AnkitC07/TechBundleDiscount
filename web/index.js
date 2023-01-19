@@ -42,12 +42,23 @@ app.get("/api/products", async (req, res) => {
       session: res.locals.shopify.session,
       since_id: id,
       limit: 250,
-      fields: "title,image,id",
-      sortKey: "title",
+      fields: "title,image,id,price,variants,options",
     });
+
     res.status(200).send(countData);
   } catch (err) {
     res.status(200).send({ error: err });
+  }
+});
+app.get("/api/getCurrency", async (req, res) => {
+  try {
+    const shop = await shopify.api.rest.Shop.all({
+      session: res.locals.shopify.session,
+    });
+    console.log(shop[0].money_format.split("{{amount}}")[0]);
+    res.status(200).send({ cur: shop[0].money_format.split("{{amount}}")[0] });
+  } catch (error) {
+    res.status(200).send({ error: error });
   }
 });
 

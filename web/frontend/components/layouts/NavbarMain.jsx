@@ -7,7 +7,7 @@ import Design from "../BundleDiscount/Design";
 import Placement from "../BundleDiscount/Placement";
 import ProductBadge from "../BundleDiscount/ProductBadge";
 
-const NavbarMain = ({ nav, products, productsState }) => {
+const NavbarMain = ({ nav, products, productsState, currency }) => {
   const dates = new Date();
   dates.setDate(dates.getDate() + 1);
   const [placement, setPlacement] = useState({
@@ -24,12 +24,12 @@ const NavbarMain = ({ nav, products, productsState }) => {
     tags: "",
   });
   const [bundle, setBundle] = useState({
-    offerHeader: "",
-    bundleProducts: ["", ""],
+    offerHeader: "Buy more and save",
+    bundleProducts: [],
     bundleDiscount: {
       addDiscount: {
         status: true,
-        discountValue: "",
+        discountValue: 10,
         discountType: "% OFF",
       },
       freeShiping: {
@@ -37,7 +37,7 @@ const NavbarMain = ({ nav, products, productsState }) => {
       },
       freeGift: {
         status: false,
-        freeGiftSlected: [7666904072442, 7666904137978],
+        freeGiftSlected: [],
       },
       noDiscount: {
         status: false,
@@ -158,6 +158,7 @@ const NavbarMain = ({ nav, products, productsState }) => {
             setBundle={setBundle}
             products={products}
             productsState={productsState}
+            currency={currency}
           />
         );
       case "Placement":
@@ -169,7 +170,7 @@ const NavbarMain = ({ nav, products, productsState }) => {
           <Design states={{ designSettings, designSatte, bundle, setBundle }} />
         );
       case "Badge":
-        return <ProductBadge states={{ settings, settingState }} />;
+        return <ProductBadge states={{ settings, settingState, bundle }} />;
     }
   };
 
