@@ -32,18 +32,6 @@ export default function BundlePreview({ bundle, currency }) {
     </div>
   );
 }
-{
-  /* <div class="sc-fYxtnH bXzEpl TotalBlockContainer">
-  <span class="sc-tilXH bQTqTl Total">Total</span>
-  <div class="sc-feJyhm irwnaz TotalBlockWrapContent">
-    <p class="sc-hEsumM hSGcLG SaveText">SAVE 10%</p>
-    <span class="sc-kafWEX kFMpHo PriceBlock">
-      <span class="sc-cIShpX gEuiux ComparePrice">Rs. 74.99</span>
-      <span class="sc-ktHwxA kRFRde Price">Rs. 67.49</span>
-    </span>
-  </div>
-</div>; */
-}
 
 const EmptyState = () => {
   return (
