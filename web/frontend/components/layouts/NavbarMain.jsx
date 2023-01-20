@@ -85,35 +85,33 @@ const NavbarMain = ({
       },
     },
   });
-
   const [selectedTab, setTabState] = useState("Content");
-
   const [designSettings, designSatte] = useState({
     settings: {
-      FontColor: "#008060",
-      FontSize: 18,
-      FontFamily: "serif",
+      FontColor: "#0a0a0a",
+      FontSize: 15,
+      FontFamily: "sans-serif",
       FontStyle: {
         b: false,
         i: false,
         u: false,
       },
-      Alignment: "",
-      VariantBgColor: "#008060",
+      Alignment: "left",
+      VariantBgColor: "#ffffff",
     },
     button: {
-      bg: "#348766",
-      color: "#ffffff",
-      borderRadius: 50,
+      bg: "#008060",
+      color: "#fffcfc",
+      borderRadius: 6,
       buttonAction: "add to cart",
-      text: "Grab this deal",
-      Moreoptions: "More options",
+      text: "GRAB THIS DEAL",
+      Moreoptions: "More options ",
       Unavailablebtn: "UNAVAILABLE",
       UnavailableNotice: "Unavailable, please try another option",
       ChooseOption: "Choose an option",
     },
     priceSavings: {
-      freeGift: "Free",
+      freeGift: 'Free',
       FreeShippingTag: "Free shipping",
       FreeGiftTag: "Free",
       SaveTag: "SAVE {{discount}}",
@@ -126,7 +124,6 @@ const NavbarMain = ({
       ShowComparePrice: false,
     },
   });
-
   const [settings, settingState] = useState({
     bundle_id: "",
     BadgeHeader: "Buy more and save test",
@@ -156,6 +153,7 @@ const NavbarMain = ({
       Mobile: "left",
     },
   });
+  
   const navRender = (title) => {
     switch (title) {
       case "Content":
