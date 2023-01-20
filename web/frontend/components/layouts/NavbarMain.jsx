@@ -159,11 +159,12 @@ const NavbarMain = ({ nav, products, productsState, currency }) => {
             products={products}
             productsState={productsState}
             currency={currency}
+            design={designSettings}
           />
         );
       case "Placement":
         return (
-          <Placement states={{ placement, setPlacement, bundle, setBundle }} />
+          <Placement states={{designSettings,placement, setPlacement, bundle, setBundle }} />
         );
       case "Design":
         return (

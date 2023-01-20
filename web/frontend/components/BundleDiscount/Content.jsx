@@ -18,7 +18,8 @@ import { SearchMinor, CirclePlusMajor } from "@shopify/polaris-icons";
 import ResourcePickerComp from "../Fields/ResourcePickerComp";
 import ComboBoxComp from "../Fields/ComboBoxComp";
 import BundlePreview from "./BundlePreview";
-const Content = ({ bundle, setBundle, products, productsState, currency }) => {
+
+const Content = ({ bundle, setBundle, products, productsState, currency,design }) => {
   const [bundleDiv, setbundleDiv] = useState(
     bundle.bundleProducts.length == 0
       ? ["", ""]
@@ -317,15 +318,21 @@ const Content = ({ bundle, setBundle, products, productsState, currency }) => {
                             <div className="Polaris-Choice__Descriptions freeProducts-Bundle ">
                               <div className="selected_product_list">
                                 {/* <ChoiceListComp selected={freeSelected} handleChange={freeHandleChange} choice={freeGift} /> */}
-                                {bundle.bundleProducts.map((x, i) => (
-                                  <Checkbox
-                                    label={`Product #${i + 1}`}
-                                    checked={bundle.bundleDiscount.freeGift.freeGiftSlected.includes(
-                                      x.id
-                                    )}
-                                    onChange={(e) => handleFreeGift(x.id, e)}
-                                  />
-                                ))}
+                                {bundle.bundleProducts.map((x, i) =>{
+                                  return(
+                                    <>
+                                    {x.includes('') == false?
+                                      <Checkbox
+                                      label={`Product #${i + 1}`}
+                                      checked={bundle.bundleDiscount.freeGift.freeGiftSlected.includes(
+                                        x.id
+                                      )}
+                                      onChange={(e) => handleFreeGift(x.id, e)}
+                                    />:''
+                                    }
+                                    </>
+                                  )
+                                })}
                               </div>
                             </div>
                             {/* // } */}
@@ -383,7 +390,7 @@ const Content = ({ bundle, setBundle, products, productsState, currency }) => {
           </div>
         </div>
         <div className="col-lg-6 col-md-6 col-sm-6">
-          <BundlePreview bundle={bundle} currency={currency} />
+          <BundlePreview bundle={bundle} currency={currency} design={design}/>
         </div>
 
         {/* <div className="col col-md-5" id='productTimer' ref={ref}>
@@ -427,15 +434,19 @@ const AdvanceSettings = ({ bundle, setBundle }) => {
           Select atleast one product
         </div>
         <div className="selected_product_list">
-          {bundle.bundleProducts.map((x, i) => (
-            <Checkbox
+          {bundle.bundleProducts.map((x, i) =>{
+            return(
+              <>
+              {x.includes('') == false?<Checkbox
               label={`Product #${i + 1}`}
               checked={bundle.advanceSetting.specific.specificSlected.includes(
                 x.id
               )}
               onChange={(e) => handleSpecificCheck(x.id, e)}
-            />
-          ))}
+            />:''}
+              </>
+            )
+          })}
         </div>
       </>
     );
