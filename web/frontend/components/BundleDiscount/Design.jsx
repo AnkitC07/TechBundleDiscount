@@ -507,7 +507,7 @@ const Design = ({ states }) => {
           </div>
         </div>
         <div className="col-lg-6 col-md-6 col-sm-6">
-          <BundlePreview bundle={bundle}/>
+          <BundlePreview bundle={bundle} design={designSettings}/>
         </div>
       </div>
     </>

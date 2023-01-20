@@ -2,12 +2,13 @@ import { Card, Banner } from "@shopify/polaris";
 import React, { useState } from "react";
 import { useEffect } from "react";
 
-export default function BundlePreview({ bundle, currency }) {
+export default function BundlePreview({ bundle, currency, design}) {
   // console.log(bundle,"checking values")
   // useEffect(()=>{
   //   // console.log('update values..............')
   // },[bundle])
 
+  console.log(design,"Design checking data")
   return (
     <div className="BundlepreviewStyle">
       <div className="previewScroll">
