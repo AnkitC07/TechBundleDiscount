@@ -4,44 +4,6 @@ import { useEffect } from "react";
 
 export default function BundlePreview({ bundle, currency, design }) {
   const { settings, button, priceSavings } = design;
-  const data = {
-    settings: {
-      FontColor: "#008060",
-      FontSize: 18,
-      FontFamily: "serif",
-      FontStyle: {
-        b: false,
-        i: false,
-        u: false,
-      },
-      Alignment: "",
-      VariantBgColor: "#008060",
-    },
-    button: {
-      bg: "#348766",
-      color: "#ffffff",
-      borderRadius: 50,
-      buttonAction: "add to cart",
-      text: "Grab this deal",
-      Moreoptions: "More options",
-      Unavailablebtn: "UNAVAILABLE",
-      UnavailableNotice: "Unavailable, please try another option",
-      ChooseOption: "Choose an option",
-    },
-    priceSavings: {
-      freeGift: "Free",
-      FreeShippingTag: "Free shipping",
-      FreeGiftTag: "Free",
-      SaveTag: "SAVE {{discount}}",
-      Total: "Total",
-      tagColor: "#008060",
-      priceColor: "#008060",
-      ComparePriceColor: "#008060",
-      showTotal: false,
-      ShowPriceUnit: false,
-      ShowComparePrice: false,
-    },
-  };
 
   return (
     <div className="BundlepreviewStyle">
@@ -111,15 +73,14 @@ const BundlePreviewPro = ({ bundle, currency, design }) => {
   const [total, setTotal] = useState(0);
   const [disTotal, setDisTotal] = useState(0);
   const [price, setPrice] = useState([]);
-  const [variantPrice, setVariantPrice] = useState(0);
 
   const getTotal = () => {
     let count = 0;
     let disCount = 0;
+    
     bundle.bundleProducts.forEach((item, i) => {
       // console.log(price, i);
       item != "" ? (count = count + Number(price[i])) : null;
-
       item != ""
         ? (disCount =
             disCount +
@@ -131,6 +92,7 @@ const BundlePreviewPro = ({ bundle, currency, design }) => {
             ))
         : null;
     });
+
     setTotal((Math.round(count * 100) / 100).toFixed(2));
     if (bundle.bundleDiscount.addDiscount.discountType == `${currency}OFF`) {
       setDisTotal(
@@ -146,21 +108,21 @@ const BundlePreviewPro = ({ bundle, currency, design }) => {
     return disTotal;
   };
 
+
   useEffect(() => {
     bundle.bundleProducts.forEach((item, i) => {
-      item != "" ? (price[i] = item.variants[0].price) : null;
+      if(item != ""){
+        if(bundle.bundleDiscount.freeGift.status && bundle.bundleDiscount.freeGift.freeGiftSlected.includes(item.id)){
+          price[i] = 0
+        }else{
+          price[i] = item.variants[0].price
+        }
+      }
+      // item != "" ? () : null;
     });
     setPrice([...price]);
     const distotal = getTotal();
     console.log(bundle.bundleDiscount.addDiscount.discountType);
-    // if (bundle.bundleDiscount.addDiscount.discountType == `${currency}OFF`) {
-    //   console.log(
-    //     "TOTAL",
-    //     total - bundle.bundleDiscount.addDiscount.discountValue
-    //   );
-    //   setDisTotal(total - bundle.bundleDiscount.addDiscount.discountValue);
-    // }
-    console.log(bundle, "Bundle");
   }, [bundle]);
 
   useEffect(() => {
@@ -440,6 +402,7 @@ const Variants = ({ v, bundle, vIndex, price, setPrice, design }) => {
             background: settings.VariantBgColor,
           }}
           onChange={(e) => {
+
             price[vIndex] = e.target.value;
             setPrice([...price]);
           }}
