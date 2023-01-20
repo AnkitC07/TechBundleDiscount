@@ -7,7 +7,14 @@ import Design from "../BundleDiscount/Design";
 import Placement from "../BundleDiscount/Placement";
 import ProductBadge from "../BundleDiscount/ProductBadge";
 
-const NavbarMain = ({ nav, products, productsState, currency }) => {
+const NavbarMain = ({
+  nav,
+  products,
+  productsState,
+  currency,
+  customer,
+  setCustomer,
+}) => {
   const dates = new Date();
   dates.setDate(dates.getDate() + 1);
   const [placement, setPlacement] = useState({
@@ -160,11 +167,21 @@ const NavbarMain = ({ nav, products, productsState, currency }) => {
             productsState={productsState}
             currency={currency}
             design={designSettings}
+            customer={customer}
+            setCustomer={setCustomer}
           />
         );
       case "Placement":
         return (
-          <Placement states={{designSettings,placement, setPlacement, bundle, setBundle }} />
+          <Placement
+            states={{
+              designSettings,
+              placement,
+              setPlacement,
+              bundle,
+              setBundle,
+            }}
+          />
         );
       case "Design":
         return (

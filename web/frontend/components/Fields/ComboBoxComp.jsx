@@ -8,10 +8,8 @@ import {
 } from "@shopify/polaris";
 import { SearchMinor } from "@shopify/polaris-icons";
 import { useEffect } from "react";
-import { useState, useCallback, useMemo } from "react";
+import { useState } from "react";
 function ComboBoxComp(props) {
-  // const tags = ['Rustic', 'Antique', 'Vinyl', 'Refurbished'];
-  const [selectedTags, setSelectedTags] = useState([]);
   const [textFieldValue, setTextFieldValue] = useState("");
   const [popoverActive, setPopoverActive] = useState(false);
 
@@ -26,50 +24,68 @@ function ComboBoxComp(props) {
 
   const search = () => {
     // const getData = setTimeout(() => {
-    return props.products.filter((item) =>
-      item.title.toLowerCase().includes(textFieldValue)
-    );
+    if (props.type == "BundleProducts") {
+      return props.products.filter((item) =>
+        item.title.toLowerCase().includes(textFieldValue)
+      );
+    } else {
+      return props.products.filter((item) =>
+        item.first_name.toLowerCase().includes(textFieldValue)
+      );
+    }
     // }, 500);
     // return () => clearTimeout(getData);
   };
 
   const verticalContentMarkup =
-    props.bundle.bundleProducts.length > 0 ? (
-      <Stack spacing="extraTight" alignment="center">
-        {/* {selectedTags.map((tag) => ( */}
-        {props.bundle.bundleProducts[props.i - 1] !== "" ? (
-          <Tag onRemove={() => props.removeTag(props.i - 1)}>
-            {props.bundle.bundleProducts[props.i - 1]?.title}
-          </Tag>
-        ) : null}
+    props.type == "BundleProducts" ? (
+      props.bundle.bundleProducts.length > 0 ? (
+        <Stack spacing="extraTight" alignment="center">
+          {/* {selectedTags.map((tag) => ( */}
+          {props.bundle.bundleProducts[props.i - 1] !== "" ? (
+            <Tag onRemove={() => props.removeTag(props.i - 1)}>
+              {props.bundle.bundleProducts[props.i - 1]?.title}
+            </Tag>
+          ) : null}
 
-        {/* ))} */}
+          {/* ))} */}
+        </Stack>
+      ) : null
+    ) : props.bundle.bundleProducts.length > 0 ? (
+      <Stack spacing="extraTight" alignment="center">
+        {props.bundle.advanceSetting.targetCustomer.targetCustomerSelected.map(
+          (x, i) => (
+            <Tag key={x.id.toString()} onRemove={() => props.removeTag(i)}>
+              {x.email}
+            </Tag>
+          )
+        )}
       </Stack>
     ) : null;
 
-  const handelCheck = (x) => {
-    console.log("Index", props.i - 1);
-    console.log("BundelProducts=> ", props.bundle.bundleProducts);
-    if (props.bundle.bundleProducts.length == 0) {
-      props.bundle.bundleProducts = [...props.bundle.bundleProducts, x];
-    } else {
-      console.log("Slicing=>", props.bundle.bundleProducts[props.i - 1]);
-      if (props.bundle.bundleProducts[props.i - 1] == "") {
-        const index = props.products.findIndex((el) => el.id === x.id);
-        props.products.splice(index, 1);
-        props.productsState([...props.products]);
-        props.bundle.bundleProducts[props.i - 1] = x;
-      } else {
-        props.products.push(props.bundle.bundleProducts[props.i - 1]);
-        props.bundle.bundleProducts[props.i - 1] = x;
-        const index = props.products.findIndex((el) => el.id === x.id);
-        props.products.splice(index, 1);
-        props.productsState([...props.products]);
-      }
-      console.log(props.products, "Products");
-    }
-    props.setBundle({ ...props.bundle });
-  };
+  // const handelCheck = (x) => {
+  //   console.log("Index", props.i - 1);
+  //   console.log("BundelProducts=> ", props.bundle.bundleProducts);
+  //   if (props.bundle.bundleProducts.length == 0) {
+  //     props.bundle.bundleProducts = [...props.bundle.bundleProducts, x];
+  //   } else {
+  //     console.log("Slicing=>", props.bundle.bundleProducts[props.i - 1]);
+  //     if (props.bundle.bundleProducts[props.i - 1] == "") {
+  //       const index = props.products.findIndex((el) => el.id === x.id);
+  //       props.products.splice(index, 1);
+  //       props.productsState([...props.products]);
+  //       props.bundle.bundleProducts[props.i - 1] = x;
+  //     } else {
+  //       props.products.push(props.bundle.bundleProducts[props.i - 1]);
+  //       props.bundle.bundleProducts[props.i - 1] = x;
+  //       const index = props.products.findIndex((el) => el.id === x.id);
+  //       props.products.splice(index, 1);
+  //       props.productsState([...props.products]);
+  //     }
+  //     console.log(props.products, "Products");
+  //   }
+  //   props.setBundle({ ...props.bundle });
+  // };
 
   //     useEffect(() => {
   //     if (textFieldValue != "") {
@@ -84,26 +100,33 @@ function ComboBoxComp(props) {
   //     }
   //   }, [textFieldValue]);
 
-  // useEffect(() => {
-  //   props.products.sort(function (a, b) {
-  //     const nameA = a.title.toUpperCase(); // ignore upper and lowercase
-  //     const nameB = b.title.toUpperCase(); // ignore upper and lowercase
-  //     // sort in an ascending order
-  //     if (nameA < nameB) {
-  //       return -1;
-  //     }
-  //     if (nameA > nameB) {
-  //       return 1;
-  //     }
-  //     // names must be equal
-  //     return 0;
-  //   });
-  // }, [props.products]);  
+  useEffect(() => {
+    props.products.sort(function (a, b) {
+      let nameA;
+      let nameB;
+      if (props.type == "BundleProducts") {
+        nameA = a.title.toUpperCase(); // ignore upper and lowercase
+        nameB = b.title.toUpperCase(); // ignore upper and lowercase
+      } else {
+        nameA = a.first_name.toUpperCase(); // ignore upper and lowercase
+        nameB = b.first_name.toUpperCase(); // ignore upper and lowercase
+      }
+      // sort in an ascending order
+      if (nameA < nameB) {
+        return -1;
+      }
+      if (nameA > nameB) {
+        return 1;
+      }
+      // names must be equal
+      return 0;
+    });
+  }, [props.products]);
 
   return (
     <>
       <TextField
-        label={`Product #${props.i}`}
+        label={props.type == "BundleProducts" ? `Product #${props.i}` : ""}
         onFocus={togglePopoverActive}
         onBlur={() => {
           setTimeout(() => {
@@ -127,8 +150,7 @@ function ComboBoxComp(props) {
                 key={`${x.id.toString()}`}
                 className="selected_pro"
                 onClick={(e) => {
-                  handelCheck(x);
-
+                  props.handelCheck(x, props.i - 1);
                   //   setTimeout(() => {
                   togglePopoverActive();
                   //   }, 200);
@@ -148,7 +170,11 @@ function ComboBoxComp(props) {
                     />
                   </div>
                   <div className="product_title selected_pro">
-                    <span>{x.title}</span>
+                    {props.type == "BundleProducts" ? (
+                      <span>{x.title}</span>
+                    ) : (
+                      <span>{x.email}</span>
+                    )}
                   </div>
                 </div>
               </li>

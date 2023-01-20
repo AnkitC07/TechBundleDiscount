@@ -10,6 +10,7 @@ const BundleDiscount = () => {
   const [products, productsState] = useState([]);
   const [lastId, lastIdState] = useState(0);
   const [currency, setCurrency] = useState("");
+  const [customer, setCustomer] = useState([]);
 
   useEffect(() => {
     fetch(`/api/products?id=${lastId}`)
@@ -24,11 +25,16 @@ const BundleDiscount = () => {
       })
       .catch((err) => {});
   }, [lastId]);
-  
+
   useEffect(() => {
     fetch("/api/getCurrency")
       .then((res) => res.json())
       .then((data) => setCurrency(data.cur))
+      .catch((err) => console.log(err));
+
+    fetch("/api/getCustomers")
+      .then((res) => res.json())
+      .then((data) => setCustomer(data))
       .catch((err) => console.log(err));
   }, []);
   //   console.log(products, "products ids checking");
@@ -178,6 +184,8 @@ const BundleDiscount = () => {
             products={products}
             productsState={productsState}
             currency={currency}
+            customer={customer}
+            setCustomer={setCustomer}
           />
         </div>
       </div>

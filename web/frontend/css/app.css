@@ -523,7 +523,7 @@ div#accordion .card {
 }
 
 .inputAndSlect .Polaris-Select__Content {
-  width: 85px;
+  width: 95px;
 }
 
 .searchBoxTag span.Polaris-Tag__TagText {
@@ -660,4 +660,7 @@ div#accordion .card {
     line-height: 21px;
     font-family: inherit;
     color: rgb(144, 149, 155);
+}
+.targetSearch {
+    padding: 5px 25px;
 }

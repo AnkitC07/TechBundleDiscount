@@ -2,13 +2,13 @@ import { Card, Banner } from "@shopify/polaris";
 import React, { useState } from "react";
 import { useEffect } from "react";
 
-export default function BundlePreview({ bundle, currency, design}) {
+export default function BundlePreview({ bundle, currency, design }) {
   // console.log(bundle,"checking values")
   // useEffect(()=>{
   //   // console.log('update values..............')
   // },[bundle])
 
-  console.log(design,"Design checking data")
+  console.log(design, "Design checking data");
   return (
     <div className="BundlepreviewStyle">
       <div className="previewScroll">
@@ -52,7 +52,7 @@ const BundlePreviewPro = ({ bundle, currency }) => {
     let count = 0;
     let disCount = 0;
     bundle.bundleProducts.forEach((item, i) => {
-      console.log(price, i);
+      // console.log(price, i);
       item != "" ? (count = count + Number(price[i])) : null;
 
       item != ""
@@ -67,7 +67,18 @@ const BundlePreviewPro = ({ bundle, currency }) => {
         : null;
     });
     setTotal((Math.round(count * 100) / 100).toFixed(2));
-    setDisTotal((Math.round(disCount * 100) / 100).toFixed(2));
+    if (bundle.bundleDiscount.addDiscount.discountType == `${currency}OFF`) {
+      setDisTotal(
+        (
+          Math.round(
+            (count - bundle.bundleDiscount.addDiscount.discountValue) * 100
+          ) / 100
+        ).toFixed(2)
+      );
+    } else {
+      setDisTotal((Math.round(disCount * 100) / 100).toFixed(2));
+    }
+    return disTotal;
   };
 
   useEffect(() => {
@@ -75,16 +86,26 @@ const BundlePreviewPro = ({ bundle, currency }) => {
       item != "" ? (price[i] = item.variants[0].price) : null;
     });
     setPrice([...price]);
-    getTotal();
+    const distotal = getTotal();
+    console.log(bundle.bundleDiscount.addDiscount.discountType);
+    // if (bundle.bundleDiscount.addDiscount.discountType == `${currency}OFF`) {
+    //   console.log(
+    //     "TOTAL",
+    //     total - bundle.bundleDiscount.addDiscount.discountValue
+    //   );
+    //   setDisTotal(total - bundle.bundleDiscount.addDiscount.discountValue);
+    // }
+    console.log(bundle, "Bundle");
   }, [bundle]);
 
   useEffect(() => {
-    console.log(price);
     getTotal();
   }, [price]);
+  useEffect(() => {
+    console.log(disTotal);
+  }, [disTotal]);
 
   function applyDiscount(price, discountPercentage) {
-    console.log(price, discountPercentage);
     const discount = price * (discountPercentage / 100);
     return (Math.round((price - discount) * 100) / 100).toFixed(2);
   }
@@ -120,28 +141,41 @@ const BundlePreviewPro = ({ bundle, currency }) => {
                     </div>
                     <div style={{ margin: "0px 7px" }}>{x.title}</div>
                     <div>
-                      <div
-                        style={{
-                          whiteSpace: "nowrap",
-                          textDecoration: "line-through",
-                          textAlign: "right",
-                          fontSize: "15px",
-                          lineHeight: "21px",
-                          color: "rgb(144, 149, 155)",
-                        }}
-                      >
-                        {currency}
-                        {price[i]}
-                      </div>
-                      <div>
-                        {currency}
-                        {bundle.bundleDiscount.addDiscount.discountValue > 0
-                          ? applyDiscount(
-                              price[i],
-                              bundle.bundleDiscount.addDiscount.discountValue
-                            )
-                          : price[i]}
-                      </div>
+                      {bundle.bundleDiscount.addDiscount.discountType !==
+                      `${currency}OFF` ? (
+                        <div
+                          style={{
+                            whiteSpace: "nowrap",
+                            textDecoration: "line-through",
+                            textAlign: "right",
+                            fontSize: "15px",
+                            lineHeight: "21px",
+                            color: "rgb(144, 149, 155)",
+                          }}
+                        >
+                          {currency}
+                          {price[i]}
+                        </div>
+                      ) : (
+                        ""
+                      )}
+                      {bundle.bundleDiscount.addDiscount.discountType !==
+                      `${currency}OFF` ? (
+                        <div>
+                          {currency}
+                          {bundle.bundleDiscount.addDiscount.discountValue > 0
+                            ? applyDiscount(
+                                price[i],
+                                bundle.bundleDiscount.addDiscount.discountValue
+                              )
+                            : price[i]}
+                        </div>
+                      ) : (
+                        <div>
+                          {currency}
+                          {price[i]}
+                        </div>
+                      )}
                     </div>
                   </div>
                   {x.variants.length > 1 ? (
@@ -213,7 +247,10 @@ const BundlePreviewPro = ({ bundle, currency }) => {
                 fontWeight: "bold",
               }}
             >
-              SAVE {bundle.bundleDiscount.addDiscount.discountValue}%
+              {bundle.bundleDiscount.addDiscount.discountType ==
+              `${currency}OFF`
+                ? `SAVE ${currency}${bundle.bundleDiscount.addDiscount.discountValue}`
+                : `SAVE ${bundle.bundleDiscount.addDiscount.discountValue}%`}
             </p>
             <span
               style={{

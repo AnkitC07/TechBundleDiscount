@@ -19,7 +19,16 @@ import ResourcePickerComp from "../Fields/ResourcePickerComp";
 import ComboBoxComp from "../Fields/ComboBoxComp";
 import BundlePreview from "./BundlePreview";
 
-const Content = ({ bundle, setBundle, products, productsState, currency,design }) => {
+const Content = ({
+  bundle,
+  setBundle,
+  products,
+  productsState,
+  currency,
+  design,
+  customer,
+  setCustomer,
+}) => {
   const [bundleDiv, setbundleDiv] = useState(
     bundle.bundleProducts.length == 0
       ? ["", ""]
@@ -43,12 +52,10 @@ const Content = ({ bundle, setBundle, products, productsState, currency,design }
     data[key].status = true;
     setBundle({ ...bundle });
   };
-  // const [selected, setSelected] = useState(["hidden"]);
   //---Choice list states ends---//
   //---Free gift choice list---//
 
   const handleFreeGift = (value, status) => {
-    console.log(status);
     if (status == true) {
       bundle.bundleDiscount.freeGift.freeGiftSlected = [
         ...bundle.bundleDiscount.freeGift.freeGiftSlected,
@@ -73,8 +80,8 @@ const Content = ({ bundle, setBundle, products, productsState, currency,design }
       selected: "true",
     },
     {
-      data: "$ OFF",
-      value: "$ OFF",
+      data: `${currency}OFF`,
+      value: `${currency}OFF`,
     },
   ];
   const freeGift = [
@@ -98,6 +105,29 @@ const Content = ({ bundle, setBundle, products, productsState, currency,design }
     }
     setBundle({ ...bundle });
     console.log(products, "Products");
+  };
+  const handelCheck = (x, i) => {
+    console.log("Index", i);
+    console.log("BundelProducts=> ", bundle.bundleProducts);
+    if (bundle.bundleProducts.length == 0) {
+      bundle.bundleProducts = [...bundle.bundleProducts, x];
+    } else {
+      // console.log("Slicing=>", bundle.bundleProducts[i]);
+      if (bundle.bundleProducts[i] == "") {
+        const index = products.findIndex((el) => el.id === x.id);
+        products.splice(index, 1);
+        productsState([...products]);
+        bundle.bundleProducts[i] = x;
+      } else {
+        products.push(bundle.bundleProducts[i]);
+        bundle.bundleProducts[i] = x;
+        const index = products.findIndex((el) => el.id === x.id);
+        products.splice(index, 1);
+        productsState([...products]);
+      }
+      console.log(products, "Products");
+    }
+    setBundle({ ...bundle });
   };
   return (
     <>
@@ -149,7 +179,7 @@ const Content = ({ bundle, setBundle, products, productsState, currency,design }
                         Bundle offers will show inside each product page that is
                         included in the bundle .
                       </div>
-                      <div id="product_search_section" class="mt-5">
+                      <div id="product_search_section" class="mt-4">
                         {bundleDiv.map((item, i) => (
                           <div
                             class="products_selected position_relative"
@@ -170,12 +200,14 @@ const Content = ({ bundle, setBundle, products, productsState, currency,design }
                               <div className="searchBoxTag">
                                 {" "}
                                 <ComboBoxComp
+                                  type={"BundleProducts"}
                                   bundle={bundle}
                                   i={i + 1}
                                   products={products}
                                   productsState={productsState}
                                   setBundle={setBundle}
                                   removeTag={removeTag}
+                                  handelCheck={handelCheck}
                                 />
                               </div>
                             </div>
@@ -318,20 +350,25 @@ const Content = ({ bundle, setBundle, products, productsState, currency,design }
                             <div className="Polaris-Choice__Descriptions freeProducts-Bundle ">
                               <div className="selected_product_list">
                                 {/* <ChoiceListComp selected={freeSelected} handleChange={freeHandleChange} choice={freeGift} /> */}
-                                {bundle.bundleProducts.map((x, i) =>{
-                                  return(
+                                {bundle.bundleProducts.map((x, i) => {
+                                  console.log(x, "gift");
+                                  return (
                                     <>
-                                    {x.includes('') == false?
-                                      <Checkbox
-                                      label={`Product #${i + 1}`}
-                                      checked={bundle.bundleDiscount.freeGift.freeGiftSlected.includes(
-                                        x.id
+                                      {x !== "" ? (
+                                        <Checkbox
+                                          label={`Product #${i + 1}`}
+                                          checked={bundle.bundleDiscount.freeGift.freeGiftSlected.includes(
+                                            x.id
+                                          )}
+                                          onChange={(e) =>
+                                            handleFreeGift(x.id, e)
+                                          }
+                                        />
+                                      ) : (
+                                        ""
                                       )}
-                                      onChange={(e) => handleFreeGift(x.id, e)}
-                                    />:''
-                                    }
                                     </>
-                                  )
+                                  );
                                 })}
                               </div>
                             </div>
@@ -385,12 +422,19 @@ const Content = ({ bundle, setBundle, products, productsState, currency,design }
                   </div>
                 </div>
               </div> */}
-              <AdvanceSettings bundle={bundle} setBundle={setBundle} />
+              <AdvanceSettings
+                bundle={bundle}
+                setBundle={setBundle}
+                products={products}
+                productsState={productsState}
+                customer={customer}
+                setCustomer={setCustomer}
+              />
             </div>
           </div>
         </div>
         <div className="col-lg-6 col-md-6 col-sm-6">
-          <BundlePreview bundle={bundle} currency={currency} design={design}/>
+          <BundlePreview bundle={bundle} currency={currency} design={design} />
         </div>
 
         {/* <div className="col col-md-5" id='productTimer' ref={ref}>
@@ -403,7 +447,14 @@ const Content = ({ bundle, setBundle, products, productsState, currency,design }
   );
 };
 
-const AdvanceSettings = ({ bundle, setBundle }) => {
+const AdvanceSettings = ({
+  bundle,
+  setBundle,
+  products,
+  productsState,
+  customer,
+  setCustomer,
+}) => {
   const roundDiscountSelect = [
     {
       data: ".00",
@@ -434,18 +485,22 @@ const AdvanceSettings = ({ bundle, setBundle }) => {
           Select atleast one product
         </div>
         <div className="selected_product_list">
-          {bundle.bundleProducts.map((x, i) =>{
-            return(
+          {bundle.bundleProducts.map((x, i) => {
+            return (
               <>
-              {x.includes('') == false?<Checkbox
-              label={`Product #${i + 1}`}
-              checked={bundle.advanceSetting.specific.specificSlected.includes(
-                x.id
-              )}
-              onChange={(e) => handleSpecificCheck(x.id, e)}
-            />:''}
+                {x !== "" ? (
+                  <Checkbox
+                    label={`Product #${i + 1}`}
+                    checked={bundle.advanceSetting.specific.specificSlected.includes(
+                      x.id
+                    )}
+                    onChange={(e) => handleSpecificCheck(x.id, e)}
+                  />
+                ) : (
+                  ""
+                )}
               </>
-            )
+            );
           })}
         </div>
       </>
@@ -505,11 +560,6 @@ const AdvanceSettings = ({ bundle, setBundle }) => {
               bundle.advanceSetting.roundDiscount.roundDiscountSelected =
                 e.target.value;
               setBundle({ ...bundle });
-              // console.log(e)
-              // setContent({
-              //     ...content,
-              //     onceItEnd: e.target.value,
-              // })
             }}
           />
         </div>
@@ -518,7 +568,42 @@ const AdvanceSettings = ({ bundle, setBundle }) => {
   };
 
   const targetDiscountChild = () => {
-    return <div className="searchBoxTag">Customers</div>;
+    const removeTag = (i) => {
+      console.log(i);
+      setCustomer([
+        bundle.advanceSetting.targetCustomer.targetCustomerSelected[i],
+        ...customer,
+      ]);
+      bundle.advanceSetting.targetCustomer.targetCustomerSelected.splice(i, 1);
+      setBundle({ ...bundle });
+    };
+    const handelCheck = (x, i) => {
+      console.log(x);
+      bundle.advanceSetting.targetCustomer.targetCustomerSelected = [
+        x,
+        ...bundle.advanceSetting.targetCustomer.targetCustomerSelected,
+      ];
+      const index = customer.findIndex((el) => el.id === x.id);
+      customer.splice(index, 1);
+      setCustomer([...customer]);
+      setBundle({ ...bundle });
+    };
+    return (
+      <div className="targetSearch">
+        <div className="searchBoxTag">
+          <ComboBoxComp
+            type={"AdvancedSettings"}
+            bundle={bundle}
+            i={0}
+            products={customer}
+            productsState={setCustomer}
+            setBundle={setBundle}
+            removeTag={removeTag}
+            handelCheck={handelCheck}
+          />
+        </div>
+      </div>
+    );
   };
 
   const handleSpecificCheck = (value, status) => {
@@ -599,7 +684,7 @@ const AdvanceSettings = ({ bundle, setBundle }) => {
   return (
     <>
       {/* <Card sectioned> */}
-      <Card.Section title="Advanced settings">
+      <Card.Section title="Advanced Settings">
         {choiceListArray.map((x, i) => {
           return (
             <div className="mb-3" key={`000${i}`}>

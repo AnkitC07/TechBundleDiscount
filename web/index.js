@@ -61,6 +61,17 @@ app.get("/api/getCurrency", async (req, res) => {
     res.status(200).send({ error: error });
   }
 });
+app.get("/api/getCustomers", async (req, res) => {
+  try {
+    const customer = await shopify.api.rest.Customer.all({
+      session: res.locals.shopify.session,
+    });
+    console.log("Customer", customer);
+    res.status(200).send(customer);
+  } catch (error) {
+    res.status(200).send({ error: error });
+  }
+});
 
 app.use(serveStatic(STATIC_PATH, { index: false }));
 
