@@ -24,6 +24,7 @@ const BundleDiscount = () => {
       })
       .catch((err) => {});
   }, [lastId]);
+  
   useEffect(() => {
     fetch("/api/getCurrency")
       .then((res) => res.json())

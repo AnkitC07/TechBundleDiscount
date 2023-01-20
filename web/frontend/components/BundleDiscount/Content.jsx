@@ -18,7 +18,6 @@ import { SearchMinor, CirclePlusMajor } from "@shopify/polaris-icons";
 import ResourcePickerComp from "../Fields/ResourcePickerComp";
 import ComboBoxComp from "../Fields/ComboBoxComp";
 import BundlePreview from "./BundlePreview";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 const Content = ({ bundle, setBundle, products, productsState, currency }) => {
   const [bundleDiv, setbundleDiv] = useState(
     bundle.bundleProducts.length == 0
@@ -83,10 +82,6 @@ const Content = ({ bundle, setBundle, products, productsState, currency }) => {
       value: "1",
     },
   ];
-
-  useEffect(() => {
-    console.log("Bundle=> ", bundle);
-  }, [bundle]);
 
   const removeTag = (i) => {
     console.log(i);
