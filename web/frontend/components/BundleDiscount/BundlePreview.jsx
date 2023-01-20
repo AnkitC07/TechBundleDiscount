@@ -2,24 +2,81 @@ import { Card, Banner } from "@shopify/polaris";
 import React, { useState } from "react";
 import { useEffect } from "react";
 
-export default function BundlePreview({ bundle, currency, design}) {
-  // console.log(bundle,"checking values")
-  // useEffect(()=>{
-  //   // console.log('update values..............')
-  // },[bundle])
+export default function BundlePreview({ bundle, currency, design }) {
+  const { settings, button, priceSavings } = design;
+  const data = {
+    settings: {
+      FontColor: "#008060",
+      FontSize: 18,
+      FontFamily: "serif",
+      FontStyle: {
+        b: false,
+        i: false,
+        u: false,
+      },
+      Alignment: "",
+      VariantBgColor: "#008060",
+    },
+    button: {
+      bg: "#348766",
+      color: "#ffffff",
+      borderRadius: 50,
+      buttonAction: "add to cart",
+      text: "Grab this deal",
+      Moreoptions: "More options",
+      Unavailablebtn: "UNAVAILABLE",
+      UnavailableNotice: "Unavailable, please try another option",
+      ChooseOption: "Choose an option",
+    },
+    priceSavings: {
+      freeGift: "Free",
+      FreeShippingTag: "Free shipping",
+      FreeGiftTag: "Free",
+      SaveTag: "SAVE {{discount}}",
+      Total: "Total",
+      tagColor: "#008060",
+      priceColor: "#008060",
+      ComparePriceColor: "#008060",
+      showTotal: false,
+      ShowPriceUnit: false,
+      ShowComparePrice: false,
+    },
+  };
 
-  console.log(design,"Design checking data")
   return (
     <div className="BundlepreviewStyle">
       <div className="previewScroll">
         <div className="customCard">
-          <Card title={bundle.offerHeader} sectioned>
-            {JSON.stringify(bundle.bundleProducts).includes("title") == true ? (
-              <BundlePreviewPro bundle={bundle} currency={currency} />
-            ) : (
-              <EmptyState />
-            )}
-          </Card>
+          {JSON.stringify(bundle.bundleProducts).includes("title") == true ? (
+            <div
+              style={{
+                color: `${settings.FontColor}`,
+                fontSize: `${settings.FontSize}px`,
+                fontFamily: settings.FontFamily,
+                fontStyle: settings.FontStyle.i == true ? "italic" : "",
+                fontWeight: settings.FontStyle.b == true ? "700" : "",
+                textDecoration: settings.FontStyle.u == true ? "underline" : "",
+              }}
+            >
+              <p
+                style={{
+                  fontSize: `${settings.FontSize + 2}px`,
+                  textAlign: settings.Alignment,
+                  margin: "10px 0px",
+                  fontWeight: 600,
+                }}
+              >
+                {bundle.offerHeader}
+              </p>
+              <BundlePreviewPro
+                bundle={bundle}
+                currency={currency}
+                design={design}
+              />
+            </div>
+          ) : (
+            <EmptyState />
+          )}
         </div>
       </div>
       <div className="mt-4">
@@ -48,13 +105,21 @@ export default function BundlePreview({ bundle, currency, design}) {
 
 const EmptyState = () => {
   return (
-    <div style={{ background: "lightgray", width: "100%", height: "100%" }}>
+    <div
+      style={{
+        background: "lightgray",
+        width: "100%",
+        height: "100%",
+        color: "black",
+      }}
+    >
       <div className="emptyPreview">Offer Preview</div>
     </div>
   );
 };
 
-const BundlePreviewPro = ({ bundle, currency }) => {
+const BundlePreviewPro = ({ bundle, currency, design }) => {
+  const { settings, button, priceSavings } = design;
   const [total, setTotal] = useState(0);
   const [disTotal, setDisTotal] = useState(0);
   const [price, setPrice] = useState([]);
@@ -102,9 +167,16 @@ const BundlePreviewPro = ({ bundle, currency }) => {
   }
 
   // console.log(bundle, "checking objs");
+  console.log(design)
   return (
     <>
-      <div style={{ border: "1px solid gray", padding: "8px" }}>
+      <div
+        style={{
+          overflow: "hidden",
+          border: `1px solid ${settings.FontColor}`,
+          padding: "8px",
+        }}
+      >
         <div style={{ marginBottom: "25px" }}>
           {bundle.bundleProducts.map((x, i) => {
             return x != "" ? (
@@ -117,27 +189,28 @@ const BundlePreviewPro = ({ bundle, currency }) => {
                       justifyContent: "space-between",
                     }}
                   >
-                    <div>
-                      <div
-                        style={{
-                          border: "1px solid lightgray",
-                          boxSizing: "border-box",
-                          width: "70px",
-                          height: "48px",
-                          background: `url(${
-                            x.image ? x.image.src : "no_image.png"
-                          }) center center / contain no-repeat rgb(237, 237, 237)`,
-                        }}
-                      ></div>
+                    <div style={{ display: "flex", alignItems: "center" }}>
+                      <div>
+                        <div
+                          style={{
+                            border: "1px solid lightgray",
+                            boxSizing: "border-box",
+                            width: "70px",
+                            height: "48px",
+                            background: `url(${
+                              x.image ? x.image.src : "no_image.png"
+                            }) center center / contain no-repeat rgb(237, 237, 237)`,
+                          }}
+                        ></div>
+                      </div>
+                      <div style={{ margin: "0px 7px" }}>{x.title}</div>
                     </div>
-                    <div style={{ margin: "0px 7px" }}>{x.title}</div>
                     <div>
                       <div
                         style={{
                           whiteSpace: "nowrap",
                           textDecoration: "line-through",
                           textAlign: "right",
-                          fontSize: "15px",
                           lineHeight: "21px",
                           color: "rgb(144, 149, 155)",
                         }}
@@ -145,7 +218,7 @@ const BundlePreviewPro = ({ bundle, currency }) => {
                         {currency}
                         {price[i]}
                       </div>
-                      <div>
+                      <div style={{ color: "#000000" }}>
                         {currency}
                         {bundle.bundleDiscount.addDiscount.discountValue > 0
                           ? applyDiscount(
@@ -164,6 +237,7 @@ const BundlePreviewPro = ({ bundle, currency }) => {
                         price={price}
                         vIndex={i}
                         setPrice={setPrice}
+                        design={design}
                       />
                     </div>
                   ) : (
@@ -173,7 +247,7 @@ const BundlePreviewPro = ({ bundle, currency }) => {
                   {bundle.bundleProducts.length - 1 == i ? (
                     ""
                   ) : (
-                    <div style={{ margin: "15px 0" }}>
+                    <div style={{ margin: "20px 0" }}>
                       <div
                         style={{
                           width: "100%",
@@ -211,7 +285,7 @@ const BundlePreviewPro = ({ bundle, currency }) => {
             display: "flex",
             alignItems: "center",
             justifyContent: "space-between",
-            borderTop: "1px solid gray",
+            borderTop: "1px solid lightgray",
             padding: "10px 10px 0px 10px",
           }}
         >
@@ -221,7 +295,6 @@ const BundlePreviewPro = ({ bundle, currency }) => {
               style={{
                 color: "#008060",
                 letterSpacing: "1px",
-                fontSize: "13px",
                 fontWeight: "bold",
               }}
             >
@@ -239,7 +312,6 @@ const BundlePreviewPro = ({ bundle, currency }) => {
                   whiteSpace: "nowrap",
                   textDecoration: "line-through",
                   textAlign: "right",
-                  fontSize: "15px",
                   lineHeight: "21px",
                   color: "rgb(144, 149, 155)",
                 }}
@@ -257,32 +329,41 @@ const BundlePreviewPro = ({ bundle, currency }) => {
       </div>
       <div style={{ marginTop: "px" }}>
         <button
+          name={button.buttonAction}
           class="grab_deal_btn "
           type="button"
           style={{
             width: "100%",
-            color: "white",
-            background: "#348766",
+            color: button.color,
+            background:button.bg,
             border: "none",
             boxShadow: "none",
             marginTop: "10px",
             padding: "10px 0px",
-            fontSize: "16px",
+            fontSize: `${settings.FontSize}px`,
+            borderRadius:`${button.borderRadius}px`
           }}
         >
-          GRAB THIS DEAL
+          {button.text}
         </button>
       </div>
     </>
   );
 };
 
-const Variants = ({ v, bundle, vIndex, price, setPrice }) => {
+const Variants = ({ v, bundle, vIndex, price, setPrice, design }) => {
+  const { settings, button, priceSavings } = design;
   return (
     <>
       <div style={{ margin: "10px 0px", width: "100%" }}>
         <select
-          style={{ width: "100%", padding: "5px" }}
+          style={{
+            width: "100%",
+            padding: "5px",
+            borderColor: settings.FontColor,
+            color: settings.FontColor,
+            background:settings.VariantBgColor
+          }}
           onChange={(e) => {
             price[vIndex] = e.target.value;
             setPrice([...price]);
@@ -290,7 +371,7 @@ const Variants = ({ v, bundle, vIndex, price, setPrice }) => {
         >
           {bundle.advanceSetting.customerOption.status == true ? (
             <option selected disabled>
-              Choose an option
+              {button.ChooseOption == ''?'Choose an option':button.ChooseOption}
             </option>
           ) : (
             ""

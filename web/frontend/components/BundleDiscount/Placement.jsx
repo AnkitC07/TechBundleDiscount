@@ -5,8 +5,8 @@ import ResourcePickerComp from "../Fields/ResourcePickerComp";
 import CustomPosition from "../layouts/CustomPosition";
 import BundlePreview from "./BundlePreview";
 
-const Placement = ({states,designSettings}) => {
-    const {placement, setPlacement,bundle} = states
+const Placement = ({states}) => {
+    const {placement, setPlacement,bundle,designSettings} = states
   const id = null;
   const [open, setOpen] = useState(false);
   const [openc, setOpenc] = useState(false);

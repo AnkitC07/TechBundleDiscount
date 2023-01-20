@@ -319,9 +319,10 @@ const Content = ({ bundle, setBundle, products, productsState, currency,design }
                               <div className="selected_product_list">
                                 {/* <ChoiceListComp selected={freeSelected} handleChange={freeHandleChange} choice={freeGift} /> */}
                                 {bundle.bundleProducts.map((x, i) =>{
+                                  console.log(x,"chekcing free gift")
                                   return(
                                     <>
-                                    {x.includes('') == false?
+                                    {x.includes("") == false?
                                       <Checkbox
                                       label={`Product #${i + 1}`}
                                       checked={bundle.bundleDiscount.freeGift.freeGiftSlected.includes(
@@ -329,7 +330,7 @@ const Content = ({ bundle, setBundle, products, productsState, currency,design }
                                       )}
                                       onChange={(e) => handleFreeGift(x.id, e)}
                                     />:''
-                                    }
+                                      }
                                     </>
                                   )
                                 })}
