@@ -174,10 +174,9 @@ const BundlePreviewPro = ({ bundle, currency, design }) => {
         style={{
           overflow: "hidden",
           border: `1px solid ${settings.FontColor}`,
-          padding: "8px",
         }}
       >
-        <div style={{ marginBottom: "25px" }}>
+        <div style={{ marginBottom: "25px" ,padding:'8px'}}>
           {bundle.bundleProducts.map((x, i) => {
             return x != "" ? (
               <>
@@ -252,17 +251,28 @@ const BundlePreviewPro = ({ bundle, currency, design }) => {
                         style={{
                           width: "100%",
                           height: "1px",
-                          background: "lightgray",
+                          background: button.bg,
                           position: "relative",
                         }}
                       >
+                        <div 
+                               style={{
+                                width: "19px",
+                                background:'white',
+                                position: "absolute",
+                                top: "-10px",
+                                left: "47%",
+                                background:'white',
+                                border:'50px'
+                              }}
+                        >
                         <svg
                           style={{
-                            width: "20px",
-                            fill: "#5c5f62",
-                            position: "absolute",
-                            top: "-9",
-                            left: "47%",
+                            // width: "21px",
+                            fill: button.bg,
+                            // position: "absolute",
+                            // top: "-9",
+                            // left: "47%",
                           }}
                           viewBox="0 0 20 20"
                           focusable="false"
@@ -270,6 +280,7 @@ const BundlePreviewPro = ({ bundle, currency, design }) => {
                         >
                           <path d="M0 10c0 5.514 4.486 10 10 10s10-4.486 10-10-4.486-10-10-10-10 4.486-10 10zm5 0a1 1 0 0 1 1-1h3v-3a1 1 0 1 1 2 0v3h3a1 1 0 1 1 0 2h-3v3a1 1 0 1 1-2 0v-3h-3a1 1 0 0 1-1-1z"></path>
                         </svg>
+                        </div>
                       </div>
                     </div>
                   )}
@@ -285,7 +296,7 @@ const BundlePreviewPro = ({ bundle, currency, design }) => {
             display: "flex",
             alignItems: "center",
             justifyContent: "space-between",
-            borderTop: "1px solid lightgray",
+            borderTop: `1px solid ${settings.FontColor}`,
             padding: "10px 10px 0px 10px",
           }}
         >
