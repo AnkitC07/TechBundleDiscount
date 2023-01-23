@@ -33,18 +33,22 @@ const Content = ({
     bundle.bundleProducts.length == 0
       ? ["", ""]
       : bundle.bundleProducts.length > 0 && bundle.bundleProducts.length < 2
-      ? [...bundle.bundleProducts, ""]
-      : [...bundle.bundleProducts]
+        ? [...bundle.bundleProducts, ""]
+        : [...bundle.bundleProducts]
   );
   bundle.bundleProducts = bundleDiv;
 
   // const [bundleDiv, setbundleDiv] = useState(bundle.bundleProducts);
 
-  // useEffect(() => {
-  //   setbundleDiv(bundle.bundleProducts);
-  // }, [bundle]);
+  useEffect(() => {
+    console.log(bundle, "Bundle")
+  }, [bundle]);
 
   const updateRadio = (key) => {
+    console.log(key)
+    if (key !== 'addDiscount') {
+      bundle.bundleDiscount.freeGift.freeGiftSlected = []
+    }
     const data = bundle.bundleDiscount;
     Object.keys(data).forEach((x) => {
       data[x].status = false;
@@ -84,12 +88,7 @@ const Content = ({
       value: `${currency}OFF`,
     },
   ];
-  const freeGift = [
-    {
-      label: `Product #1`,
-      value: "1",
-    },
-  ];
+
 
   const removeTag = (i) => {
     console.log(i);
@@ -302,7 +301,7 @@ const Content = ({
                           </div>
                           {bundle.bundleDiscount.addDiscount.discountValue ===
                             "" ||
-                          bundle.bundleDiscount.addDiscount.discountValue >
+                            bundle.bundleDiscount.addDiscount.discountValue >
                             100 ? (
                             <div className="inputWarning">
                               <i class="fa-solid fa-triangle-exclamation"></i>
@@ -342,11 +341,12 @@ const Content = ({
                       {bundle.bundleDiscount.freeGift.status ? (
                         <>
                           <div className="Polaris-FormLayout__Item">
-                            {/* {bundle.bundleDiscount.freeGift.freeGiftSlected == 0 ? */}
+                            {/* {bundle.bundleDiscount.freeGift.freeGiftSlected == 0 ?
                             <div className="Polaris-Choice__Descriptions Polaris-Text--subdued">
                               Select atleast one product
                             </div>
-                            {/* //  : */}
+                            :'' */}
+                            
                             <div className="Polaris-Choice__Descriptions freeProducts-Bundle ">
                               <div className="selected_product_list">
                                 {/* <ChoiceListComp selected={freeSelected} handleChange={freeHandleChange} choice={freeGift} /> */}
@@ -386,25 +386,25 @@ const Content = ({
                             </div>
                           </div>
                         </>
-                      ) : (
-                        ""
+                    ) : (
+                    ""
                       )}
 
-                      <CheckBoxComponent
-                        id="nodiscount"
-                        name="bundleDiscount"
-                        label="No Discount"
-                        decription=""
-                        checked={bundle.bundleDiscount.noDiscount.status}
-                        onChange={(e) => {
-                          updateRadio("noDiscount");
-                        }}
-                      />
-                    </div>
+                    <CheckBoxComponent
+                      id="nodiscount"
+                      name="bundleDiscount"
+                      label="No Discount"
+                      decription=""
+                      checked={bundle.bundleDiscount.noDiscount.status}
+                      onChange={(e) => {
+                        updateRadio("noDiscount");
+                      }}
+                    />
                   </div>
                 </div>
               </div>
-              {/* <div className="Polaris-Card__Section">
+            </div>
+            {/* <div className="Polaris-Card__Section">
                 <div className="sc-bczRLJ czvMoD">
                   <div className="Polaris-FormLayout">
                     <div className="Polaris-FormLayout__Item">
@@ -422,27 +422,27 @@ const Content = ({
                   </div>
                 </div>
               </div> */}
-              <AdvanceSettings
-                bundle={bundle}
-                setBundle={setBundle}
-                products={products}
-                productsState={productsState}
-                customer={customer}
-                setCustomer={setCustomer}
-              />
-            </div>
+            <AdvanceSettings
+              bundle={bundle}
+              setBundle={setBundle}
+              products={products}
+              productsState={productsState}
+              customer={customer}
+              setCustomer={setCustomer}
+            />
           </div>
         </div>
-        <div className="col-lg-6 col-md-6 col-sm-6">
-          <BundlePreview bundle={bundle} currency={currency} design={design} />
-        </div>
+      </div>
+      <div className="col-lg-6 col-md-6 col-sm-6">
+        <BundlePreview bundle={bundle} currency={currency} design={design} />
+      </div>
 
-        {/* <div className="col col-md-5" id='productTimer' ref={ref}>
+      {/* <div className="col col-md-5" id='productTimer' ref={ref}>
                     <div style={{ position: 'sticky', top: '20px' }} >
                     </div>
                 </div> */}
-        {/* <ResourcePickerComp type="Product" state1={false} /> */}
-      </div>
+      {/* <ResourcePickerComp type="Product" state1={false} /> */}
+    </div>
     </>
   );
 };
@@ -518,7 +518,7 @@ const AdvanceSettings = ({
                 bundle.advanceSetting.startDate.date = e;
                 setBundle({ ...bundle });
               }}
-              // disable={!modal.isEnabled}
+            // disable={!modal.isEnabled}
             />
             <span id="start_date_err" className="err"></span>
           </div>
@@ -538,7 +538,7 @@ const AdvanceSettings = ({
                 bundle.advanceSetting.endDate.date = e;
                 setBundle({ ...bundle });
               }}
-              // disable={!modal.isEnabled}
+            // disable={!modal.isEnabled}
             />
             <span id="end_date_err" className="err"></span>
           </div>

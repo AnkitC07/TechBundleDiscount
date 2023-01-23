@@ -12,6 +12,7 @@ export default function BundlePreview({ bundle, currency, design }) {
           {JSON.stringify(bundle.bundleProducts).includes("title") == true ? (
             <div
               style={{
+                background: 'white',
                 color: `${settings.FontColor}`,
                 fontSize: `${settings.FontSize}px`,
                 fontFamily: settings.FontFamily,
@@ -42,7 +43,7 @@ export default function BundlePreview({ bundle, currency, design }) {
         </div>
       </div>
       <div className="mt-4">
-        <Banner icon={false} onDismiss={() => {}}>
+        <Banner icon={false} onDismiss={() => { }}>
           <p>
             You can design the app in the "Design" tab after you're done
             creating your offer.
@@ -74,39 +75,18 @@ const BundlePreviewPro = ({ bundle, currency, design }) => {
   const [compareDisTotal, setCompareDisTotal] = useState(0);
   const [total, setTotal] = useState(0);
   const [disTotal, setDisTotal] = useState(0);
-  const [price, setPrice] = useState([]);
-  const [comparePrice, setComparePrice] = useState([]);
+  const [price, setPrice] = useState({});
 
   const getTotal = () => {
+    console.log(price, "GEtTotal")
     let count = 0;
     let disCount = 0;
 
-    bundle.bundleProducts.forEach((item, i) => {
-      // console.log(price, i);
-      item != "" ? (count = count + Number(price[i])) : null;
-      if (item != "") {
-        if (bundle.advanceSetting.roundDiscount.status) {
-          let arr = [];
-          arr = applyDiscount(
-            price[i],
-            bundle.bundleDiscount.addDiscount.discountValue
-          ).split(".");
-          arr[1] = bundle.advanceSetting.roundDiscount.roundDiscountSelected;
-          arr = arr.toString().replace(",", "");
-          // console.log(arr, "Array");
-          disCount = disCount + Number(arr);
-        } else {
-          disCount =
-            disCount +
-            Number(
-              applyDiscount(
-                price[i],
-                bundle.bundleDiscount.addDiscount.discountValue
-              )
-            );
-        }
-      }
-    });
+    const obj = Object.keys(price);
+    for (let i = 0; i < obj.length; i++) {
+      count = count + Number(price[obj[i]].comparePrice);
+      disCount = disCount + Number(price[obj[i]].price);
+    }
 
     setTotal((Math.round(count * 100) / 100).toFixed(2));
     if (bundle.bundleDiscount.addDiscount.discountType == `${currency}OFF`) {
@@ -120,30 +100,59 @@ const BundlePreviewPro = ({ bundle, currency, design }) => {
     } else {
       setDisTotal((Math.round(disCount * 100) / 100).toFixed(2));
     }
+    console.log(disTotal)
     return disTotal;
   };
 
   useEffect(() => {
-    bundle.bundleProducts.forEach((item, i) => {
-      if (item != "") {
+    let obj = {};
+    for (let i = 0; i < bundle.bundleProducts.length; i++) {
+      const item = bundle.bundleProducts[i];
+      if (item !== "") {
+        const priceVal = item.variants[0].price;
+        const compareVal = item.variants[0].compare_at_price;
         if (
           bundle.bundleDiscount.freeGift.status &&
           bundle.bundleDiscount.freeGift.freeGiftSlected.includes(item.id)
         ) {
-          price[i] = 0;
-          comparePrice[i] = 0;
+          obj = { ...obj, [item.id]: { price: 0, comparePrice: compareVal } };
+        } else if (bundle.bundleDiscount.addDiscount.status) {
+          obj = {
+            ...obj,
+            [item.id]: {
+              price: applyDiscount(
+                priceVal,
+                bundle.bundleDiscount.addDiscount.discountValue
+              ),
+              comparePrice: priceVal,
+            },
+          };
         } else {
-          price[i] = item.variants[0].price;
-          comparePrice[i] = item.variants[0].compare_at_price;
+          obj = {
+            ...obj,
+            [item.id]: { price: priceVal, comparePrice: compareVal },
+          };
         }
       }
-      // item != "" ? () : null;
-    });
-    setPrice([...price]);
-    setComparePrice([...comparePrice]);
-    getTotal();
-    console.log(comparePrice);
-    console.log(bundle, "Bundle");
+    }
+
+    const keys = Object.keys(obj);
+    if (bundle.advanceSetting.roundDiscount.status) {
+      for (let i = 0; i < keys.length; i++) {
+        let roundOffPrice = obj[keys[i]].price;
+        if (!bundle.bundleDiscount.freeGift.freeGiftSlected.includes(Number(keys[i]))) {
+          roundOffPrice = roundOffPrice.split(".");
+          roundOffPrice[1] =
+            bundle.advanceSetting.roundDiscount.roundDiscountSelected.split(
+              "."
+            )[1];
+          roundOffPrice = roundOffPrice.join(".");
+          obj[keys[i]].price = roundOffPrice;
+        }
+      }
+    }
+    setPrice(obj);
+    console.log(price);
   }, [bundle]);
 
   useEffect(() => {
@@ -151,19 +160,19 @@ const BundlePreviewPro = ({ bundle, currency, design }) => {
   }, [price]);
 
   function applyDiscount(price, discountPercentage) {
+
     let discount = price * (discountPercentage / 100);
     discount = (Math.round((price - discount) * 100) / 100).toFixed(2);
-    if (bundle.advanceSetting.roundDiscount.status) {
-      let temp = discount.toString().split(".");
-      temp[1] = bundle.advanceSetting.roundDiscount.roundDiscountSelected;
-      discount = temp.toString().replace(",", "");
-    }
     console.log(price);
-    return discount;
+    if (bundle.bundleDiscount.addDiscount.discountType !== '% OFF') {
+      let fixedDiscount = bundle.bundleDiscount.addDiscount.discountValue;
+      return price;
+    } else {
+      return discount;
+    }
+
   }
 
-  // console.log(bundle, "checking objs");
-  // console.log(design);
   return (
     <>
       <div
@@ -176,11 +185,10 @@ const BundlePreviewPro = ({ bundle, currency, design }) => {
           style={{
             marginBottom: "25px",
             padding: "8px",
-            height: "283px",
-            overflowY: "scroll",
           }}
         >
           {bundle.bundleProducts.map((x, i) => {
+            // console.log(price[x.id], "checking price obj");
             return x != "" ? (
               <>
                 <div style={{ width: "100%" }}>
@@ -199,90 +207,19 @@ const BundlePreviewPro = ({ bundle, currency, design }) => {
                             boxSizing: "border-box",
                             width: "70px",
                             height: "48px",
-                            background: `url(${
-                              x.image ? x.image.src : "no_image.png"
-                            }) center center / contain no-repeat rgb(237, 237, 237)`,
+                            background: `url(${x.image ? x.image.src : "no_image.png"
+                              }) center center / contain no-repeat rgb(237, 237, 237)`,
                           }}
                         ></div>
                       </div>
                       <div style={{ margin: "0px 7px" }}>{x.title}</div>
                     </div>
-
-                    <div>
-                      {bundle.bundleDiscount.noDiscount.status ? (
-                        <div
-                          style={{
-                            whiteSpace: "nowrap",
-                            textDecoration: "line-through",
-                            textAlign: "right",
-                            fontSize: "15px",
-                            lineHeight: "21px",
-                            color: "rgb(144, 149, 155)",
-                          }}
-                        >
-                          {/* {currency} */}
-                          {comparePrice[i] !== null
-                            ? currency + comparePrice[i]
-                            : ""}
-                          {/* {bundle.bundleDiscount.freeGift.status
-                            ? comparePrice[i] !== null
-                              ? currency + comparePrice[i]
-                              : ""
-                            : currency + price[i]} */}
-                        </div>
-                      ) : bundle.bundleDiscount.addDiscount.discountType !==
-                        `${currency}OFF` ? (
-                        <div
-                          style={{
-                            whiteSpace: "nowrap",
-                            textDecoration: "line-through",
-                            textAlign: "right",
-                            fontSize: "15px",
-                            lineHeight: "21px",
-                            color: "rgb(144, 149, 155)",
-                          }}
-                        >
-                          {currency}
-                          {price[i]}
-                          {/* {bundle.bundleDiscount.freeGift.status
-                            ? comparePrice[i] !== null
-                              ? currency + comparePrice[i]
-                              : ""
-                            : currency + price[i]} */}
-                        </div>
-                      ) : (
-                        ""
-                      )}
-                      {bundle.bundleDiscount.freeGift.freeGiftSlected.includes(
-                        x.id
-                      ) && bundle.bundleDiscount.freeGift.status ? (
-                        <span
-                          style={{
-                            color: "#008060",
-                            letterSpacing: "1px",
-                            fontWeight: "bold",
-                          }}
-                        >
-                          FREE
-                        </span>
-                      ) : bundle.bundleDiscount.addDiscount.discountType !==
-                        `${currency}OFF` ? (
-                        <div className="discountPrice">
-                          {currency}
-                          {bundle.bundleDiscount.addDiscount.discountValue > 0
-                            ? applyDiscount(
-                                price[i],
-                                bundle.bundleDiscount.addDiscount.discountValue
-                              )
-                            : price[i]}
-                        </div>
-                      ) : (
-                        <div className="discountPrice_currency">
-                          {currency}
-                          {price[i]}
-                        </div>
-                      )}
-                    </div>
+                    <Price
+                      data={x}
+                      bundle={bundle}
+                      currency={currency}
+                      priceStates={price[x.id]}
+                    />
                   </div>
                   {x.variants.length > 1 ? (
                     <div className="productSelects">
@@ -293,6 +230,7 @@ const BundlePreviewPro = ({ bundle, currency, design }) => {
                         vIndex={i}
                         setPrice={setPrice}
                         design={design}
+                        applyDiscount={applyDiscount}
                       />
                     </div>
                   ) : (
@@ -365,17 +303,17 @@ const BundlePreviewPro = ({ bundle, currency, design }) => {
                 textAlign: "right",
               }}
             >
-              {bundle.bundleDiscount.freeGift.freeGiftSlected.length > 0 &&
-              bundle.bundleDiscount.freeGift.status
-                ? "FREE GIFT INCLUDED"
-                : bundle.bundleDiscount.freeShiping.status
-                ? "FREE SHIPPING INCLUDED"
-                : bundle.bundleDiscount.noDiscount.status
-                ? ""
-                : bundle.bundleDiscount.addDiscount.discountType ==
-                  `${currency}OFF`
-                ? `SAVE ${currency}${bundle.bundleDiscount.addDiscount.discountValue}`
-                : `SAVE ${bundle.bundleDiscount.addDiscount.discountValue}%`}
+              {
+                bundle.bundleDiscount.freeGift.status
+                  ? "FREE GIFT INCLUDED"
+                  : bundle.bundleDiscount.freeShiping.status
+                    ? "FREE SHIPPING INCLUDED"
+                    : bundle.bundleDiscount.noDiscount.status
+                      ? ""
+                      : bundle.bundleDiscount.addDiscount.discountType ==
+                        `${currency}OFF`
+                        ? `SAVE ${currency}${bundle.bundleDiscount.addDiscount.discountValue}`
+                        : `SAVE ${bundle.bundleDiscount.addDiscount.discountValue}%`}
             </p>
             <div style={{ textAlign: "right" }}>
               <span
@@ -431,8 +369,50 @@ const BundlePreviewPro = ({ bundle, currency, design }) => {
   );
 };
 
-const Variants = ({ v, bundle, vIndex, price, setPrice, design }) => {
+const Price = ({ data, bundle, currency, priceStates }) => {
+  const pr = priceStates;
+  return (
+    <>
+      <div>
+        {pr?.comparePrice !== null ? bundle.bundleDiscount.addDiscount.status && bundle.bundleDiscount.addDiscount.discountType === '% OFF' ? (
+          <div>
+            <span className="text-secondary">
+              <del>
+                {currency} {pr?.comparePrice}
+              </del>
+            </span>
+          </div>
+        ) : '' : (
+          ""
+        )}
+        <div style={{ textAlign: "right" }}>
+          {bundle.bundleDiscount.freeGift.status &&
+            bundle.bundleDiscount.freeGift.freeGiftSlected.includes(data.id) ? (
+            <span
+              style={{ color: "green", fontWeight: "700", textAlign: "right" }}
+            >
+              FREE
+            </span>
+          ) : (
+            `${currency} ${pr?.price}`
+          )}
+        </div>
+      </div>
+    </>
+  );
+};
+
+const Variants = ({
+  v,
+  bundle,
+  vIndex,
+  price,
+  setPrice,
+  design,
+  applyDiscount,
+}) => {
   const { settings, button, priceSavings } = design;
+
   return (
     <>
       <div style={{ margin: "10px 0px", width: "100%" }}>
@@ -445,8 +425,25 @@ const Variants = ({ v, bundle, vIndex, price, setPrice, design }) => {
             background: settings.VariantBgColor,
           }}
           onChange={(e) => {
-            price[vIndex] = e.target.value;
-            setPrice([...price]);
+            let prices = e.target.value;
+            let comp =
+              e.target.options[e.target.selectedIndex].getAttribute(
+                "data-comparePrice"
+              );
+            const priceObj = price;
+
+            priceObj[v[0].product_id] = {
+              price: bundle.bundleDiscount.addDiscount.status
+                ? applyDiscount(
+                  prices,
+                  bundle.bundleDiscount.addDiscount.discountValue
+                )
+                : prices,
+              comparePrice: bundle.bundleDiscount.addDiscount.status
+                ? prices
+                : comp,
+            };
+            setPrice({ ...price });
           }}
         >
           {bundle.advanceSetting.customerOption.status == true ? (
@@ -459,7 +456,11 @@ const Variants = ({ v, bundle, vIndex, price, setPrice, design }) => {
             ""
           )}
           {v.map((x, i) => {
-            return <option value={x.price}>{x.title}</option>;
+            return (
+              <option value={x.price} data-comparePrice={x.compare_at_price}>
+                {x.title}
+              </option>
+            );
           })}
         </select>
       </div>
