@@ -66,7 +66,7 @@ app.get("/api/getCustomers", async (req, res) => {
     const customer = await shopify.api.rest.Customer.all({
       session: res.locals.shopify.session,
     });
-    console.log("Customer", customer);
+    // console.log("Customer", customer);
     res.status(200).send(customer);
   } catch (error) {
     res.status(200).send({ error: error });

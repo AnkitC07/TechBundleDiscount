@@ -70,9 +70,12 @@ const EmptyState = () => {
 
 const BundlePreviewPro = ({ bundle, currency, design }) => {
   const { settings, button, priceSavings } = design;
+  const [compareTotal, setCompareTotal] = useState(0);
+  const [compareDisTotal, setCompareDisTotal] = useState(0);
   const [total, setTotal] = useState(0);
   const [disTotal, setDisTotal] = useState(0);
   const [price, setPrice] = useState([]);
+  const [comparePrice, setComparePrice] = useState([]);
 
   const getTotal = () => {
     let count = 0;
@@ -128,14 +131,18 @@ const BundlePreviewPro = ({ bundle, currency, design }) => {
           bundle.bundleDiscount.freeGift.freeGiftSlected.includes(item.id)
         ) {
           price[i] = 0;
+          comparePrice[i] = 0;
         } else {
           price[i] = item.variants[0].price;
+          comparePrice[i] = item.variants[0].compare_at_price;
         }
       }
       // item != "" ? () : null;
     });
     setPrice([...price]);
+    setComparePrice([...comparePrice]);
     getTotal();
+    console.log(comparePrice);
     console.log(bundle, "Bundle");
   }, [bundle]);
 
@@ -165,7 +172,14 @@ const BundlePreviewPro = ({ bundle, currency, design }) => {
           border: `1px solid ${settings.FontColor}`,
         }}
       >
-        <div style={{ marginBottom: "25px", padding: "8px" }}>
+        <div
+          style={{
+            marginBottom: "25px",
+            padding: "8px",
+            height: "283px",
+            overflowY: "scroll",
+          }}
+        >
           {bundle.bundleProducts.map((x, i) => {
             return x != "" ? (
               <>
@@ -193,9 +207,29 @@ const BundlePreviewPro = ({ bundle, currency, design }) => {
                       </div>
                       <div style={{ margin: "0px 7px" }}>{x.title}</div>
                     </div>
+
                     <div>
                       {bundle.bundleDiscount.noDiscount.status ? (
-                        ""
+                        <div
+                          style={{
+                            whiteSpace: "nowrap",
+                            textDecoration: "line-through",
+                            textAlign: "right",
+                            fontSize: "15px",
+                            lineHeight: "21px",
+                            color: "rgb(144, 149, 155)",
+                          }}
+                        >
+                          {/* {currency} */}
+                          {comparePrice[i] !== null
+                            ? currency + comparePrice[i]
+                            : ""}
+                          {/* {bundle.bundleDiscount.freeGift.status
+                            ? comparePrice[i] !== null
+                              ? currency + comparePrice[i]
+                              : ""
+                            : currency + price[i]} */}
+                        </div>
                       ) : bundle.bundleDiscount.addDiscount.discountType !==
                         `${currency}OFF` ? (
                         <div
@@ -210,6 +244,11 @@ const BundlePreviewPro = ({ bundle, currency, design }) => {
                         >
                           {currency}
                           {price[i]}
+                          {/* {bundle.bundleDiscount.freeGift.status
+                            ? comparePrice[i] !== null
+                              ? currency + comparePrice[i]
+                              : ""
+                            : currency + price[i]} */}
                         </div>
                       ) : (
                         ""
@@ -228,7 +267,7 @@ const BundlePreviewPro = ({ bundle, currency, design }) => {
                         </span>
                       ) : bundle.bundleDiscount.addDiscount.discountType !==
                         `${currency}OFF` ? (
-                        <div>
+                        <div className="discountPrice">
                           {currency}
                           {bundle.bundleDiscount.addDiscount.discountValue > 0
                             ? applyDiscount(
@@ -238,7 +277,7 @@ const BundlePreviewPro = ({ bundle, currency, design }) => {
                             : price[i]}
                         </div>
                       ) : (
-                        <div>
+                        <div className="discountPrice_currency">
                           {currency}
                           {price[i]}
                         </div>
