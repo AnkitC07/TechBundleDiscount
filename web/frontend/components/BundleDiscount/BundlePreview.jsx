@@ -119,17 +119,28 @@ const BundlePreviewPro = ({ bundle, currency, design }) => {
     bundle.bundleProducts.forEach((item, i) => {
       // console.log(price, i);
       item != "" ? (count = count + Number(price[i])) : null;
-
-      item != ""
-        ? (disCount =
+      if (item != "") {
+        if (bundle.advanceSetting.roundDiscount.status) {
+          let arr = [];
+          arr = applyDiscount(
+            price[i],
+            bundle.bundleDiscount.addDiscount.discountValue
+          ).split(".");
+          arr[1] = bundle.advanceSetting.roundDiscount.roundDiscountSelected;
+          arr = arr.toString().replace(",", "");
+          // console.log(arr, "Array");
+          disCount = disCount + Number(arr);
+        } else {
+          disCount =
             disCount +
             Number(
               applyDiscount(
                 price[i],
                 bundle.bundleDiscount.addDiscount.discountValue
               )
-            ))
-        : null;
+            );
+        }
+      }
     });
     setTotal((Math.round(count * 100) / 100).toFixed(2));
     if (bundle.bundleDiscount.addDiscount.discountType == `${currency}OFF`) {
@@ -151,32 +162,27 @@ const BundlePreviewPro = ({ bundle, currency, design }) => {
       item != "" ? (price[i] = item.variants[0].price) : null;
     });
     setPrice([...price]);
-    const distotal = getTotal();
-    console.log(bundle.bundleDiscount.addDiscount.discountType);
-    // if (bundle.bundleDiscount.addDiscount.discountType == `${currency}OFF`) {
-    //   console.log(
-    //     "TOTAL",
-    //     total - bundle.bundleDiscount.addDiscount.discountValue
-    //   );
-    //   setDisTotal(total - bundle.bundleDiscount.addDiscount.discountValue);
-    // }
+    getTotal();
     console.log(bundle, "Bundle");
   }, [bundle]);
 
   useEffect(() => {
     getTotal();
   }, [price]);
-  useEffect(() => {
-    console.log(disTotal);
-  }, [disTotal]);
 
   function applyDiscount(price, discountPercentage) {
-    const discount = price * (discountPercentage / 100);
-    return (Math.round((price - discount) * 100) / 100).toFixed(2);
+    let discount = price * (discountPercentage / 100);
+    discount = (Math.round((price - discount) * 100) / 100).toFixed(2);
+    if (bundle.advanceSetting.roundDiscount.status) {
+      let temp = discount.toString().split(".");
+      temp[1] = bundle.advanceSetting.roundDiscount.roundDiscountSelected;
+      discount = temp.toString().replace(",", "");
+    }
+    return discount;
   }
 
   // console.log(bundle, "checking objs");
-  console.log(design);
+  // console.log(design);
   return (
     <>
       <div
