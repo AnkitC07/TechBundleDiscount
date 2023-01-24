@@ -434,6 +434,9 @@ const Variants = ({
               e.target.options[e.target.selectedIndex].getAttribute(
                 "data-comparePrice"
               );
+            let vid = e.target.options[e.target.selectedIndex].getAttribute(
+              "data-VariantId"
+            );
             const priceObj = price;
 
             priceObj[v[0].product_id] = {
@@ -447,8 +450,8 @@ const Variants = ({
                 ? prices
                 : comp,
             };
-
-            const i = bundle.bundleProducts[xIndex].variants.findIndex(x => x.id == v.id)
+            console.log(vid)
+            const i = bundle.bundleProducts[xIndex].variants.findIndex((x, j, arr) => x.id == vid)
             console.log('Slected Id ', i)
             setTimeout(() => {
 
@@ -467,7 +470,7 @@ const Variants = ({
           )}
           {v.map((x, i) => {
             return (
-              <option value={x.price} data-comparePrice={x.compare_at_price}>
+              <option value={x.price} data-comparePrice={x.compare_at_price} data-VariantId={x.id}>
                 {x.title}
               </option>
             );
