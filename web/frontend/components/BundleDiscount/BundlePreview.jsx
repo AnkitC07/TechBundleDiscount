@@ -76,6 +76,7 @@ const BundlePreviewPro = ({ bundle, currency, design }) => {
   const [total, setTotal] = useState(0);
   const [disTotal, setDisTotal] = useState(0);
   const [price, setPrice] = useState({});
+  const [vIndex, setVIndex] = useState(0)
 
   const getTotal = () => {
     console.log(price, "GEtTotal")
@@ -227,7 +228,8 @@ const BundlePreviewPro = ({ bundle, currency, design }) => {
                         v={x.variants}
                         bundle={bundle}
                         price={price}
-                        vIndex={i}
+                        vIndex={vIndex}
+                        xIndex={i}
                         setPrice={setPrice}
                         design={design}
                         applyDiscount={applyDiscount}
@@ -410,8 +412,10 @@ const Variants = ({
   setPrice,
   design,
   applyDiscount,
+  xIndex
 }) => {
   const { settings, button, priceSavings } = design;
+  console.log(vIndex, 'VIndex ')
 
   return (
     <>
@@ -443,7 +447,13 @@ const Variants = ({
                 ? prices
                 : comp,
             };
-            setPrice({ ...price });
+
+            const i = bundle.bundleProducts[xIndex].variants.findIndex(x => x.id == v.id)
+            console.log('Slected Id ', i)
+            setTimeout(() => {
+
+              setPrice({ ...price });
+            }, 1000);
           }}
         >
           {bundle.advanceSetting.customerOption.status == true ? (
