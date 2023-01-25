@@ -10,6 +10,8 @@ import GDPRWebhookHandlers from "./gdpr.js";
 import { title } from "process";
 import bundleRouter from "./routes/SetBundle.js";
 import "./database/config.js";
+import AllDiscount from "./routes/AllDiscount.js";
+import GetDatabyId from "./routes/GetDatabyId.js";
 const PORT = parseInt(process.env.BACKEND_PORT || process.env.PORT, 10);
 
 const STATIC_PATH =
@@ -37,6 +39,8 @@ app.use("/api/*", shopify.validateAuthenticatedSession());
 app.use(express.json());
 
 app.use("/api", bundleRouter);
+app.use("/api", AllDiscount);
+app.use("/api", GetDatabyId);
 
 app.get("/api/products", async (req, res) => {
   try {
@@ -58,7 +62,7 @@ app.get("/api/getCurrency", async (req, res) => {
     const shop = await shopify.api.rest.Shop.all({
       session: res.locals.shopify.session,
     });
-    console.log(shop[0].money_format.split("{{amount}}")[0]);
+    // console.log(shop[0].money_format.split("{{amount}}")[0]);
     res.status(200).send({ cur: shop[0].money_format.split("{{amount}}")[0] });
   } catch (error) {
     res.status(200).send({ error: error });

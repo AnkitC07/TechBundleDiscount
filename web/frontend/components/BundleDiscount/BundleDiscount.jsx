@@ -1,25 +1,44 @@
-import { Button } from "@shopify/polaris";
+import { Badge, Button } from "@shopify/polaris";
 import React, { useContext } from "react";
 import { useState, useEffect } from "react";
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import { useAuthenticatedFetch } from "../../hooks/useAuthenticatedFetch.js";
+import CustomModal from "../layouts/Modal.jsx";
 import NavbarMain from "../layouts/NavbarMain.jsx";
 import ToastComp from "../layouts/ToastComp.jsx";
 
 const BundleDiscount = () => {
+  const navigate = useNavigate();
   const fetch = useAuthenticatedFetch();
   const [products, productsState] = useState([]);
   const [lastId, lastIdState] = useState(0);
   const [currency, setCurrency] = useState("");
   const [customer, setCustomer] = useState([]);
-  const [active, setActive] = useState(true);
+
+  const [modal, modalState] = useState({
+    status: false,
+    title: "",
+    content: "",
+    primary: [],
+  });
+  const [active, setActive] = useState(false);
   const [msg, setMsg] = useState('');
   const [btnLoading, setBtnLoading] = useState({
     type: "",
     status: false
   })
-  const id = null
+  // Getting Id
+  const queryString = window.location.search;
+  const urlParams = new URLSearchParams(queryString);
+  let id = urlParams.get("id");
+
+  const [modalbtnloading, loadingModalbtn] = useState(false);
   const [btnMain, setBtnMain] = useState(id == null ? true : false)
+  const [banner, setBanner] = useState(false)
+  const [ID, setID] = useState('  ')
+
+
+
   //************ Main States ************//
   const dates = new Date();
   dates.setDate(dates.getDate() + 1);
@@ -169,6 +188,7 @@ const BundleDiscount = () => {
 
 
   useEffect(() => {
+
     fetch(`/api/products?id=${lastId}`)
       .then((res) => res.json())
       .then((x) => {
@@ -183,6 +203,7 @@ const BundleDiscount = () => {
   }, [lastId]);
 
   useEffect(() => {
+    console.log("ID=>", id)
     fetch("/api/getCurrency")
       .then((res) => res.json())
       .then((data) => setCurrency(data.cur))
@@ -192,7 +213,104 @@ const BundleDiscount = () => {
       .then((res) => res.json())
       .then((data) => setCustomer(data))
       .catch((err) => console.log(err));
+
+    const getDataById = async () => {
+      const res = await fetch("/api/getDataById", {
+        method: "post",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ id: id }),
+      });
+      const data = await res.json();
+      console.log(data, "GetDataById")
+      // setContent({
+      //   ...data.data.Content,
+      //   timerType: UpdateTimerType(data, "Content"),
+      // });
+      setBundle(data.data.Content)
+      designSatte(data.data.Design);
+      setPlacement(data.data.Placement);
+      settingState(data.data.Badge)
+      setHtml(data.data.Html);
+      setIspublished(data.data.IsPublished);
+      setBtnMain(data.data.IsPublished == "published" ? false : true);
+    };
+
+    if (id !== null) {
+      getDataById();
+    }
+    return () => {
+      setID(null);
+    };
   }, []);
+
+  if (ID !== undefined && id == null) {
+    id = ID;
+  }
+  console.log(ID)
+  const BanneronDismiss = () => {
+    setBanner(false)
+  }
+
+
+  const modalActivator = async (type) => {
+    if (type == "Delete") {
+      modalState({
+        state: true,
+        title: "Delete timer",
+        content: `Are you sure you want to delete this timer?`,
+        primary: [
+          {
+            content: "Delete",
+            onAction: () => {
+              loadingModalbtn(true);
+              deleteBtn(id);
+            },
+            destructive: true,
+            loading: modalbtnloading,
+          },
+        ],
+      });
+      return false;
+    } else if (type == "Duplicate") {
+      modalState({
+        state: true,
+        title: "Duplicate timer",
+        content: `Are you sure you want to duplicate Bundle Discount?`,
+        // content: `Are you sure you want to duplicate ${content.timerName}?`,
+        primary: [
+          {
+            content: "Duplicate",
+            onAction: () => {
+              loadingModalbtn(true);
+              handelPublish("Duplicate");
+            },
+          },
+        ],
+      });
+      return false;
+    }
+    console.log(modal);
+  };
+  const deleteBtn = async (idrec) => {
+    loadingModalbtn(true);
+    const deletebyid = await fetch(`/api/deleterecord?id=${idrec}`, {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+    const getResult = await deletebyid.json();
+    if (getResult.code == 200) {
+      setActive(true);
+      setMsg("Deleted");
+      loadingModalbtn(false);
+      setTimeout(() => {
+        navigate("/");
+      }, 1500);
+    }
+  };
   //   console.log(products, "products ids checking");
   const navdata = [
     {
@@ -217,15 +335,19 @@ const BundleDiscount = () => {
       type: statusUpdate,
       status: true
     })
+    console.log('Stauts Update=>', statusUpdate)
+    const setHTMl = document.querySelector("#getHTMLData").innerHTML;
     const body = {
       content: bundle,
       design: designSettings,
       placement: placement,
-      Html: Html,
+      Html: setHTMl,
       badge: settings,
       ispublished: statusUpdate == "save" ? ispublished : statusUpdate,
     }
-    fetch('/api/setBundle', {
+
+
+    fetch(`/api/setBundle?status=${statusUpdate}&id=${id}`, {
       method: 'POST',
       headers: {
         "Content-Type": 'application/json'
@@ -239,11 +361,30 @@ const BundleDiscount = () => {
           type: statusUpdate,
           status: false
         })
-        if (data.status == 'published') {
-          setMsg('Published')
-          setBtnMain(false)
+        if (data) {
+          if (data.status == 'published') {
+            setMsg('Published')
+            setBtnMain(false)
+            setIspublished("published");
+            setBanner(true)
+            // id = data.id
+          } else if (data.status == "save") {
+            setMsg('Save')
+          } else if (data.status == "Duplicate") {
+            setMsg("Duplicate")
+            // loadingModalbtn(false)
+            setTimeout(() => {
+              navigate("/")
+            }, 1500)
+          } else {
+            setMsg('Unpublished')
+            setBtnMain(true)
+            setIspublished("unpublished");
+          }
+          setActive(true);
         }
         setActive(true);
+        setID(data.id);
       })
       .catch(err => console.log(err))
 
@@ -288,17 +429,21 @@ const BundleDiscount = () => {
                           {/* {content.productTimer} */}
                           Bundle Discount Name
                         </h1>
-                        <div className="Polaris-Header-Title__TitleMetadata">
-                          <span className="Polaris-Badge">Not published</span>
+                        <div class="Polaris-Header-Title__TitleMetadata">
+                          {ispublished == "published" ? (
+                            <Badge status="success">Published</Badge>
+                          ) : (
+                            <Badge>Not published</Badge>
+                          )}
                         </div>
                       </div>
                     </div>
                   </div>
                   <div class="Polaris-Header-Title__SubTitle">
-                    <p>Discount ID: Save or Publish to show discount ID</p>
-                    {/* <p>
-											Timer ID: <span>  {id ? `${id}` : 'Save or Publish to show timer ID'}</span>
-										</p> */}
+                    {/* <p>Discount ID: Save or Publish to show discount ID</p> */}
+                    <p>
+                      Discount ID: <span>  {id ? `${id}` : 'Save or Publish to show discount ID'}</span>
+                    </p>
 
                   </div>
                 </div>
@@ -306,63 +451,36 @@ const BundleDiscount = () => {
                   <div class="Polaris-ActionMenu">
                     <div class="Polaris-ActionMenu-Actions__ActionsLayout">
                       <div class="Polaris-ButtonGroup Polaris-ButtonGroup--extraTight">
-                        {/* {id != null ? <> */}
-                        <div class="Polaris-ButtonGroup__Item">
-                          <span class="Polaris-ActionMenu-SecondaryAction Polaris-ActionMenu-SecondaryAction--destructive">
-                            <button
-                              class="Polaris-Button Polaris-Button--outline"
-                              aria-disabled="false"
-                              type="button"
-                              onClick={() => {
-                                // deleteBtn(id)
-                              }}
-                            >
-                              <span class="Polaris-Button__Content">
-                                <span class="Polaris-Button__Text">Delete</span>
-                              </span>
-                            </button>
-                          </span>
-                        </div>
+
+                        {id != null ? <>
+
+                          <div class="Polaris-ButtonGroup__Item">
+                            <span class="Polaris-ActionMenu-SecondaryAction Polaris-ActionMenu-SecondaryAction--destructive">
+                              <button class="Polaris-Button Polaris-Button--outline" aria-disabled="false" type="button"
+                                onClick={() => modalActivator("Delete")}
+                              >
+                                <span class="Polaris-Button__Content">
+                                  <span class="Polaris-Button__Text">Delete</span>
+                                </span>
+                              </button>
+                            </span>
+                          </div>
+
+
+                          <div class="Polaris-ButtonGroup__Item">
+                            <span class="Polaris-ActionMenu-SecondaryAction">
+                              <button class="Polaris-Button Polaris-Button--outline" aria-disabled="false" type="button"
+                                onClick={() => modalActivator("Duplicate")}
+                              >
+                                <span class="Polaris-Button__Content">
+                                  <span class="Polaris-Button__Text">Duplicate</span>
+                                </span>
+                              </button>
+                            </span>
+                          </div>
+                        </> : ''}
+
                         {/* <div class="Polaris-ButtonGroup__Item">
-														<span class="Polaris-ActionMenu-SecondaryAction Polaris-ActionMenu-SecondaryAction--destructive">
-															<button class="Polaris-Button Polaris-Button--outline" aria-disabled="false" type="button"
-																onClick={()=>modalActivator("Delete")}
-															>
-																<span class="Polaris-Button__Content">
-																	<span class="Polaris-Button__Text">Delete</span>
-																</span>
-															</button>
-														</span>
-													</div> */}
-
-
-                        <div class="Polaris-ButtonGroup__Item">
-                          <span class="Polaris-ActionMenu-SecondaryAction">
-                            <button class="Polaris-Button Polaris-Button--outline" aria-disabled="false" type="button"
-                              onClick={() => modalActivator("Duplicate")}
-                            >
-                              <span class="Polaris-Button__Content">
-                                <span class="Polaris-Button__Text">Duplicate</span>
-                              </span>
-                            </button>
-                          </span>
-                        </div>
-                        {/* <div class="Polaris-ButtonGroup__Item">
-														<span class="Polaris-ActionMenu-SecondaryAction">
-															<button class="Polaris-Button Polaris-Button--outline" aria-disabled="false" type="button" 
-															onClick={()=>modalActivator("Duplicate")}
-															>
-																<span class="Polaris-Button__Content">
-																	<span class="Polaris-Button__Text">Duplicate</span>
-																</span>
-															</button>
-														</span>
-													</div> */}
-
-
-                        {/* </> : ''} */}
-
-                        <div class="Polaris-ButtonGroup__Item">
                           <span class="Polaris-ActionMenu-SecondaryAction">
                             <button
                               class="Polaris-Button Polaris-Button--outline"
@@ -374,16 +492,16 @@ const BundleDiscount = () => {
                               </span>
                             </button>
                           </span>
-                        </div>
+                        </div> */}
 
-                        {/* <div class="Polaris-ButtonGroup__Item">
+                        <div class="Polaris-ButtonGroup__Item">
                           <span class="Polaris-ActionMenu-SecondaryAction">
                             <Button
                               onClick={() => handelPublish("save")}
                               loading={btnLoading.type == "save" ? btnLoading.status : false}
                             >Save</Button>
                           </span>
-                        </div> */}
+                        </div>
 
                       </div>
                     </div>
@@ -432,6 +550,31 @@ const BundleDiscount = () => {
         </div>
       </div>
       <ToastComp active={active} setActive={setActive} msg={msg} />
+      {modal.state == true ? (
+        <CustomModal
+          state={true}
+          primaryAction={[
+            {
+              content: modal.primary[0].content,
+              onAction: modal.primary[0].onAction,
+              loading: modalbtnloading,
+              destructive: modal.primary[0].destructive,
+            },
+          ]}
+          secondaryActions={[
+            {
+              content: "Cancel",
+              onAction: async () => {
+                modalState({ ...modal, state: false });
+              },
+            },
+          ]}
+          title={modal.title}
+          content={modal.content}
+        />
+      ) : (
+        ""
+      )}
     </section>
   );
 };

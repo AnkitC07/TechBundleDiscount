@@ -3,6 +3,7 @@ import {
   Card,
   Checkbox,
   Icon,
+  InlineError,
   Popover,
   TextField,
 } from "@shopify/polaris";
@@ -304,20 +305,18 @@ const Content = ({
                               }}
                             />
                           </div>
-                          {bundle.bundleDiscount.addDiscount.discountValue ===
+                          {/* {bundle.bundleDiscount.addDiscount.discountType !== "% OFF" && bundle.bundleDiscount.addDiscount.discountValue ===
                             "" ||
                             bundle.bundleDiscount.addDiscount.discountValue >
-                            100 ? (
-                            <div className="inputWarning">
-                              <i class="fa-solid fa-triangle-exclamation"></i>
-                              <span>
-                                Please fill out this field. Value lessthan or
-                                equal to 100.
-                              </span>
-                            </div>
-                          ) : (
-                            ""
-                          )}
+                            100} */}
+                          {bundle.bundleDiscount.addDiscount.discountType == "% OFF" && (bundle.bundleDiscount.addDiscount.discountValue ===
+                            "" ||
+                            bundle.bundleDiscount.addDiscount.discountValue >
+                            100) && (
+                              <div style={{ margin: '10px' }}>
+                                <InlineError message="Please fill out this field. Value lessthan or equal to 100." fieldID="myFieldID" />
+                              </div>
+                            )}
                         </div>
                       ) : (
                         ""
@@ -523,6 +522,7 @@ const AdvanceSettings = ({
                 bundle.advanceSetting.startDate.date = e;
                 setBundle({ ...bundle });
               }}
+              disableBefore={bundle.advanceSetting.startDate.date}
             // disable={!modal.isEnabled}
             />
             <span id="start_date_err" className="err"></span>

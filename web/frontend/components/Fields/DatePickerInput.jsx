@@ -53,6 +53,10 @@ export default function DatePickerExample(props) {
     )
   }
 
+            // disableDatesBefore={{
+            //   start: new Date(props.disableBefore.start),
+            //   end: new Date(props.disableBefore.end),
+            // }}
   return (
     <>
       <div className="date_picker">

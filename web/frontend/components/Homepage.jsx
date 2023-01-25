@@ -24,25 +24,18 @@ import CheckHead from './layouts/CheckHead'
 
 export default function Homepage() {
     const fetch = useAuthenticatedFetch()
-    const [TimerData, setTimerData] = useState([])
+    const [discountData, setDiscountData] = useState([])
 
-    // useEffect(() => {
-    //     const handelPublish = async () => {
+    useEffect(() => {
+        const handelPublish = async () => {
 
-    //         const res = await fetch('/api/getAllTimer', {
-    //             method: 'POST',
-    //             headers: {
-    //                 'Content-Type': 'application/json',
-    //             },
-    //             body: JSON.stringify({ shop: getShopName() }),
-    //         })
-    //         const data = await res.json()
-    //         console.log('response', data)
-    //         setTimerData(data.status)
-    //         console.log(TimerData.status)
-    //     }
-    //     handelPublish()
-    // }, [])
+            const res = await fetch('/api/getAllDiscount')
+            const data = await res.json()
+            console.log('response', data)
+            setDiscountData(data.status)
+        }
+        handelPublish()
+    }, [])
     return (
         <Page>
             <section className="countdown_main">
@@ -81,7 +74,7 @@ export default function Homepage() {
                             </div>
                             <div className="Polaris-Card">
 
-                                {TimerData.length !== 0 ? <PublishedList item={TimerData} /> :
+                                {discountData.length !== 0 ? <PublishedList item={discountData} /> :
                                     <div className="Polaris-Card__Section">
                                         <div className="Polaris-EmptyState Polaris-EmptyState--withinContentContainer">
                                             <div className="Polaris-EmptyState__Section">

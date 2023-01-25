@@ -6,7 +6,7 @@ export default function BundlePreview({ bundle, currency, design }) {
   const { settings, button, priceSavings } = design;
 
   return (
-    <div className="BundlepreviewStyle">
+    <div id='getHTMLData' className="BundlepreviewStyle">
       <div className="previewScroll">
         <div className="customCard">
           {JSON.stringify(bundle.bundleProducts).includes("title") == true ? (

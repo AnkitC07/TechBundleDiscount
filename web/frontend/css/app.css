@@ -664,3 +664,9 @@ div#accordion .card {
 .targetSearch {
     padding: 5px 25px;
 }
+.Polaris-Modal-Dialog__Container {
+    z-index: 999999;
+}
+.Polaris-Backdrop {
+    z-index: 99999;
+}
