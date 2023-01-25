@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import { NavLink } from "react-router-dom";
 import { useAuthenticatedFetch } from "../../hooks/useAuthenticatedFetch.js";
 import NavbarMain from "../layouts/NavbarMain.jsx";
+import ToastComp from "../layouts/ToastComp.jsx";
 
 const BundleDiscount = () => {
   const fetch = useAuthenticatedFetch();
@@ -11,6 +12,161 @@ const BundleDiscount = () => {
   const [lastId, lastIdState] = useState(0);
   const [currency, setCurrency] = useState("");
   const [customer, setCustomer] = useState([]);
+  const [active, setActive] = useState(true);
+  const [msg, setMsg] = useState('');
+  const [btnLoading, setBtnLoading] = useState({
+    type: "",
+    status: false
+  })
+  const id = null
+  const [btnMain, setBtnMain] = useState(id == null ? true : false)
+  //************ Main States ************//
+  const dates = new Date();
+  dates.setDate(dates.getDate() + 1);
+  const [placement, setPlacement] = useState({
+    selectProduct: {
+      allProducts: true,
+      specificProducts: false,
+      allCollections: false,
+      specificCollections: false,
+      allProductsWithTags: false,
+      customPosition: false,
+    },
+    specificProducts: [],
+    specificCollection: [],
+    tags: "",
+  });
+  const [Html, setHtml] = useState('')
+  const [ispublished, setIspublished] = useState(false)
+  const [bundle, setBundle] = useState({
+    offerHeader: "Buy more and save",
+    bundleProducts: [],
+    bundleDiscount: {
+      addDiscount: {
+        status: true,
+        discountValue: 10,
+        discountType: "% OFF",
+      },
+      freeShiping: {
+        status: false,
+      },
+      freeGift: {
+        status: false,
+        freeGiftSlected: [],
+      },
+      noDiscount: {
+        status: false,
+      },
+    },
+    advanceSetting: {
+      customerOption: {
+        status: false,
+      },
+      hideStorefront: {
+        status: false,
+      },
+      specific: {
+        status: false,
+        specificSlected: [],
+      },
+      startDate: {
+        status: false,
+        date: {
+          start: new Date(),
+          end: new Date(),
+        },
+      },
+      endDate: {
+        status: false,
+        date: {
+          start: new Date(dates),
+          end: new Date(dates),
+        },
+      },
+      roundDiscount: {
+        status: false,
+        roundDiscountSelected: ".00",
+      },
+      targetCustomer: {
+        status: false,
+        targetCustomerSelected: [],
+      },
+    },
+  });
+  const [selectedTab, setTabState] = useState("Content");
+  const [designSettings, designSatte] = useState({
+    settings: {
+      FontColor: "#0a0a0a",
+      FontSize: 15,
+      FontFamily: "sans-serif",
+      FontStyle: {
+        b: false,
+        i: false,
+        u: false,
+      },
+      Alignment: "left",
+      VariantBgColor: "#ffffff",
+    },
+    button: {
+      bg: "#008060",
+      color: "#fffcfc",
+      borderRadius: 6,
+      buttonAction: "add to cart",
+      text: "GRAB THIS DEAL",
+      Moreoptions: "More options ",
+      Unavailablebtn: "UNAVAILABLE",
+      UnavailableNotice: "Unavailable, please try another option",
+      ChooseOption: "Choose an option",
+    },
+    priceSavings: {
+      freeGift: 'Free',
+      FreeShippingTag: "Free shipping",
+      FreeGiftTag: "Free",
+      SaveTag: "SAVE {{discount}}",
+      Total: "Total",
+      tagColor: "#008060",
+      priceColor: "#008060",
+      ComparePriceColor: "#008060",
+      showTotal: false,
+      ShowPriceUnit: false,
+      ShowComparePrice: false,
+    },
+  });
+  const [settings, settingState] = useState({
+    bundle_id: "",
+    BadgeHeader: "Buy more and save test",
+    Design: {
+      BadgePosition: {
+        right: true,
+        left: false,
+      },
+      Style: {
+        round: true,
+        rectangle: false,
+      },
+      Color: "#008060",
+      Border: "#008060",
+      Font: "#ffffff",
+      Width: 70,
+      Height: 40,
+      Radius: 55,
+      FontSize: 18,
+      FontFamily: "serif",
+      FontStyle: {
+        b: true,
+        i: false,
+        u: false,
+      },
+      Desktop: "right",
+      Mobile: "left",
+    },
+  });
+  /************************************/
+
+
+
+
+
 
   useEffect(() => {
     fetch(`/api/products?id=${lastId}`)
@@ -23,7 +179,7 @@ const BundleDiscount = () => {
         productsState(pro);
         lastIdState(id);
       })
-      .catch((err) => {});
+      .catch((err) => { });
   }, [lastId]);
 
   useEffect(() => {
@@ -56,7 +212,42 @@ const BundleDiscount = () => {
       path: "",
     },
   ];
-  const handelPublish = async () => {};
+  const handelPublish = async (statusUpdate) => {
+    setBtnLoading({
+      type: statusUpdate,
+      status: true
+    })
+    const body = {
+      content: bundle,
+      design: designSettings,
+      placement: placement,
+      Html: Html,
+      badge: settings,
+      ispublished: statusUpdate == "save" ? ispublished : statusUpdate,
+    }
+    fetch('/api/setBundle', {
+      method: 'POST',
+      headers: {
+        "Content-Type": 'application/json'
+      },
+      body: JSON.stringify(body)
+    })
+      .then(res => res.json())
+      .then(data => {
+        console.log(data)
+        setBtnLoading({
+          type: statusUpdate,
+          status: false
+        })
+        if (data.status == 'published') {
+          setMsg('Published')
+          setBtnMain(false)
+        }
+        setActive(true);
+      })
+      .catch(err => console.log(err))
+
+  };
 
   return (
     <section className="product_main_page">
@@ -104,7 +295,11 @@ const BundleDiscount = () => {
                     </div>
                   </div>
                   <div class="Polaris-Header-Title__SubTitle">
-                    <p>Timer ID: Save or Publish to show timer ID</p>
+                    <p>Discount ID: Save or Publish to show discount ID</p>
+                    {/* <p>
+											Timer ID: <span>  {id ? `${id}` : 'Save or Publish to show timer ID'}</span>
+										</p> */}
+
                   </div>
                 </div>
                 <div className="Polaris-Page-Header__RightAlign">
@@ -128,21 +323,43 @@ const BundleDiscount = () => {
                             </button>
                           </span>
                         </div>
+                        {/* <div class="Polaris-ButtonGroup__Item">
+														<span class="Polaris-ActionMenu-SecondaryAction Polaris-ActionMenu-SecondaryAction--destructive">
+															<button class="Polaris-Button Polaris-Button--outline" aria-disabled="false" type="button"
+																onClick={()=>modalActivator("Delete")}
+															>
+																<span class="Polaris-Button__Content">
+																	<span class="Polaris-Button__Text">Delete</span>
+																</span>
+															</button>
+														</span>
+													</div> */}
+
+
                         <div class="Polaris-ButtonGroup__Item">
                           <span class="Polaris-ActionMenu-SecondaryAction">
-                            <button
-                              class="Polaris-Button Polaris-Button--outline"
-                              aria-disabled="false"
-                              type="button"
+                            <button class="Polaris-Button Polaris-Button--outline" aria-disabled="false" type="button"
+                              onClick={() => modalActivator("Duplicate")}
                             >
                               <span class="Polaris-Button__Content">
-                                <span class="Polaris-Button__Text">
-                                  Duplicate
-                                </span>
+                                <span class="Polaris-Button__Text">Duplicate</span>
                               </span>
                             </button>
                           </span>
                         </div>
+                        {/* <div class="Polaris-ButtonGroup__Item">
+														<span class="Polaris-ActionMenu-SecondaryAction">
+															<button class="Polaris-Button Polaris-Button--outline" aria-disabled="false" type="button" 
+															onClick={()=>modalActivator("Duplicate")}
+															>
+																<span class="Polaris-Button__Content">
+																	<span class="Polaris-Button__Text">Duplicate</span>
+																</span>
+															</button>
+														</span>
+													</div> */}
+
+
                         {/* </> : ''} */}
 
                         <div class="Polaris-ButtonGroup__Item">
@@ -158,20 +375,43 @@ const BundleDiscount = () => {
                             </button>
                           </span>
                         </div>
+
+                        {/* <div class="Polaris-ButtonGroup__Item">
+                          <span class="Polaris-ActionMenu-SecondaryAction">
+                            <Button
+                              onClick={() => handelPublish("save")}
+                              loading={btnLoading.type == "save" ? btnLoading.status : false}
+                            >Save</Button>
+                          </span>
+                        </div> */}
+
                       </div>
                     </div>
                   </div>
-                  <div class="Polaris-Page-Header__PrimaryActionWrapper">
+                  {/* <div class="Polaris-Page-Header__PrimaryActionWrapper">
                     <Button
                       primary
                       onClick={() => {
                         handelPublish("unPublished");
                       }}
-                      //  loading={btnLoading}
+                    //  loading={btnLoading}
                     >
                       Publish
                     </Button>
+                  </div> */}
+                  <div class="Polaris-Page-Header__PrimaryActionWrapper">
+                    {btnMain
+                      ?
+                      <Button primary onClick={() => {
+                        handelPublish("published")
+                      }} loading={btnLoading.type == "published" ? btnLoading.status : false}>Publish</Button>
+                      :
+                      <Button destructive onClick={() => {
+                        handelPublish("unPublished")
+                      }} loading={btnLoading.type == "unPublished" ? btnLoading.status : false}>Unpublish</Button>}
+
                   </div>
+
                 </div>
               </div>
             </div>
@@ -180,15 +420,18 @@ const BundleDiscount = () => {
 
         <div className="row ">
           <NavbarMain
+            states={{ placement, setPlacement, bundle, setBundle, selectedTab, setTabState, designSettings, designSatte, settings, settingState }}
             nav={navdata}
             products={products}
             productsState={productsState}
             currency={currency}
             customer={customer}
             setCustomer={setCustomer}
+            setHtml={setHtml}
           />
         </div>
       </div>
+      <ToastComp active={active} setActive={setActive} msg={msg} />
     </section>
   );
 };

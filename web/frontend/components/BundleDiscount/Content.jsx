@@ -6,7 +6,7 @@ import {
   Popover,
   TextField,
 } from "@shopify/polaris";
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 import CheckBoxComponent from "../Fields/CheckBoxComponent";
 import ChoiceListComp from "../Fields/ChoiceListComp";
 import DatePickerExample from "../Fields/DatePickerInput";
@@ -28,6 +28,7 @@ const Content = ({
   design,
   customer,
   setCustomer,
+  setHtml
 }) => {
   const [bundleDiv, setbundleDiv] = useState(
     bundle.bundleProducts.length == 0
@@ -39,7 +40,11 @@ const Content = ({
   bundle.bundleProducts = bundleDiv;
 
   // const [bundleDiv, setbundleDiv] = useState(bundle.bundleProducts);
+  const ref = useRef()
+  setTimeout(() => {
+    setHtml(ref.current.innerHTML)
 
+  }, 100);
   useEffect(() => {
     console.log(bundle, "Bundle")
   }, [bundle]);
@@ -346,7 +351,7 @@ const Content = ({
                               Select atleast one product
                             </div>
                             :'' */}
-                            
+
                             <div className="Polaris-Choice__Descriptions freeProducts-Bundle ">
                               <div className="selected_product_list">
                                 {/* <ChoiceListComp selected={freeSelected} handleChange={freeHandleChange} choice={freeGift} /> */}
@@ -386,25 +391,25 @@ const Content = ({
                             </div>
                           </div>
                         </>
-                    ) : (
-                    ""
+                      ) : (
+                        ""
                       )}
 
-                    <CheckBoxComponent
-                      id="nodiscount"
-                      name="bundleDiscount"
-                      label="No Discount"
-                      decription=""
-                      checked={bundle.bundleDiscount.noDiscount.status}
-                      onChange={(e) => {
-                        updateRadio("noDiscount");
-                      }}
-                    />
+                      <CheckBoxComponent
+                        id="nodiscount"
+                        name="bundleDiscount"
+                        label="No Discount"
+                        decription=""
+                        checked={bundle.bundleDiscount.noDiscount.status}
+                        onChange={(e) => {
+                          updateRadio("noDiscount");
+                        }}
+                      />
+                    </div>
                   </div>
                 </div>
               </div>
-            </div>
-            {/* <div className="Polaris-Card__Section">
+              {/* <div className="Polaris-Card__Section">
                 <div className="sc-bczRLJ czvMoD">
                   <div className="Polaris-FormLayout">
                     <div className="Polaris-FormLayout__Item">
@@ -422,27 +427,27 @@ const Content = ({
                   </div>
                 </div>
               </div> */}
-            <AdvanceSettings
-              bundle={bundle}
-              setBundle={setBundle}
-              products={products}
-              productsState={productsState}
-              customer={customer}
-              setCustomer={setCustomer}
-            />
+              <AdvanceSettings
+                bundle={bundle}
+                setBundle={setBundle}
+                products={products}
+                productsState={productsState}
+                customer={customer}
+                setCustomer={setCustomer}
+              />
+            </div>
           </div>
         </div>
-      </div>
-      <div className="col-lg-6 col-md-6 col-sm-6">
-        <BundlePreview bundle={bundle} currency={currency} design={design} />
-      </div>
+        <div className="col-lg-6 col-md-6 col-sm-6" ref={ref}>
+          <BundlePreview bundle={bundle} currency={currency} design={design} />
+        </div>
 
-      {/* <div className="col col-md-5" id='productTimer' ref={ref}>
+        {/* <div className="col col-md-5" id='productTimer' ref={ref}>
                     <div style={{ position: 'sticky', top: '20px' }} >
                     </div>
                 </div> */}
-      {/* <ResourcePickerComp type="Product" state1={false} /> */}
-    </div>
+        {/* <ResourcePickerComp type="Product" state1={false} /> */}
+      </div>
     </>
   );
 };

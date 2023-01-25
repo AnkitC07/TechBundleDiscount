@@ -12,7 +12,7 @@ export default function BundlePreview({ bundle, currency, design }) {
           {JSON.stringify(bundle.bundleProducts).includes("title") == true ? (
             <div
               style={{
-                background: 'white',
+                background: "white",
                 color: `${settings.FontColor}`,
                 fontSize: `${settings.FontSize}px`,
                 fontFamily: settings.FontFamily,
@@ -76,16 +76,19 @@ const BundlePreviewPro = ({ bundle, currency, design }) => {
   const [total, setTotal] = useState(0);
   const [disTotal, setDisTotal] = useState(0);
   const [price, setPrice] = useState({});
-  const [vIndex, setVIndex] = useState(0)
+  const [vIndex, setVIndex] = useState(0);
 
   const getTotal = () => {
-    console.log(price, "GEtTotal")
+    console.log(price, "GEtTotal");
     let count = 0;
     let disCount = 0;
 
     const obj = Object.keys(price);
     for (let i = 0; i < obj.length; i++) {
-      count = count + Number(price[obj[i]].comparePrice);
+      if (bundle.bundleDiscount.addDiscount.discountType == `${currency}OFF`)
+        count = count + Number(price[obj[i]].price);
+      else
+        count = count + Number(price[obj[i]].comparePrice);
       disCount = disCount + Number(price[obj[i]].price);
     }
 
@@ -101,7 +104,7 @@ const BundlePreviewPro = ({ bundle, currency, design }) => {
     } else {
       setDisTotal((Math.round(disCount * 100) / 100).toFixed(2));
     }
-    console.log(disTotal)
+    console.log(disTotal);
     return disTotal;
   };
 
@@ -141,7 +144,11 @@ const BundlePreviewPro = ({ bundle, currency, design }) => {
     if (bundle.advanceSetting.roundDiscount.status) {
       for (let i = 0; i < keys.length; i++) {
         let roundOffPrice = obj[keys[i]].price;
-        if (!bundle.bundleDiscount.freeGift.freeGiftSlected.includes(Number(keys[i]))) {
+        if (
+          !bundle.bundleDiscount.freeGift.freeGiftSlected.includes(
+            Number(keys[i])
+          )
+        ) {
           roundOffPrice = roundOffPrice.split(".");
           roundOffPrice[1] =
             bundle.advanceSetting.roundDiscount.roundDiscountSelected.split(
@@ -161,17 +168,15 @@ const BundlePreviewPro = ({ bundle, currency, design }) => {
   }, [price]);
 
   function applyDiscount(price, discountPercentage) {
-
     let discount = price * (discountPercentage / 100);
     discount = (Math.round((price - discount) * 100) / 100).toFixed(2);
     console.log(price);
-    if (bundle.bundleDiscount.addDiscount.discountType !== '% OFF') {
+    if (bundle.bundleDiscount.addDiscount.discountType !== "% OFF") {
       let fixedDiscount = bundle.bundleDiscount.addDiscount.discountValue;
       return price;
     } else {
       return discount;
     }
-
   }
 
   return (
@@ -305,17 +310,16 @@ const BundlePreviewPro = ({ bundle, currency, design }) => {
                 textAlign: "right",
               }}
             >
-              {
-                bundle.bundleDiscount.freeGift.status
-                  ? "FREE GIFT INCLUDED"
-                  : bundle.bundleDiscount.freeShiping.status
-                    ? "FREE SHIPPING INCLUDED"
-                    : bundle.bundleDiscount.noDiscount.status
-                      ? ""
-                      : bundle.bundleDiscount.addDiscount.discountType ==
-                        `${currency}OFF`
-                        ? `SAVE ${currency}${bundle.bundleDiscount.addDiscount.discountValue}`
-                        : `SAVE ${bundle.bundleDiscount.addDiscount.discountValue}%`}
+              {bundle.bundleDiscount.freeGift.status
+                ? "FREE GIFT INCLUDED"
+                : bundle.bundleDiscount.freeShiping.status
+                  ? "FREE SHIPPING INCLUDED"
+                  : bundle.bundleDiscount.noDiscount.status
+                    ? ""
+                    : bundle.bundleDiscount.addDiscount.discountType ==
+                      `${currency}OFF`
+                      ? `SAVE ${currency}${bundle.bundleDiscount.addDiscount.discountValue}`
+                      : `SAVE ${bundle.bundleDiscount.addDiscount.discountValue}%`}
             </p>
             <div style={{ textAlign: "right" }}>
               <span
@@ -376,15 +380,20 @@ const Price = ({ data, bundle, currency, priceStates }) => {
   return (
     <>
       <div>
-        {pr?.comparePrice !== null ? bundle.bundleDiscount.addDiscount.status && bundle.bundleDiscount.addDiscount.discountType === '% OFF' ? (
-          <div>
-            <span className="text-secondary">
-              <del>
-                {currency} {pr?.comparePrice}
-              </del>
-            </span>
-          </div>
-        ) : '' : (
+        {pr?.comparePrice !== null ? (
+          bundle.bundleDiscount.addDiscount.status &&
+            bundle.bundleDiscount.addDiscount.discountType === "% OFF" ? (
+            <div>
+              <span className="text-secondary">
+                <del>
+                  {currency} {pr?.comparePrice}
+                </del>
+              </span>
+            </div>
+          ) : (
+            ""
+          )
+        ) : (
           ""
         )}
         <div style={{ textAlign: "right" }}>
@@ -412,10 +421,9 @@ const Variants = ({
   setPrice,
   design,
   applyDiscount,
-  xIndex
+  xIndex,
 }) => {
   const { settings, button, priceSavings } = design;
-  console.log(vIndex, 'VIndex ')
 
   return (
     <>
@@ -430,13 +438,9 @@ const Variants = ({
           }}
           onChange={(e) => {
             let prices = e.target.value;
-            let comp =
-              e.target.options[e.target.selectedIndex].getAttribute(
-                "data-comparePrice"
-              );
-            let vid = e.target.options[e.target.selectedIndex].getAttribute(
-              "data-VariantId"
-            );
+            let compr = e.target.options[e.target.selectedIndex];
+            let comp = compr.getAttribute("data-comparePrice");
+            let variantId = compr.getAttribute("data-id");
             const priceObj = price;
 
             priceObj[v[0].product_id] = {
@@ -450,13 +454,17 @@ const Variants = ({
                 ? prices
                 : comp,
             };
-            console.log(vid)
-            const i = bundle.bundleProducts[xIndex].variants.findIndex((x, j, arr) => x.id == vid)
-            console.log('Slected Id ', i)
-            setTimeout(() => {
 
-              setPrice({ ...price });
-            }, 1000);
+            const getselectedVariant = bundle.bundleProducts[
+              xIndex
+            ].variants.findIndex((x) => x.id == variantId);
+            const firstVariant = bundle.bundleProducts[xIndex].variants[0];
+            bundle.bundleProducts[xIndex].variants[0] =
+              bundle.bundleProducts[xIndex].variants[getselectedVariant];
+            bundle.bundleProducts[xIndex].variants[getselectedVariant] =
+              firstVariant;
+            setPrice({ ...price });
+            e.target.options[0].selected = true
           }}
         >
           {bundle.advanceSetting.customerOption.status == true ? (
@@ -470,9 +478,16 @@ const Variants = ({
           )}
           {v.map((x, i) => {
             return (
-              <option value={x.price} data-comparePrice={x.compare_at_price} data-VariantId={x.id}>
-                {x.title}
-              </option>
+              <>
+                <option
+                  selected="selected"
+                  value={x.price}
+                  data-id={x.id}
+                  data-comparePrice={x.compare_at_price}
+                >
+                  {x.title}
+                </option>
+              </>
             );
           })}
         </select>

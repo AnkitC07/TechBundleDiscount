@@ -8,6 +8,7 @@ import shopify from "./shopify.js";
 import productCreator from "./product-creator.js";
 import GDPRWebhookHandlers from "./gdpr.js";
 import { title } from "process";
+import bundleRouter from "./routes/SetBundle.js";
 import "./database/config.js";
 const PORT = parseInt(process.env.BACKEND_PORT || process.env.PORT, 10);
 
@@ -34,6 +35,8 @@ app.post(
 app.use("/api/*", shopify.validateAuthenticatedSession());
 
 app.use(express.json());
+
+app.use("/api", bundleRouter);
 
 app.get("/api/products", async (req, res) => {
   try {
