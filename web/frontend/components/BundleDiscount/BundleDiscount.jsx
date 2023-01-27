@@ -6,8 +6,11 @@ import { useAuthenticatedFetch } from "../../hooks/useAuthenticatedFetch.js";
 import CustomModal from "../layouts/Modal.jsx";
 import NavbarMain from "../layouts/NavbarMain.jsx";
 import ToastComp from "../layouts/ToastComp.jsx";
-
+import Preview from "./ProductBadge/Preview.jsx";
+// import Preview from "../"
 const BundleDiscount = () => {
+
+  const [badgeHtml, setBadgeHtlml] = useState('')
   const navigate = useNavigate();
   const fetch = useAuthenticatedFetch();
   const [products, productsState] = useState([]);
@@ -35,7 +38,7 @@ const BundleDiscount = () => {
   const [modalbtnloading, loadingModalbtn] = useState(false);
   const [btnMain, setBtnMain] = useState(id == null ? true : false)
   const [banner, setBanner] = useState(false)
-  const [ID, setID] = useState('  ')
+  const [ID, setID] = useState(null)
 
 
 
@@ -203,6 +206,7 @@ const BundleDiscount = () => {
   }, [lastId]);
 
   useEffect(() => {
+
     console.log("ID=>", id)
     fetch("/api/getCurrency")
       .then((res) => res.json())
@@ -236,7 +240,6 @@ const BundleDiscount = () => {
       setIspublished(data.data.IsPublished);
       setBtnMain(data.data.IsPublished == "published" ? false : true);
     };
-
     if (id !== null) {
       getDataById();
     }
@@ -331,17 +334,20 @@ const BundleDiscount = () => {
     },
   ];
   const handelPublish = async (statusUpdate) => {
+    console.log("badgeHtml=> ", badgeHtml)
     setBtnLoading({
       type: statusUpdate,
       status: true
     })
     console.log('Stauts Update=>', statusUpdate)
-    const setHTMl = document.querySelector("#getHTMLData").innerHTML;
+    const setHTMl = document.querySelector("#getHTMLData") !== null ? document.querySelector("#getHTMLData").innerHTML : '';
+
     const body = {
       content: bundle,
       design: designSettings,
       placement: placement,
       Html: setHTMl,
+      BadgeHtml: badgeHtml,
       badge: settings,
       ispublished: statusUpdate == "save" ? ispublished : statusUpdate,
     }
@@ -451,7 +457,7 @@ const BundleDiscount = () => {
                   <div class="Polaris-ActionMenu">
                     <div class="Polaris-ActionMenu-Actions__ActionsLayout">
                       <div class="Polaris-ButtonGroup Polaris-ButtonGroup--extraTight">
-
+                        {console.log(id)}
                         {id != null ? <>
 
                           <div class="Polaris-ButtonGroup__Item">
@@ -546,6 +552,8 @@ const BundleDiscount = () => {
             customer={customer}
             setCustomer={setCustomer}
             setHtml={setHtml}
+            setBadgeHtlml={setBadgeHtlml}
+            id={id}
           />
         </div>
       </div>

@@ -1,14 +1,14 @@
-import {TextField} from '@shopify/polaris';
+import { TextField } from '@shopify/polaris';
 const CustomPosition = ({
-    id,
-    checked
+  id,
+  checked
 }) => {
   return (
     <>
       <div className="Polaris-Card__Section">
         <span className="Polaris-Text--root Polaris-Text--headingMd Polaris-Text--semibold">Timer ID</span>
         <div className="Polaris-TextContainer" style={{ marginTop: "5px" }}>
-          <p>{id == undefined?"Save or Publish to show timer ID":id}</p>
+          <p>{id == undefined ? "Save or Publish to show timer ID" : id}</p>
         </div>
         <div
           className="Polaris-Labelled__HelpText  "
@@ -20,17 +20,17 @@ const CustomPosition = ({
         </div>
       </div>
 
-      <div id="timer-card" className={`Polaris-Card__Section ${checked == true?'':"hide-div"}`}>
+      <div id="timer-card" className={`Polaris-Card__Section ${checked == true ? '' : "hide-div"}`}>
         <span className="Polaris-Text--root Polaris-Text--headingMd Polaris-Text--semibold">
           Timer code snippet
         </span>
         <div className="Polaris-TextContainer" style={{ marginTop: "5px" }}>
-          {id == undefined?<p>Save or Publish to show code snippet</p>
-          :
-          <TextField 
-            value={`<div class="count-down-timer-app" id="${id}"></div>`}
-            multiline={5}
-          />}
+          {id == undefined ? <p>Save or Publish to show code snippet</p>
+            :
+            <TextField
+              value={`<div class="count-down-timer-app" id="${id}"></div>`}
+              multiline={5}
+            />}
         </div>
         <div
           className="Polaris-Labelled__HelpText  "

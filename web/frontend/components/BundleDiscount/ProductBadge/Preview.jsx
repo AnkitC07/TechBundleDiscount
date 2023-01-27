@@ -1,7 +1,7 @@
 import { Card } from "@shopify/polaris";
 
 const Preview = ({ data }) => {
-  const { Color, FontFamily, Font, FontSize, Radius, Border, Width, Height,FontStyle } =
+  const { Color, FontFamily, Font, FontSize, Radius, Border, Width, Height, FontStyle } =
     data.Design;
   const style = {
     color: Font,
@@ -17,10 +17,10 @@ const Preview = ({ data }) => {
     width: `${Width}%`,
     height: `${Height}px`,
     textAlign: "center",
-    overflow:'hidden',
-    fontStyle:FontStyle.i == true?'italic':'normal',
-    fontWeight:FontStyle.b == true?'bold':'400',
-    textDecoration:FontStyle.u == true?'underline':''
+    overflow: 'hidden',
+    fontStyle: FontStyle.i == true ? 'italic' : 'normal',
+    fontWeight: FontStyle.b == true ? 'bold' : '400',
+    textDecoration: FontStyle.u == true ? 'underline' : ''
   };
   console.log(style);
   return (
@@ -29,7 +29,7 @@ const Preview = ({ data }) => {
         <Card title={"Preview"} sectioned>
           <div id="PreviewHtml">
             <div
-              id="PreviewHtml-GEt"
+              id="PreviewHtml_Get"
               style={{
                 height: "200px",
                 width: "auto",
@@ -39,11 +39,10 @@ const Preview = ({ data }) => {
               <div
                 style={{
                   display: "flex",
-                  justifyContent: `${
-                    data.Design.BadgePosition.right == true
-                      ? "flex-end"
-                      : "flex-start"
-                  }`,
+                  justifyContent: `${data.Design.BadgePosition.right == true
+                    ? "flex-end"
+                    : "flex-start"
+                    }`,
                 }}
               >
                 <div style={style}>{data.BadgeHeader}</div>

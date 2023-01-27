@@ -15,7 +15,9 @@ const NavbarMain = ({
   customer,
   setCustomer,
   states,
-  setHtml
+  setHtml,
+  setBadgeHtlml,
+  id
 }) => {
 
   const { placement, setPlacement, bundle, setBundle, selectedTab, setTabState, designSettings, designSatte, settings, settingState } = states
@@ -44,6 +46,7 @@ const NavbarMain = ({
               setPlacement,
               bundle,
               setBundle,
+              id
             }}
           />
         );
@@ -52,7 +55,7 @@ const NavbarMain = ({
           <Design states={{ designSettings, designSatte, bundle, setBundle }} />
         );
       case "Badge":
-        return <ProductBadge states={{ settings, settingState, bundle }} />;
+        return <ProductBadge states={{ settings, settingState, bundle, setBadgeHtlml }} />;
     }
   };
 

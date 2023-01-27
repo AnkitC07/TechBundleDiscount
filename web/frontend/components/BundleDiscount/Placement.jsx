@@ -5,9 +5,9 @@ import ResourcePickerComp from "../Fields/ResourcePickerComp";
 import CustomPosition from "../layouts/CustomPosition";
 import BundlePreview from "./BundlePreview";
 
-const Placement = ({states}) => {
-    const {placement, setPlacement,bundle,designSettings} = states
-  const id = null;
+const Placement = ({ states }) => {
+  const { placement, setPlacement, bundle, designSettings, id } = states
+
   const [open, setOpen] = useState(false);
   const [openc, setOpenc] = useState(false);
   const [selectedPro, setProducts] = useState(placement.selectProduct);
@@ -57,11 +57,10 @@ const Placement = ({states}) => {
                   </div>
                   <div className="Polaris-FormLayout__Item ">
                     <button
-                      className={`Polaris-Button Polaris-Button--fullWidth ${
-                        selectedPro.specificProducts == true
-                          ? ""
-                          : "disable-div"
-                      }`}
+                      className={`Polaris-Button Polaris-Button--fullWidth ${selectedPro.specificProducts == true
+                        ? ""
+                        : "disable-div"
+                        }`}
                       type="button"
                       onClick={() => setOpen(true)}
                       id="spcProduct-btn"
@@ -96,11 +95,10 @@ const Placement = ({states}) => {
 
                   <div className="Polaris-FormLayout__Item ">
                     <button
-                      className={`Polaris-Button Polaris-Button--fullWidth ${
-                        selectedPro.specificCollections == true
-                          ? ""
-                          : "disable-div"
-                      }`}
+                      className={`Polaris-Button Polaris-Button--fullWidth ${selectedPro.specificCollections == true
+                        ? ""
+                        : "disable-div"
+                        }`}
                       type="button"
                       onClick={() => setOpenc(true)}
                       id="spcProduct-btn"
@@ -124,9 +122,8 @@ const Placement = ({states}) => {
                   />
                   <div
                     id="customPosition"
-                    className={`Polaris-FormLayout__Item ${
-                      selectedPro.allProductsWithTags == true ? "" : "hide-div"
-                    }`}
+                    className={`Polaris-FormLayout__Item ${selectedPro.allProductsWithTags == true ? "" : "hide-div"
+                      }`}
                   >
                     <InputComponent
                       placeholder={"Add tags"}
@@ -164,7 +161,7 @@ const Placement = ({states}) => {
           </div>
         </div>
         <div className="col-lg-6 col-md-5">
-          <BundlePreview bundle={bundle} design={designSettings}/>
+          <BundlePreview bundle={bundle} design={designSettings} />
         </div>
       </div>
       <div>

@@ -665,8 +665,8 @@ div#accordion .card {
     padding: 5px 25px;
 }
 .Polaris-Modal-Dialog__Container {
-    z-index: 999999;
+    z-index: 999999 !important;
 }
 .Polaris-Backdrop {
-    z-index: 99999;
+    z-index: 99999 !important;
 }

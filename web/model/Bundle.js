@@ -13,6 +13,9 @@ const bundleSchema = new mongoose.Schema({
   Html: {
     type: String,
   },
+  BadgeHtml: {
+    type: String,
+  },
   Badge: {
     type: Object,
   },
