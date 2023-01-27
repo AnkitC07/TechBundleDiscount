@@ -77,7 +77,6 @@ export default function Homepage() {
                             </div>
                             {loading ? <div style={{ display: 'flex', justifyContent: 'center' }}> <Spinner accessibilityLabel="Spinner example" size="large" /></div> :
                                 <div className="Polaris-Card">
-
                                     {
                                         discountData.length !== 0 ? <PublishedList item={discountData} /> :
                                             <div className="Polaris-Card__Section">

@@ -31,27 +31,27 @@ const Content = ({
   setCustomer,
   setHtml
 }) => {
-  const [bundleDiv, setbundleDiv] = useState(
-    bundle.bundleProducts.length == 0
+
+  const [bundleDiv, setbundleDiv] = useState(bundle.bundleProducts);
+
+  // bundle.bundleProducts = bundleDiv;
+
+  useEffect(() => {
+
+    setbundleDiv(bundle.bundleProducts.length == 0
       ? ["", ""]
       : bundle.bundleProducts.length > 0 && bundle.bundleProducts.length < 2
         ? [...bundle.bundleProducts, ""]
-        : [...bundle.bundleProducts]
-  );
-  bundle.bundleProducts = bundleDiv;
+        : [...bundle.bundleProducts])
+  }, [bundle])
 
-  // const [bundleDiv, setbundleDiv] = useState(bundle.bundleProducts);
   const ref = useRef()
   setTimeout(() => {
     setHtml(ref.current.innerHTML)
-
   }, 100);
-  useEffect(() => {
-    console.log(bundle, "Bundle")
-  }, [bundle]);
+
 
   const updateRadio = (key) => {
-    console.log(key)
     if (key !== 'addDiscount') {
       bundle.bundleDiscount.freeGift.freeGiftSlected = []
     }
@@ -97,27 +97,27 @@ const Content = ({
 
 
   const removeTag = (i) => {
-    console.log(i);
     if (bundle.bundleProducts[i] != "") {
       productsState([bundle.bundleProducts[i], ...products]);
       if (i == 0 || i == 1) {
         bundle.bundleProducts[i] = "";
       } else {
         bundle.bundleProducts.splice(i, 1);
+        bundleDiv.splice(i, 1)
       }
     } else {
       bundle.bundleProducts.splice(i, 1);
+      bundleDiv.splice(i, 1)
     }
+    console.log(bundle, " Bundless")
+    console.log(bundleDiv, " DIvv")
+
     setBundle({ ...bundle });
-    console.log(products, "Products");
   };
   const handelCheck = (x, i) => {
-    console.log("Index", i);
-    console.log("BundelProducts=> ", bundle.bundleProducts);
     if (bundle.bundleProducts.length == 0) {
       bundle.bundleProducts = [...bundle.bundleProducts, x];
     } else {
-      // console.log("Slicing=>", bundle.bundleProducts[i]);
       if (bundle.bundleProducts[i] == "") {
         const index = products.findIndex((el) => el.id === x.id);
         products.splice(index, 1);
@@ -130,8 +130,10 @@ const Content = ({
         products.splice(index, 1);
         productsState([...products]);
       }
-      console.log(products, "Products");
     }
+    console.log(products, "Checking Productss")
+    console.log(bundle, "Checking Bundless")
+
     setBundle({ ...bundle });
   };
   return (
@@ -146,6 +148,30 @@ const Content = ({
                     <span className="Polaris-TextStyle--variationStrong">
                       Bundle Offer Detail
                     </span>
+                  </div>
+                  <div className="Polaris-FormLayout__Item">
+                    <div className="Polaris-Labelled__LabelWrapper">
+                      <div className="Polaris-Label">
+                        <label
+                          id="nameLabel"
+                          htmlFor="name"
+                          className="Polaris-Label__Text"
+                        >
+                          Discount name
+                        </label>
+                      </div>
+                    </div>
+                    <InputComponent
+                      id="name"
+                      type="text"
+                      default={bundle.discountName}
+                      onChange={(e) => {
+                        setBundle({
+                          ...bundle,
+                          discountName: e.target.value,
+                        });
+                      }}
+                    />
                   </div>
                   <div className="Polaris-FormLayout__Item">
                     <div className="Polaris-Labelled__LabelWrapper">
@@ -221,6 +247,7 @@ const Content = ({
                                 className="position_center pointerclass"
                                 onClick={() => {
                                   bundleDiv.push("");
+                                  bundle.bundleProducts = [...bundle.bundleProducts, ""]
                                   setBundle({ ...bundle });
                                 }}
                               >
@@ -241,6 +268,7 @@ const Content = ({
                             class="mt-4 add_another_pro"
                             onClick={() => {
                               bundleDiv.push("");
+                              bundle.bundleProducts = [...bundle.bundleProducts, ""]
                               setBundle({ ...bundle });
                             }}
                           >
@@ -305,10 +333,7 @@ const Content = ({
                               }}
                             />
                           </div>
-                          {/* {bundle.bundleDiscount.addDiscount.discountType !== "% OFF" && bundle.bundleDiscount.addDiscount.discountValue ===
-                            "" ||
-                            bundle.bundleDiscount.addDiscount.discountValue >
-                            100} */}
+
                           {bundle.bundleDiscount.addDiscount.discountType == "% OFF" && (bundle.bundleDiscount.addDiscount.discountValue ===
                             "" ||
                             bundle.bundleDiscount.addDiscount.discountValue >
@@ -345,17 +370,9 @@ const Content = ({
                       {bundle.bundleDiscount.freeGift.status ? (
                         <>
                           <div className="Polaris-FormLayout__Item">
-                            {/* {bundle.bundleDiscount.freeGift.freeGiftSlected == 0 ?
-                            <div className="Polaris-Choice__Descriptions Polaris-Text--subdued">
-                              Select atleast one product
-                            </div>
-                            :'' */}
-
                             <div className="Polaris-Choice__Descriptions freeProducts-Bundle ">
                               <div className="selected_product_list">
-                                {/* <ChoiceListComp selected={freeSelected} handleChange={freeHandleChange} choice={freeGift} /> */}
                                 {bundle.bundleProducts.map((x, i) => {
-                                  console.log(x, "gift");
                                   return (
                                     <>
                                       {x !== "" ? (
@@ -408,24 +425,6 @@ const Content = ({
                   </div>
                 </div>
               </div>
-              {/* <div className="Polaris-Card__Section">
-                <div className="sc-bczRLJ czvMoD">
-                  <div className="Polaris-FormLayout">
-                    <div className="Polaris-FormLayout__Item">
-                      <span className="Polaris-TextStyle--variationStrong">
-                        Advanced settings
-                      </span>
-                    </div>
-                    <div className="advanceChoiceList choiceList">
-                      <ChoiceListComp
-                        selected={selected}
-                        handleChange={handleChange}
-                        choice={choiceListArray}
-                      /> 
-                    </div>
-                  </div>
-                </div>
-              </div> */}
               <AdvanceSettings
                 bundle={bundle}
                 setBundle={setBundle}
@@ -440,12 +439,6 @@ const Content = ({
         <div className="col-lg-6 col-md-6 col-sm-6" ref={ref}>
           <BundlePreview bundle={bundle} currency={currency} design={design} />
         </div>
-
-        {/* <div className="col col-md-5" id='productTimer' ref={ref}>
-                    <div style={{ position: 'sticky', top: '20px' }} >
-                    </div>
-                </div> */}
-        {/* <ResourcePickerComp type="Product" state1={false} /> */}
       </div>
     </>
   );
@@ -574,7 +567,6 @@ const AdvanceSettings = ({
 
   const targetDiscountChild = () => {
     const removeTag = (i) => {
-      console.log(i);
       setCustomer([
         bundle.advanceSetting.targetCustomer.targetCustomerSelected[i],
         ...customer,
@@ -583,7 +575,6 @@ const AdvanceSettings = ({
       setBundle({ ...bundle });
     };
     const handelCheck = (x, i) => {
-      console.log(x);
       bundle.advanceSetting.targetCustomer.targetCustomerSelected = [
         x,
         ...bundle.advanceSetting.targetCustomer.targetCustomerSelected,

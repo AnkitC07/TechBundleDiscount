@@ -6,7 +6,7 @@ import CustomPosition from "../layouts/CustomPosition";
 import BundlePreview from "./BundlePreview";
 
 const Placement = ({ states }) => {
-  const { placement, setPlacement, bundle, designSettings, id } = states
+  const { placement, setPlacement, bundle, designSettings, id, currency } = states
 
   const [open, setOpen] = useState(false);
   const [openc, setOpenc] = useState(false);
@@ -161,7 +161,7 @@ const Placement = ({ states }) => {
           </div>
         </div>
         <div className="col-lg-6 col-md-5">
-          <BundlePreview bundle={bundle} design={designSettings} />
+          <BundlePreview bundle={bundle} design={designSettings} currency={currency} />
         </div>
       </div>
       <div>

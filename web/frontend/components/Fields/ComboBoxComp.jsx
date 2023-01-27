@@ -23,18 +23,15 @@ function ComboBoxComp(props) {
   };
 
   const search = () => {
-    // const getData = setTimeout(() => {
     if (props.type == "BundleProducts") {
       return props.products.filter((item) =>
-        item.title.toLowerCase().includes(textFieldValue)
+        item.title.toLowerCase().includes(textFieldValue) 
       );
     } else {
       return props.products.filter((item) =>
         item.first_name.toLowerCase().includes(textFieldValue)
       );
     }
-    // }, 500);
-    // return () => clearTimeout(getData);
   };
 
   const verticalContentMarkup =
@@ -63,29 +60,7 @@ function ComboBoxComp(props) {
       </Stack>
     ) : null;
 
-  // const handelCheck = (x) => {
-  //   console.log("Index", props.i - 1);
-  //   console.log("BundelProducts=> ", props.bundle.bundleProducts);
-  //   if (props.bundle.bundleProducts.length == 0) {
-  //     props.bundle.bundleProducts = [...props.bundle.bundleProducts, x];
-  //   } else {
-  //     console.log("Slicing=>", props.bundle.bundleProducts[props.i - 1]);
-  //     if (props.bundle.bundleProducts[props.i - 1] == "") {
-  //       const index = props.products.findIndex((el) => el.id === x.id);
-  //       props.products.splice(index, 1);
-  //       props.productsState([...props.products]);
-  //       props.bundle.bundleProducts[props.i - 1] = x;
-  //     } else {
-  //       props.products.push(props.bundle.bundleProducts[props.i - 1]);
-  //       props.bundle.bundleProducts[props.i - 1] = x;
-  //       const index = props.products.findIndex((el) => el.id === x.id);
-  //       props.products.splice(index, 1);
-  //       props.productsState([...props.products]);
-  //     }
-  //     console.log(props.products, "Products");
-  //   }
-  //   props.setBundle({ ...props.bundle });
-  // };
+
 
   //     useEffect(() => {
   //     if (textFieldValue != "") {

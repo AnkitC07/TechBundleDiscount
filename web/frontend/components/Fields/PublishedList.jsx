@@ -21,28 +21,29 @@ function PublishedList({ item }) {
                             url={`/bundleDiscount?id=${item._id}`}
                         // accessibilityLabel={`View details for ${name}`}
                         >
-                            <Stack distribution="fillEvenly">
-                                <h1 style={{ fontWeight: 'bold' }}>
-                                    {item.Content.offerHeader}
-                                    {/*  {item.Content.timerName} */}
-                                </h1>
-                                <div className=" dwxbiy">
-                                    <div>
-                                        {/* {item.Type} */}
-                                    </div>
-                                    <div>
-                                        {/* 2 min */}
-                                    </div>
-                                    <div>
 
-                                        {item.IsPublished == 'published' ?
-                                            <BadgeCustom status={'success'} text={'Published'} />
-                                            :
-                                            <BadgeCustom status={''} text={'Not Published'} />
-                                        }
+                            <Stack distribution="fillEvenly">
+                                <div>
+                                    <h1 style={{ fontWeight: "bold" }}>
+                                        {item.Content.discountName}
+                                    </h1>
+                                </div>
+                                <div>
+                                    <h1 style={{ fontWeight: "bold" }}>
+                                        {item.Content.offerHeader}
+                                    </h1>
+                                </div>
+                                <div className=" dwxbiy">
+                                    <div></div>
+                                    <div></div>
+                                    <div>
+                                        {item.IsPublished == "published" ? (
+                                            <BadgeCustom status={"success"} text={"Published"} />
+                                        ) : (
+                                            <BadgeCustom status={""} text={"Not Published"} />
+                                        )}
                                     </div>
                                 </div>
-
                             </Stack>
                         </ResourceItem>
                     );

@@ -61,8 +61,9 @@ const BundleDiscount = () => {
   const [Html, setHtml] = useState('')
   const [ispublished, setIspublished] = useState(false)
   const [bundle, setBundle] = useState({
+    discountName: 'Bundle Discount',
     offerHeader: "Buy more and save",
-    bundleProducts: [],
+    bundleProducts: ["",""],
     bundleDiscount: {
       addDiscount: {
         status: true,
@@ -192,10 +193,12 @@ const BundleDiscount = () => {
 
   useEffect(() => {
 
+
+
     fetch(`/api/products?id=${lastId}`)
       .then((res) => res.json())
       .then((x) => {
-        console.log(x, "products ids");
+        // console.log(x, "products ids");
         const len = x.length - 1;
         const id = x[len].id;
         const pro = products.concat(x);
@@ -206,8 +209,8 @@ const BundleDiscount = () => {
   }, [lastId]);
 
   useEffect(() => {
+    setHtml(document.querySelector("#getHTMLData") !== null ? document.querySelector("#getHTMLData").innerHTML : '')
 
-    console.log("ID=>", id)
     fetch("/api/getCurrency")
       .then((res) => res.json())
       .then((data) => setCurrency(data.cur))
@@ -227,19 +230,19 @@ const BundleDiscount = () => {
         body: JSON.stringify({ id: id }),
       });
       const data = await res.json();
-      console.log(data, "GetDataById")
-      // setContent({
-      //   ...data.data.Content,
-      //   timerType: UpdateTimerType(data, "Content"),
-      // });
-      setBundle(data.data.Content)
-      designSatte(data.data.Design);
-      setPlacement(data.data.Placement);
-      settingState(data.data.Badge)
-      setHtml(data.data.Html);
-      setIspublished(data.data.IsPublished);
-      setBtnMain(data.data.IsPublished == "published" ? false : true);
+      const products = { ...data.data.Content }
+      console.log("Data: ", data)
+      setTimeout(() => {
+        designSatte(data.data.Design);
+        setPlacement(data.data.Placement);
+        settingState(data.data.Badge)
+        setHtml(data.data.Html);
+        setIspublished(data.data.IsPublished);
+        setBtnMain(data.data.IsPublished == "published" ? false : true);
+        setBundle(products)
+      }, 1000)
     };
+
     if (id !== null) {
       getDataById();
     }
@@ -251,7 +254,7 @@ const BundleDiscount = () => {
   if (ID !== undefined && id == null) {
     id = ID;
   }
-  console.log(ID)
+  // console.log(ID)
   const BanneronDismiss = () => {
     setBanner(false)
   }
@@ -280,8 +283,8 @@ const BundleDiscount = () => {
       modalState({
         state: true,
         title: "Duplicate timer",
-        content: `Are you sure you want to duplicate Bundle Discount?`,
-        // content: `Are you sure you want to duplicate ${content.timerName}?`,
+        // content: `Are you sure you want to duplicate Bundle Discount?`,
+        content: `Are you sure you want to duplicate ${bundle.discountName}?`,
         primary: [
           {
             content: "Duplicate",
@@ -294,7 +297,7 @@ const BundleDiscount = () => {
       });
       return false;
     }
-    console.log(modal);
+    // console.log(modal);
   };
   const deleteBtn = async (idrec) => {
     loadingModalbtn(true);
@@ -334,19 +337,18 @@ const BundleDiscount = () => {
     },
   ];
   const handelPublish = async (statusUpdate) => {
-    console.log("badgeHtml=> ", badgeHtml)
+    // console.log("badgeHtml=> ", badgeHtml)
     setBtnLoading({
       type: statusUpdate,
       status: true
     })
-    console.log('Stauts Update=>', statusUpdate)
-    const setHTMl = document.querySelector("#getHTMLData") !== null ? document.querySelector("#getHTMLData").innerHTML : '';
-
+    console.log('Handle Publish Bundle=>', bundle)
+    // const setHTMl = document.querySelector("#getHTMLData") !== null ? document.querySelector("#getHTMLData").innerHTML : '';
     const body = {
       content: bundle,
       design: designSettings,
       placement: placement,
-      Html: setHTMl,
+      Html: Html,
       BadgeHtml: badgeHtml,
       badge: settings,
       ispublished: statusUpdate == "save" ? ispublished : statusUpdate,
@@ -362,7 +364,7 @@ const BundleDiscount = () => {
     })
       .then(res => res.json())
       .then(data => {
-        console.log(data)
+        console.log("Response form Publish=> ", data)
         setBtnLoading({
           type: statusUpdate,
           status: false
@@ -432,8 +434,7 @@ const BundleDiscount = () => {
                     <div className="Polaris-Header-Title__TitleAndSubtitleWrapper">
                       <div className="Polaris-Header-Title__TitleWithMetadataWrapper">
                         <h1 className="Polaris-Header-Title">
-                          {/* {content.productTimer} */}
-                          Bundle Discount Name
+                          {bundle.discountName}
                         </h1>
                         <div class="Polaris-Header-Title__TitleMetadata">
                           {ispublished == "published" ? (
@@ -446,7 +447,6 @@ const BundleDiscount = () => {
                     </div>
                   </div>
                   <div class="Polaris-Header-Title__SubTitle">
-                    {/* <p>Discount ID: Save or Publish to show discount ID</p> */}
                     <p>
                       Discount ID: <span>  {id ? `${id}` : 'Save or Publish to show discount ID'}</span>
                     </p>
@@ -457,7 +457,6 @@ const BundleDiscount = () => {
                   <div class="Polaris-ActionMenu">
                     <div class="Polaris-ActionMenu-Actions__ActionsLayout">
                       <div class="Polaris-ButtonGroup Polaris-ButtonGroup--extraTight">
-                        {console.log(id)}
                         {id != null ? <>
 
                           <div class="Polaris-ButtonGroup__Item">
@@ -486,20 +485,6 @@ const BundleDiscount = () => {
                           </div>
                         </> : ''}
 
-                        {/* <div class="Polaris-ButtonGroup__Item">
-                          <span class="Polaris-ActionMenu-SecondaryAction">
-                            <button
-                              class="Polaris-Button Polaris-Button--outline"
-                              type="button"
-                              onClick={handelPublish}
-                            >
-                              <span class="Polaris-Button__Content">
-                                <span class="Polaris-Button__Text">Save</span>
-                              </span>
-                            </button>
-                          </span>
-                        </div> */}
-
                         <div class="Polaris-ButtonGroup__Item">
                           <span class="Polaris-ActionMenu-SecondaryAction">
                             <Button
@@ -512,17 +497,6 @@ const BundleDiscount = () => {
                       </div>
                     </div>
                   </div>
-                  {/* <div class="Polaris-Page-Header__PrimaryActionWrapper">
-                    <Button
-                      primary
-                      onClick={() => {
-                        handelPublish("unPublished");
-                      }}
-                    //  loading={btnLoading}
-                    >
-                      Publish
-                    </Button>
-                  </div> */}
                   <div class="Polaris-Page-Header__PrimaryActionWrapper">
                     {btnMain
                       ?

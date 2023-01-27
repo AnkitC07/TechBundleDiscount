@@ -79,7 +79,7 @@ const BundlePreviewPro = ({ bundle, currency, design }) => {
   const [vIndex, setVIndex] = useState(0);
 
   const getTotal = () => {
-    console.log(price, "GEtTotal");
+    // console.log(price, "GEtTotal");
     let count = 0;
     let disCount = 0;
 
@@ -104,7 +104,6 @@ const BundlePreviewPro = ({ bundle, currency, design }) => {
     } else {
       setDisTotal((Math.round(disCount * 100) / 100).toFixed(2));
     }
-    console.log(disTotal);
     return disTotal;
   };
 
@@ -160,7 +159,6 @@ const BundlePreviewPro = ({ bundle, currency, design }) => {
       }
     }
     setPrice(obj);
-    console.log(price);
   }, [bundle]);
 
   useEffect(() => {
@@ -170,7 +168,6 @@ const BundlePreviewPro = ({ bundle, currency, design }) => {
   function applyDiscount(price, discountPercentage) {
     let discount = price * (discountPercentage / 100);
     discount = (Math.round((price - discount) * 100) / 100).toFixed(2);
-    console.log(price);
     if (bundle.bundleDiscount.addDiscount.discountType !== "% OFF") {
       let fixedDiscount = bundle.bundleDiscount.addDiscount.discountValue;
       return price;
