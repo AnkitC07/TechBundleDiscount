@@ -607,16 +607,7 @@ const AdvanceSettings = ({
       return (
         <div className="targetSearch">
           <div className="searchBoxTag">
-            {/* <ComboBoxComp
-              type={"AdvancedSettings"}
-              bundle={bundle}
-              i={0}
-              products={customer}
-              productsState={setCustomer}
-              setBundle={setBundle}
-              removeTag={removeTag}
-              handelCheck={handelCheck}
-            /> */}
+    
           </div>
         </div>
       );

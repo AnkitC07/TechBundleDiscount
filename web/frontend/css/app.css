@@ -649,8 +649,9 @@ div#accordion .card {
 }
 
 .previewScroll{
-  height: 350px;
+  height: 100%;
   overflow-y: auto;
+  max-height: calc(100vh - 303px);
 }
 .price_cut{
     white-space: nowrap;
