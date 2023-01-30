@@ -670,3 +670,6 @@ div#accordion .card {
 .Polaris-Backdrop {
     z-index: 99999 !important;
 }
+.frontpage p.Polaris-Text--root.Polaris-Text--headingLg.Polaris-Text--semibold {
+    font-weight: unset;
+}

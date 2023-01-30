@@ -63,7 +63,7 @@ const BundleDiscount = () => {
   const [bundle, setBundle] = useState({
     discountName: 'Bundle Discount',
     offerHeader: "Buy more and save",
-    bundleProducts: ["",""],
+    bundleProducts: ["", ""],
     bundleDiscount: {
       addDiscount: {
         status: true,
@@ -283,8 +283,7 @@ const BundleDiscount = () => {
       modalState({
         state: true,
         title: "Duplicate timer",
-        // content: `Are you sure you want to duplicate Bundle Discount?`,
-        content: `Are you sure you want to duplicate ${bundle.discountName}?`,
+        content: `Are you sure you want to duplicate ${bundle.discountName} ?`,
         primary: [
           {
             content: "Duplicate",

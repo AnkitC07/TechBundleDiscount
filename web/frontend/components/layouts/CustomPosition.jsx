@@ -15,7 +15,7 @@ const CustomPosition = ({
           id="insideTopSpacingHelpText"
           style={{ marginTop: "5px" }}
         >
-          Countdown timer app block can be added, removed, repositioned, and
+          Bundle discount app block can be added, removed, repositioned, and
           customized through the theme editor using timer ID.
         </div>
       </div>

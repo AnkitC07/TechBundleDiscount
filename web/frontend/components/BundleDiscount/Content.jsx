@@ -566,6 +566,7 @@ const AdvanceSettings = ({
   };
 
   const targetDiscountChild = () => {
+    console.log('Customer=>', customer)
     const removeTag = (i) => {
       setCustomer([
         bundle.advanceSetting.targetCustomer.targetCustomerSelected[i],
