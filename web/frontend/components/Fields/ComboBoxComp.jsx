@@ -17,7 +17,6 @@ function ComboBoxComp(props) {
     setPopoverActive((popoverActive) => !popoverActive);
 
   const handleTextFieldChange = (value) => {
-    // props.products.filter((item) => item.title.toLowerCase().includes(value));
     console.log(search());
     setTextFieldValue(value);
   };
@@ -28,9 +27,14 @@ function ComboBoxComp(props) {
         item.title.toLowerCase().includes(textFieldValue) 
       );
     } else {
-      return props.products.filter((item) =>
+      try{
+        return props.products.filter((item) =>
         item.first_name.toLowerCase().includes(textFieldValue)
       );
+      }catch(err){
+        return []
+      }
+      
     }
   };
 
@@ -83,8 +87,12 @@ function ComboBoxComp(props) {
         nameA = a.title.toUpperCase(); // ignore upper and lowercase
         nameB = b.title.toUpperCase(); // ignore upper and lowercase
       } else {
-        nameA = a.first_name.toUpperCase(); // ignore upper and lowercase
-        nameB = b.first_name.toUpperCase(); // ignore upper and lowercase
+        try{
+          nameA = a.first_name.toUpperCase(); // ignore upper and lowercase
+          nameB = b.first_name.toUpperCase(); // ignore upper and lowercase
+        }catch(err){
+
+        }
       }
       // sort in an ascending order
       if (nameA < nameB) {

@@ -566,6 +566,7 @@ const AdvanceSettings = ({
   };
 
   const targetDiscountChild = () => {
+    console.log(customer,"checkign customer data")
     const removeTag = (i) => {
       setCustomer([
         bundle.advanceSetting.targetCustomer.targetCustomerSelected[i],
@@ -584,22 +585,43 @@ const AdvanceSettings = ({
       setCustomer([...customer]);
       setBundle({ ...bundle });
     };
-    return (
-      <div className="targetSearch">
-        <div className="searchBoxTag">
-          <ComboBoxComp
-            type={"AdvancedSettings"}
-            bundle={bundle}
-            i={0}
-            products={customer}
-            productsState={setCustomer}
-            setBundle={setBundle}
-            removeTag={removeTag}
-            handelCheck={handelCheck}
-          />
+
+    try{
+      return (
+        <div className="targetSearch">
+          <div className="searchBoxTag">
+            <ComboBoxComp
+              type={"AdvancedSettings"}
+              bundle={bundle}
+              i={0}
+              products={customer}
+              productsState={setCustomer}
+              setBundle={setBundle}
+              removeTag={removeTag}
+              handelCheck={handelCheck}
+            />
+          </div>
         </div>
-      </div>
-    );
+      );
+    }catch(err){
+      return (
+        <div className="targetSearch">
+          <div className="searchBoxTag">
+            {/* <ComboBoxComp
+              type={"AdvancedSettings"}
+              bundle={bundle}
+              i={0}
+              products={customer}
+              productsState={setCustomer}
+              setBundle={setBundle}
+              removeTag={removeTag}
+              handelCheck={handelCheck}
+            /> */}
+          </div>
+        </div>
+      );
+    }
+    
   };
 
   const handleSpecificCheck = (value, status) => {
