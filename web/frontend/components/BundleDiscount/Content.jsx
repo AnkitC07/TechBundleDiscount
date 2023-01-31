@@ -566,7 +566,7 @@ const AdvanceSettings = ({
   };
 
   const targetDiscountChild = () => {
-    console.log(customer,"checkign customer data")
+    console.log(customer, "checkign customer data")
     const removeTag = (i) => {
       setCustomer([
         bundle.advanceSetting.targetCustomer.targetCustomerSelected[i],
@@ -586,7 +586,7 @@ const AdvanceSettings = ({
       setBundle({ ...bundle });
     };
 
-    try{
+    try {
       return (
         <div className="targetSearch">
           <div className="searchBoxTag">
@@ -603,16 +603,16 @@ const AdvanceSettings = ({
           </div>
         </div>
       );
-    }catch(err){
+    } catch (err) {
       return (
         <div className="targetSearch">
           <div className="searchBoxTag">
-    
+
           </div>
         </div>
       );
     }
-    
+
   };
 
   const handleSpecificCheck = (value, status) => {

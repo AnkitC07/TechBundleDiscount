@@ -63,7 +63,7 @@ const BundleDiscount = () => {
   const [bundle, setBundle] = useState({
     discountName: 'Bundle Discount',
     offerHeader: "Buy more and save",
-    bundleProducts: ["",""],
+    bundleProducts: ["", ""],
     bundleDiscount: {
       addDiscount: {
         status: true,
