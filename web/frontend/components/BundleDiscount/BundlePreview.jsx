@@ -94,7 +94,7 @@ const BundlePreviewPro = ({ bundle, currency, design }) => {
     }
 
     setTotal((Math.round(count * 100) / 100).toFixed(2));
-    if (bundle.bundleDiscount.addDiscount.discountType == `${currency}OFF`) {
+    if (bundle.bundleDiscount.addDiscount.status == true && bundle.bundleDiscount.addDiscount.discountType == `${currency}OFF`) {
       setDisTotal(
         (
           Math.round(
@@ -113,9 +113,11 @@ const BundlePreviewPro = ({ bundle, currency, design }) => {
     
     for (let i = 0; i < bundle.bundleProducts.length; i++) {
       const item = bundle.bundleProducts[i];
+
       if (item !== "" ) {
           const priceVal = item.variants[0].price;
           const compareVal = item.variants[0].compare_at_price;
+
           if(bundle.advanceSetting.customerOption.status == true ){
             if(item.variants.length <= 1 || price[item.id]?.selected == true){
               obj = {
@@ -141,6 +143,7 @@ const BundlePreviewPro = ({ bundle, currency, design }) => {
               },
             };
           } else {
+            console.log("getting price")
             obj = {
               ...obj,
               [item.id]: { price: priceVal, comparePrice: compareVal },
@@ -425,7 +428,7 @@ const Price = ({ data, bundle, currency, priceStates }) => {
               FREE
             </span>
           ) : (
-            pr?.comparePrice == undefined  ?'':`${currency} ${pr?.price}`
+            pr?.price == undefined  ?'':`${currency} ${pr?.price}`
           )}
         </div>
       </div>
