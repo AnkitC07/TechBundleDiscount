@@ -10,7 +10,7 @@ import Preview from "./ProductBadge/Preview.jsx";
 // import Preview from "../"
 const BundleDiscount = () => {
 
-  const [badgeHtml, setBadgeHtlml] = useState('')
+  const [badgeHtml, setBadgeHtlml] = useState('<div style="display: flex; justify-content: flex-end;"><div style="color: rgb(255, 255, 255); display: flex; align-items: center; justify-content: center; font-family: serif; background: rgb(0, 128, 96); font-size: 18px; padding: 5px 10px; border-radius: 55px; border: 1px solid rgb(0, 128, 96); width: 70%; height: 40px; text-align: center; overflow: hidden; font-style: normal; font-weight: bold;">Buy more and save test</div></div>')
   const navigate = useNavigate();
   const fetch = useAuthenticatedFetch();
   const [products, productsState] = useState([]);
@@ -142,10 +142,10 @@ const BundleDiscount = () => {
       ChooseOption: "Choose an option",
     },
     priceSavings: {
-      freeGift: 'Free',
-      FreeShippingTag: "Free shipping",
-      FreeGiftTag: "Free",
-      SaveTag: "SAVE {{discount}}",
+      freeGift: 'FREE',
+      FreeShippingTag: "FREE SHIPPING INCLUDED",
+      FreeGiftTag: "FREE GIFT INCLUDED",
+      SaveTag: "SAVE {discount}",
       Total: "Total",
       tagColor: "#008060",
       priceColor: "#008060",

@@ -1,7 +1,7 @@
 import { Card, Banner } from "@shopify/polaris";
 import React, { useState } from "react";
 import { useEffect } from "react";
-
+import parser from 'html-react-parser'
 export default function BundlePreview({ bundle, currency, design }) {
   const { settings, button, priceSavings } = design;
 
@@ -94,7 +94,7 @@ const BundlePreviewPro = ({ bundle, currency, design }) => {
     }
 
     setTotal((Math.round(count * 100) / 100).toFixed(2));
-    if (bundle.bundleDiscount.addDiscount.discountType == `${currency}OFF`) {
+    if (bundle.bundleDiscount.addDiscount.status == true && bundle.bundleDiscount.addDiscount.discountType == `${currency}OFF`) {
       setDisTotal(
         (
           Math.round(
@@ -229,6 +229,7 @@ const BundlePreviewPro = ({ bundle, currency, design }) => {
                       <div style={{ margin: "0px 7px" }}>{x.title}</div>
                     </div>
                     <Price
+                      design={design}
                       data={x}
                       bundle={bundle}
                       currency={currency}
@@ -308,7 +309,7 @@ const BundlePreviewPro = ({ bundle, currency, design }) => {
             padding: "20px 10px 10px 10px",
           }}
         >
-          <span style={{ fontWeight: "bold" }}>Total</span>
+          <span style={{ fontWeight: "bold" }}>{design.priceSavings.Total}</span>
           <div>
             <p
               style={{
@@ -319,15 +320,18 @@ const BundlePreviewPro = ({ bundle, currency, design }) => {
               }}
             >
               {bundle.bundleDiscount.freeGift.status
-                ? design.priceSavings.FreeGiftTag == '' ? design.priceSavings.FreeGiftTag : "FREE GIFT INCLUDED"
+                ? design.priceSavings.FreeGiftTag !== '' ? design.priceSavings.FreeGiftTag : "FREE GIFT INCLUDED"
                 : bundle.bundleDiscount.freeShiping.status
-                  ? design.priceSavings.FreeShippingTag == '' ? design.priceSavings.FreeShippingTag : "FREE SHIPPING INCLUDED"
+                  ? design.priceSavings.FreeShippingTag !== '' ? design.priceSavings.FreeShippingTag : "FREE SHIPPING INCLUDED"
                   : bundle.bundleDiscount.noDiscount.status
                     ? ""
                     : bundle.bundleDiscount.addDiscount.discountType ==
                       `${currency}OFF`
-                      ? `SAVE ${currency}${bundle.bundleDiscount.addDiscount.discountValue}`
-                      : `SAVE ${bundle.bundleDiscount.addDiscount.discountValue}%`}
+                      ?
+                      replaceDiscount(`${currency}${bundle.bundleDiscount.addDiscount.discountValue}`, design.priceSavings.SaveTag)
+                      : replaceDiscount(`${bundle.bundleDiscount.addDiscount.discountValue}%`, design.priceSavings.SaveTag)}
+
+
             </p>
             <div style={{ textAlign: "right" }}>
               <span
@@ -347,8 +351,7 @@ const BundlePreviewPro = ({ bundle, currency, design }) => {
                     color: "rgb(144, 149, 155)",
                   }}
                 >
-                  {currency}
-                  {total}
+                  {bundle.bundleDiscount.noDiscount.status ? '' : total > 0 ? `${currency} ${total}` : ''}
                 </span>
                 <span>
                   {currency}
@@ -383,7 +386,15 @@ const BundlePreviewPro = ({ bundle, currency, design }) => {
   );
 };
 
-const Price = ({ data, bundle, currency, priceStates }) => {
+const replaceDiscount = (dis, val) => {
+  let value = val
+  let discount = dis
+  value = parser(`${value.replace("{discount}", discount)}`)
+  return value
+}
+
+
+const Price = ({ design, data, bundle, currency, priceStates }) => {
   const pr = priceStates;
   console.log(pr, "checkign pricesssssssssssssss", pr?.comparePrice);
   return (
@@ -421,17 +432,17 @@ const Price = ({ data, bundle, currency, priceStates }) => {
             <span
               style={{ color: "green", fontWeight: "700", textAlign: "right" }}
             >
-              {design.priceSavings.FreeGiftTag == '' ? design.priceSavings.FreeGiftTag : 'FREE'}
+              {design.priceSavings.freeGift !== '' ? design.priceSavings.freeGift : 'FREE'}
             </span>
           ) : (
-            pr?.comparePrice == undefined ? '' : `${currency} ${pr?.price}`
+            pr?.price == undefined ? '' : `${currency} ${pr?.price}`
           )}
         </div>
       </div>
     </>
   );
 };
-  
+
 const Variants = ({
   v,
   bundle,
