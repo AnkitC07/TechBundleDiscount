@@ -85,9 +85,11 @@ const BundlePreviewPro = ({ bundle, currency, design }) => {
 
     const obj = Object.keys(price);
     for (let i = 0; i < obj.length; i++) {
-      if (bundle.bundleDiscount.addDiscount.discountType == `${currency}OFF`)
+      if (bundle.bundleDiscount.addDiscount.status == true && bundle.bundleDiscount.addDiscount.discountType == `${currency}OFF`){
         count = count + Number(price[obj[i]].price);
-      else count = count + Number(price[obj[i]].comparePrice);
+      }else{
+        count = count + Number(price[obj[i]].comparePrice);
+      }
       disCount = disCount + Number(price[obj[i]].price);
     }
 
@@ -112,14 +114,21 @@ const BundlePreviewPro = ({ bundle, currency, design }) => {
     for (let i = 0; i < bundle.bundleProducts.length; i++) {
       const item = bundle.bundleProducts[i];
       if (item !== "" ) {
-        if(bundle.advanceSetting.customerOption.status == true && item.variants.length <= 1 || bundle.advanceSetting.customerOption.status == false){
           const priceVal = item.variants[0].price;
           const compareVal = item.variants[0].compare_at_price;
-          if (
+          if(bundle.advanceSetting.customerOption.status == true ){
+            if(item.variants.length <= 1 || price[item.id]?.selected == true){
+              obj = {
+                ...obj,
+                [item.id]: { price: priceVal, comparePrice: compareVal },
+              };
+            }
+          }
+          else if (
             bundle.bundleDiscount.freeGift.status &&
             bundle.bundleDiscount.freeGift.freeGiftSlected.includes(item.id)
           ) {
-            obj = { ...obj, [item.id]: { price: 0, comparePrice: compareVal } };
+            obj = { ...obj, [item.id]: { price: 0, comparePrice: priceVal } };
           } else if (bundle.bundleDiscount.addDiscount.status) {
             obj = {
               ...obj,
@@ -137,7 +146,6 @@ const BundlePreviewPro = ({ bundle, currency, design }) => {
               [item.id]: { price: priceVal, comparePrice: compareVal },
             };
           } 
-        }
       }
     }
 
@@ -466,6 +474,7 @@ const Variants = ({
               comparePrice: bundle.bundleDiscount.addDiscount.status
                 ? prices
                 : comp,
+                selected:true
             };
 
             const getselectedVariant = bundle.bundleProducts[
