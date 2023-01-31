@@ -12,6 +12,7 @@ import bundleRouter from "./routes/SetBundle.js";
 import "./database/config.js";
 import AllDiscount from "./routes/AllDiscount.js";
 import GetDatabyId from "./routes/GetDatabyId.js";
+import createHmac from "create-hmac";
 const PORT = parseInt(process.env.BACKEND_PORT || process.env.PORT, 10);
 
 const STATIC_PATH =
@@ -33,10 +34,63 @@ app.post(
   shopify.processWebhooks({ webhookHandlers: GDPRWebhookHandlers })
 );
 
+app.use(express.json());
+
+// function verifyWebhook(payload, hmac) {
+//   const message = JSON.stringify(payload).toString();
+//   var check = createHmac("sha256", "559b428e001f7a75611db9f8e77309b4")
+//     .update(message)
+//     .digest("base64");
+//   return check === hmac;
+// }
+
+
+//   // START GDPR end point =====================================================================
+//   app.post("/api/data-request", async (req, res) => {
+//     console.log('checking')
+//     const hmac = req.headers["x-shopify-hmac-sha256"];
+//     const topic = req.header("X-Shopify-Topic");
+//     const verified = verifyWebhook(req.body, hmac);
+//     if (verified) {
+//       console.log("GDPR is verified",topic)
+//       res.status(200).send({ data: "data-request triggered" });
+//     } else {
+//       console.log("GDPR is not verified",topic)
+//       res.status(401).send({ data: "data-request triggered" });
+//     }
+//   });
+
+//   app.post("/api/data-erasure", (req, res) => {
+//     const hmac = req.headers["x-shopify-hmac-sha256"];
+//     const topic = req.header("X-Shopify-Topic");
+//     const verified = verifyWebhook(req.body, hmac);
+//     if (verified) {
+//       console.log("GDPR is verified",topic)
+//       res.status(200).send({ data: "data-request triggered" });
+//     } else {
+//       console.log("GDPR is not verified",topic)
+//       res.status(401).send({ data: "data-request triggered" });
+//     }
+//   });
+
+//   app.post("/api/shop-data-erasure", (req, res) => {
+//     const hmac = req.headers["x-shopify-hmac-sha256"];
+//     const topic = req.header("X-Shopify-Topic");
+//     const verified = verifyWebhook(req.body, hmac);
+//     if (verified) {
+//       console.log("GDPR is verified",topic)
+//       res.status(200).send({ data: "data-request triggered" });
+//     } else {
+//       console.log("GDPR is not verified",topic)
+//       res.status(401).send({ data: "data-request triggered" });
+//     }
+//   });
+
+
 // All endpoints after this point will require an active session
 app.use("/api/*", shopify.validateAuthenticatedSession());
 
-app.use(express.json());
+
 
 app.use("/api", bundleRouter);
 app.use("/api", AllDiscount);
@@ -51,7 +105,7 @@ app.get("/api/products", async (req, res) => {
       limit: 250,
       fields: "title,image,id,price,variants,options",
     });
-
+    console.log(res.locals.shopify.session)
     res.status(200).send(countData);
   } catch (err) {
     res.status(200).send({ error: err });

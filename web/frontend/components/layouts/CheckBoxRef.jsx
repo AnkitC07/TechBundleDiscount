@@ -7,7 +7,7 @@ export const CheckBoxRef = (props) => {
                 <div className="Polaris-Card">
                     <div className="Polaris-Card__Section">
                         <img src={props.src} style={{ width: '100%' }} />
-                        <div className="Polaris-TextContainer buttonContainer">
+                        <div className="Polaris-TextContainer buttonContainer" style={{height:"242px"}}>
                             <div className="cartdataclass">
                                 <h2 className="Polaris-Heading" style={{ marginTop: '10px' }}>{props.title}</h2>
                                 <p style={{ marginTop: '10px' }}>{props.description}</p>

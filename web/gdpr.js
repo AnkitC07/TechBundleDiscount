@@ -12,6 +12,9 @@ export default {
     callbackUrl: "/api/webhooks",
     callback: async (topic, shop, body, webhookId) => {
       const payload = JSON.parse(body);
+      // console.log(payload)
+      console.log("customer Request data")
+      return true
       // Payload has the following shape:
       // {
       //   "shop_id": 954889,
@@ -42,23 +45,11 @@ export default {
   CUSTOMERS_REDACT: {
     deliveryMethod: DeliveryMethod.Http,
     callbackUrl: "/api/webhooks",
-    callback: async (topic, shop, body, webhookId) => {
+    callback: async (topic, shop, body, webhookId,req,res) => {
       const payload = JSON.parse(body);
-      // Payload has the following shape:
-      // {
-      //   "shop_id": 954889,
-      //   "shop_domain": "{shop}.myshopify.com",
-      //   "customer": {
-      //     "id": 191167,
-      //     "email": "john@example.com",
-      //     "phone": "555-625-1199"
-      //   },
-      //   "orders_to_redact": [
-      //     299938,
-      //     280263,
-      //     220458
-      //   ]
-      // }
+      console.log(payload)
+      console.log("CUSTOMERS_REDACT data ...")
+      return 200
     },
   },
 
@@ -73,6 +64,7 @@ export default {
     callbackUrl: "/api/webhooks",
     callback: async (topic, shop, body, webhookId) => {
       const payload = JSON.parse(body);
+      console.log("shop deleted")
       // Payload has the following shape:
       // {
       //   "shop_id": 954889,
@@ -85,11 +77,8 @@ export default {
     callbackUrl: "/api/webhooks",
     callback: async (topic, shop, body, webhookId) => {
       const payload = JSON.parse(body);
-      // Payload has the following shape:
-      // {
-      //   "shop_id": 954889,
-      //   "shop_domain": "{shop}.myshopify.com"
-      // }
+      console.log("order created")
+      return 200
     },
   },
 };

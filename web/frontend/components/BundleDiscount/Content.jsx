@@ -479,7 +479,7 @@ const AdvanceSettings = ({
     return (
       <>
         <div className=" Polaris-Text--subdued mt-2">
-          Select atleast one product
+          Select at least one product
         </div>
         <div className="selected_product_list">
           {bundle.bundleProducts.map((x, i) => {

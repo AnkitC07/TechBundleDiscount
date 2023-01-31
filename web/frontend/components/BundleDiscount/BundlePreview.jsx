@@ -13,6 +13,7 @@ export default function BundlePreview({ bundle, currency, design }) {
             <div
               style={{
                 background: "white",
+                padding:'0px 10px 10px 10px',
                 color: `${settings.FontColor}`,
                 fontSize: `${settings.FontSize}px`,
                 fontFamily: settings.FontFamily,
@@ -45,7 +46,7 @@ export default function BundlePreview({ bundle, currency, design }) {
       <div className="mt-4">
         <Banner icon={false} onDismiss={() => { }}>
           <p>
-            You can design the app in the "Design" tab after you're done
+            You can design the bundle style in the "Design" tab after you're done
             creating your offer.
           </p>
         </Banner>
