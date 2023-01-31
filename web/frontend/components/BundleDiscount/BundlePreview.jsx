@@ -43,7 +43,7 @@ export default function BundlePreview({ bundle, currency, design }) {
         </div>
       </div>
       <div className="mt-4">
-        <Banner icon={false} onDismiss={() => {}}>
+        <Banner icon={false} onDismiss={() => { }}>
           <p>
             You can design the app in the "Design" tab after you're done
             creating your offer.
@@ -85,9 +85,11 @@ const BundlePreviewPro = ({ bundle, currency, design }) => {
 
     const obj = Object.keys(price);
     for (let i = 0; i < obj.length; i++) {
-      if (bundle.bundleDiscount.addDiscount.discountType == `${currency}OFF`)
+      if (bundle.bundleDiscount.addDiscount.status == true && bundle.bundleDiscount.addDiscount.discountType == `${currency}OFF`) {
         count = count + Number(price[obj[i]].price);
-      else count = count + Number(price[obj[i]].comparePrice);
+      } else {
+        count = count + Number(price[obj[i]].comparePrice);
+      }
       disCount = disCount + Number(price[obj[i]].price);
     }
 
@@ -108,35 +110,41 @@ const BundlePreviewPro = ({ bundle, currency, design }) => {
 
   useEffect(() => {
     let obj = {};
-    
+
     for (let i = 0; i < bundle.bundleProducts.length; i++) {
       const item = bundle.bundleProducts[i];
-      if (item !== "" ) {
-        if(bundle.advanceSetting.customerOption.status == true && item.variants.length <= 1 || bundle.advanceSetting.customerOption.status == false){
-          const priceVal = item.variants[0].price;
-          const compareVal = item.variants[0].compare_at_price;
-          if (
-            bundle.bundleDiscount.freeGift.status &&
-            bundle.bundleDiscount.freeGift.freeGiftSlected.includes(item.id)
-          ) {
-            obj = { ...obj, [item.id]: { price: 0, comparePrice: compareVal } };
-          } else if (bundle.bundleDiscount.addDiscount.status) {
-            obj = {
-              ...obj,
-              [item.id]: {
-                price: applyDiscount(
-                  priceVal,
-                  bundle.bundleDiscount.addDiscount.discountValue
-                ),
-                comparePrice: priceVal,
-              },
-            };
-          } else {
+      if (item !== "") {
+        const priceVal = item.variants[0].price;
+        const compareVal = item.variants[0].compare_at_price;
+        if (bundle.advanceSetting.customerOption.status == true) {
+          if (item.variants.length <= 1 || price[item.id]?.selected == true) {
             obj = {
               ...obj,
               [item.id]: { price: priceVal, comparePrice: compareVal },
             };
-          } 
+          }
+        }
+        else if (
+          bundle.bundleDiscount.freeGift.status &&
+          bundle.bundleDiscount.freeGift.freeGiftSlected.includes(item.id)
+        ) {
+          obj = { ...obj, [item.id]: { price: 0, comparePrice: priceVal } };
+        } else if (bundle.bundleDiscount.addDiscount.status) {
+          obj = {
+            ...obj,
+            [item.id]: {
+              price: applyDiscount(
+                priceVal,
+                bundle.bundleDiscount.addDiscount.discountValue
+              ),
+              comparePrice: priceVal,
+            },
+          };
+        } else {
+          obj = {
+            ...obj,
+            [item.id]: { price: priceVal, comparePrice: compareVal },
+          };
         }
       }
     }
@@ -213,9 +221,8 @@ const BundlePreviewPro = ({ bundle, currency, design }) => {
                             boxSizing: "border-box",
                             width: "70px",
                             height: "48px",
-                            background: `url(${
-                              x.image ? x.image.src : "no_image.png"
-                            }) center center / contain no-repeat rgb(237, 237, 237)`,
+                            background: `url(${x.image ? x.image.src : "no_image.png"
+                              }) center center / contain no-repeat rgb(237, 237, 237)`,
                           }}
                         ></div>
                       </div>
@@ -312,15 +319,15 @@ const BundlePreviewPro = ({ bundle, currency, design }) => {
               }}
             >
               {bundle.bundleDiscount.freeGift.status
-                ? "FREE GIFT INCLUDED"
+                ? design.priceSavings.FreeGiftTag == '' ? design.priceSavings.FreeGiftTag : "FREE GIFT INCLUDED"
                 : bundle.bundleDiscount.freeShiping.status
-                ? "FREE SHIPPING INCLUDED"
-                : bundle.bundleDiscount.noDiscount.status
-                ? ""
-                : bundle.bundleDiscount.addDiscount.discountType ==
-                  `${currency}OFF`
-                ? `SAVE ${currency}${bundle.bundleDiscount.addDiscount.discountValue}`
-                : `SAVE ${bundle.bundleDiscount.addDiscount.discountValue}%`}
+                  ? design.priceSavings.FreeShippingTag == '' ? design.priceSavings.FreeShippingTag : "FREE SHIPPING INCLUDED"
+                  : bundle.bundleDiscount.noDiscount.status
+                    ? ""
+                    : bundle.bundleDiscount.addDiscount.discountType ==
+                      `${currency}OFF`
+                      ? `SAVE ${currency}${bundle.bundleDiscount.addDiscount.discountValue}`
+                      : `SAVE ${bundle.bundleDiscount.addDiscount.discountValue}%`}
             </p>
             <div style={{ textAlign: "right" }}>
               <span
@@ -382,9 +389,9 @@ const Price = ({ data, bundle, currency, priceStates }) => {
   return (
     <>
       <div>
-        {pr?.comparePrice !== null && pr?.comparePrice !== undefined? (
+        {pr?.comparePrice !== null && pr?.comparePrice !== undefined ? (
           bundle.bundleDiscount.addDiscount.status &&
-          bundle.bundleDiscount.addDiscount.discountType === "% OFF" ? (
+            bundle.bundleDiscount.addDiscount.discountType === "% OFF" ? (
             <div>
               <span className="text-secondary">
                 <del>
@@ -394,7 +401,7 @@ const Price = ({ data, bundle, currency, priceStates }) => {
             </div>
           ) : bundle.bundleDiscount.addDiscount.status &&
             bundle.bundleDiscount.addDiscount.discountType ==
-              `${currency}OFF` ? (
+            `${currency}OFF` ? (
             ""
           ) : (
             <div>
@@ -410,21 +417,21 @@ const Price = ({ data, bundle, currency, priceStates }) => {
         )}
         <div style={{ textAlign: "right" }}>
           {bundle.bundleDiscount.freeGift.status &&
-          bundle.bundleDiscount.freeGift.freeGiftSlected.includes(data.id) ? (
+            bundle.bundleDiscount.freeGift.freeGiftSlected.includes(data.id) ? (
             <span
               style={{ color: "green", fontWeight: "700", textAlign: "right" }}
             >
-              FREE
+              {design.priceSavings.FreeGiftTag == '' ? design.priceSavings.FreeGiftTag : 'FREE'}
             </span>
           ) : (
-            pr?.comparePrice == undefined  ?'':`${currency} ${pr?.price}`
+            pr?.comparePrice == undefined ? '' : `${currency} ${pr?.price}`
           )}
         </div>
       </div>
     </>
   );
 };
-
+  
 const Variants = ({
   v,
   bundle,
@@ -459,13 +466,14 @@ const Variants = ({
             priceObj[v[0].product_id] = {
               price: bundle.bundleDiscount.addDiscount.status
                 ? applyDiscount(
-                    prices,
-                    bundle.bundleDiscount.addDiscount.discountValue
-                  )
+                  prices,
+                  bundle.bundleDiscount.addDiscount.discountValue
+                )
                 : prices,
               comparePrice: bundle.bundleDiscount.addDiscount.status
                 ? prices
                 : comp,
+              selected: true
             };
 
             const getselectedVariant = bundle.bundleProducts[
@@ -477,12 +485,12 @@ const Variants = ({
             bundle.bundleProducts[xIndex].variants[getselectedVariant] =
               firstVariant;
             setPrice({ ...price });
-            if(bundle.advanceSetting.customerOption.status == true){
+            if (bundle.advanceSetting.customerOption.status == true) {
               e.target.options[1].selected = true;
-            }else{
+            } else {
               e.target.options[0].selected = true;
             }
-            
+
           }}
         >
           {bundle.advanceSetting.customerOption.status == true ? (
