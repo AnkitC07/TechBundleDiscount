@@ -4,6 +4,7 @@ import Help from "./pages/Help";
 import Suggestions from "./pages/Suggestion";
 import BundleDiscount from "./components/BundleDiscount/BundleDiscount";
 import Homepage from "./components/Homepage";
+import Plan from "./pages/Plan";
 
 /**
  * File-based routing.
@@ -36,6 +37,7 @@ export default function Routes({ pages }) {
       <Route path="/Help" element={<Help />} />
       <Route path="/" element={<Homepage />} />
       <Route path="/bundleDiscount" element={<BundleDiscount />} />
+      <Route path="/Plan" element={<Plan />} />
     </ReactRouterRoutes>
   );
 }
