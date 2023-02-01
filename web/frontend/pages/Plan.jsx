@@ -1,6 +1,9 @@
-import { Button, Card, Icon, ProgressBar, Text } from "@shopify/polaris";
+import { Button, Card, Icon, ProgressBar, Spinner, Text } from "@shopify/polaris";
+import { AppFooter } from '../components/layouts/AppFooter'
 import { TickMinor } from "@shopify/polaris-icons";
 import "../css/plan.css";
+import { useState } from "react";
+import { useAuthenticatedFetch } from "../hooks/useAuthenticatedFetch";
 
 const Plan = () => {
   const freeplan = [
@@ -127,11 +130,57 @@ const Plan = () => {
           </div>
         </div>
       </div>
+      <AppFooter />
     </>
   );
 };
 
 const PlanCard = ({ title, subTitle, features, price }) => {
+  const fetch = useAuthenticatedFetch()
+  const [loadingPlan, setLoadingPlan] = useState(false);
+  const [disabledButton, setDisabledButton] = useState(false);
+
+  const plan_subscribed = {
+    title: title,
+    price: price
+  }
+
+  const handleButton = async () => {
+    setLoadingPlan(true);
+    setDisabledButton(true);
+    await fetch(`/api/payment-api`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ plan: plan_subscribed }),
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        setLoadingPlan(false)
+        setDisabledButton(false);
+        if (data.data) {
+          const url = data.data.url;
+          console.log(url);
+          // window.open(url, "_self");
+          window.top.location.href = url;
+          // window.open(data.data.url)
+        }
+      })
+      .catch((error) => {
+        setLoadingPlan(false);
+        setDisabledButton(false);
+        console.log(error);
+      });
+  };
+
+
+
+
+
+
+
+
   return (
     <>
       <Card sectioned title={title}>
@@ -179,10 +228,16 @@ const PlanCard = ({ title, subTitle, features, price }) => {
         )}
 
         <div className="mt-4">
-          <Button primary fullWidth={true}>
-            <Text variant="bodyMd" fontWeight="bold" as="p">
-              Choose Your Plan
-            </Text>
+          <Button primary fullWidth={true} onClick={() => handleButton()} disabled={disabledButton}>
+            {!loadingPlan ? (
+              <Text variant="bodyMd" fontWeight="bold" as="p">
+                Choose Your Plan
+              </Text>
+            ) : (
+              <Spinner accessibilityLabel="Small spinner example" size="small" />
+            )}
+
+
           </Button>
         </div>
       </Card>

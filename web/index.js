@@ -3,6 +3,7 @@ import { join } from "path";
 import { readFileSync } from "fs";
 import express from "express";
 import serveStatic from "serve-static";
+import bodyParser from "body-parser";
 
 import shopify from "./shopify.js";
 import productCreator from "./product-creator.js";
@@ -43,7 +44,6 @@ app.use(express.json());
 //     .digest("base64");
 //   return check === hmac;
 // }
-
 
 //   // START GDPR end point =====================================================================
 //   app.post("/api/data-request", async (req, res) => {
@@ -86,11 +86,93 @@ app.use(express.json());
 //     }
 //   });
 
-
 // All endpoints after this point will require an active session
+
+app.get("/api/paymenturl", async (req, res) => {
+  console.log(req.query.shop, "Session-----");
+  console.log(
+    "----------------------------------------------------------------------------------------"
+  );
+
+  const session = {
+    shop: req.query.shop,
+    accessToken: req.query.token,
+  };
+  console.log(session);
+  try {
+    const chargeId = req.query.charge_id;
+    const url = `https://${req.query.shop}/admin/apps/surebright-app?shop=${req.query.shop}`;
+    console.log(req.query.planPrice, "Priceee");
+
+    const recurring_application_charge =
+      new shopify.api.rest.RecurringApplicationCharge({
+        session: session,
+      });
+    recurring_application_charge.name = "Super Duper Plan";
+    recurring_application_charge.status = "accepted";
+    recurring_application_charge.return_url = url;
+    recurring_application_charge.test = true;
+    recurring_application_charge.price = req.query.planPrice;
+    recurring_application_charge.terms = "testing Data";
+    await recurring_application_charge.save({
+      update: true,
+    });
+
+    // database entry
+    // await updatePlan(
+    //   shopName,
+    //   req.query,
+    //   data.body.recurring_application_charge
+    // );
+    //    res.status(200).json({ data: session });
+    res.redirect(`/api/auth?shop=${req.query.shop}`);
+  } catch (error) {
+    // console.log(error)
+    res.status(404).json({
+      status: false,
+      error: error,
+    });
+  }
+});
 app.use("/api/*", shopify.validateAuthenticatedSession());
 
+// SUBSCRIBED PLAN
+app.post("/api/payment-api", bodyParser.json(), async (req, res) => {
+  res.setHeader("Access-Control-Allow-Origin", " *");
+  try {
+    // var shop_name_token = await getStoreAccessToken(req.body.shopName);
+    let shopName = res.locals.shopify.session.shop;
+    let tokenAccess = res.locals.shopify.session.accessToken;
 
+    const recurring_application_charge =
+      new shopify.api.rest.RecurringApplicationCharge({
+        session: res.locals.shopify.session,
+      });
+    recurring_application_charge.name = "Super Duper Plan";
+    recurring_application_charge.return_url = `https://def8-125-99-173-2.in.ngrok.io/api/paymenturl?shop=${shopName}&planType=${req.body.plan.title}&planPrice=${req.body.plan.price}&token=${tokenAccess}`;
+    recurring_application_charge.test = true;
+    recurring_application_charge.price = req.body.plan.price;
+    recurring_application_charge.terms = "testing Data";
+    await recurring_application_charge.save({
+      update: true,
+    });
+
+    const url = recurring_application_charge.confirmation_url;
+
+    res.status(200).json({
+      status: true,
+      data: {
+        url,
+      },
+    });
+  } catch (error) {
+    // console.log(error)
+    res.status(404).json({
+      status: false,
+      error: error,
+    });
+  }
+});
 
 app.use("/api", bundleRouter);
 app.use("/api", AllDiscount);
@@ -105,7 +187,7 @@ app.get("/api/products", async (req, res) => {
       limit: 250,
       fields: "title,image,id,price,variants,options",
     });
-    console.log(res.locals.shopify.session)
+    console.log(res.locals.shopify.session);
     res.status(200).send(countData);
   } catch (err) {
     res.status(200).send({ error: err });
