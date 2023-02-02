@@ -6,6 +6,7 @@ import { useState } from "react";
 import { useAuthenticatedFetch } from "../hooks/useAuthenticatedFetch";
 
 const Plan = () => {
+  let days = 1;
   const freeplan = [
     {
       icon: TickMinor,
@@ -57,7 +58,7 @@ const Plan = () => {
           </Text>
           <div className="mt-3">
             <ProgressBar
-              progress={Math.floor(7.2 * 1)}
+              progress={Math.floor(7.2 * days)}
               size="small"
               color="primary"
             />
@@ -142,41 +143,38 @@ const PlanCard = ({ title, subTitle, features, price }) => {
 
   const plan_subscribed = {
     title: title,
-    price: price
+    price: price == 'Free' ? '0' : price
   }
   const handleButton = async () => {
     console.log(plan_subscribed, "Plan")
-    //   setLoadingPlan(true);
-    //   setDisabledButton(true);
-    //   await fetch(`/api/payment-api`, {
-    //     method: "POST",
-    //     headers: {
-    //       "Content-Type": "application/json",
-    //     },
-    //     body: JSON.stringify({ plan: plan_subscribed }),
-    //   })
-    //     .then((response) => response.json())
-    //     .then((data) => {
-    //       setLoadingPlan(false)
-    //       setDisabledButton(false);
-    //       if (data.data) {
-    //         const url = data.data.url;
-    //         console.log(url);
-    //         // window.open(url, "_self");
-    //         window.top.location.href = url;
-    //         // window.open(data.data.url)
-    //       }
-    //     })
-    //     .catch((error) => {
-    //       setLoadingPlan(false);
-    //       setDisabledButton(false);
-    //       console.log(error);
-    //     });
+    setLoadingPlan(true);
+    setDisabledButton(true);
+    await fetch(`/api/payment-api`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ plan: plan_subscribed }),
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        console.log(data)
+        setLoadingPlan(false)
+        setDisabledButton(false);
+        if (data.data) {
+          const url = data.data.url;
+          console.log(url);
+          // window.open(url, "_self");
+          window.top.location.href = url;
+          // window.open(data.data.url)
+        }
+      })
+      .catch((error) => {
+        setLoadingPlan(false);
+        setDisabledButton(false);
+        console.log(error);
+      });
   };
-
-
-
-
 
 
 

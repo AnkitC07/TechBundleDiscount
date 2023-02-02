@@ -1,10 +1,9 @@
 import { Button, Select, Modal, Card, Tabs } from "@shopify/polaris";
-import { useState, useCallback ,useEffect} from "react";
+import { useState, useCallback, useEffect } from "react";
 import './onboarding.css'
 import { useNavigate } from "react-router-dom";
 
-import thank from './Thank you for installing CanCode.io App’s - Countdown Timer Banner.svg'
-import logo from './Logo.svg'
+import thank from '../../public/Thankyou-Bundle Discount Manager.svg'
 import getShopName from "../Common/getShopName";
 import { useAuthenticatedFetch } from "../../hooks/useAuthenticatedFetch";
 
@@ -51,24 +50,25 @@ function Setup({ content }) {
 function Installation() {
   const [selected, setSelected] = useState();
   const [imgLoading, loadingstate] = useState(true);
-  const [optionsValues,optionsState] = useState([])
+  const [optionsValues, optionsState] = useState([])
   const fetch = useAuthenticatedFetch();
-  const shopName = getShopName();
+  let shopName = getShopName();
 
-  useEffect(()=>{
+  useEffect(() => {
     optionsData()
-  },[])
+  }, [])
 
   const handleSelectChange = useCallback((value) => {
     setSelected(value)
   }, []);
 
-  const optionsData = async () =>{
+  const optionsData = async () => {
     const fetchData = await fetch(`/api/getTheme?shopName=${shopName}`)
     const getData = await fetchData.json()
-    console.log(getData,"onboarding page")
-    let newoptions = getData.data.map(x=>{return{label:x.name,value:`${x.id}`}})
-    let selectedOptions = getData.data.filter(x=>x.role == 'main')
+    console.log(getData, "onboarding page")
+    shopName = getData.shop
+    let newoptions = getData.data.map(x => { return { label: x.name, value: `${x.id}` } })
+    let selectedOptions = getData.data.filter(x => x.role == 'main')
     setSelected(`${selectedOptions[0].id}`)
     optionsState(newoptions)
   }
@@ -77,12 +77,12 @@ function Installation() {
     return (
       <div className="customSelectStyle">
         <Select
-        id="customSelectStyle"
-        label={<b>Select a theme to add the Pre-Order Button App Embeds</b>}
-        options={optionsValues}
-        onChange={handleSelectChange}
-        value={selected}
-      />
+          id="customSelectStyle"
+          label={<b>Select a theme to add the Bundle Discount  App Embeds</b>}
+          options={optionsValues}
+          onChange={handleSelectChange}
+          value={selected}
+        />
       </div>
     );
   };
@@ -91,29 +91,28 @@ function Installation() {
       <div>
         <p>
           <b>
-            Please enable the Terms & Condition Checkbox embed in your store
-            theme setting
+            Please enable the Bundle Discount Manager embed in your store theme setting
           </b>
         </p>
-        <p className="subtext" style={{marginTop:"10px"}}>Step 1: Go to theme customization</p>
+        <p className="subtext" style={{ marginTop: "10px" }}>Step 1: Go to theme customization</p>
         <p className="subtext">Step 2: Go to theme setting</p>
         <p className="subtext">Step 3: Click App embeds</p>
-        <p className="subtext">Step 4; Enable Pre-Order Button App Embeds</p>
+        <p className="subtext">Step 4; Enable Bundle Discount Manager App Embeds</p>
       </div>
       <div className="image">
         {imgLoading == true ? <p className="loading"></p> : ""}
         <img
-          src={"install.svg"}
+          src={"4_App-on-boarding-Art-Work 3.svg"}
           onLoad={() => loadingstate(false)}
-          style={{width:"100%"}}
+          style={{ width: "100%" }}
           className={imgLoading == true ? "isloading" : ""}
         />
       </div>
       <div className="dropdwon">
         {dropdown()}
         <div className="button">
-          <Button primary onClick={()=>{
-           window.open(`https://${shopName}/admin/themes/${selected}/editor?context=apps`)
+          <Button primary onClick={() => {
+            window.open(`https://${shopName}/admin/themes/${selected}/editor?context=apps`)
           }}>Preview in theme</Button>
         </div>
       </div>
@@ -174,7 +173,7 @@ function TabsExample({ content, state, all, displayState }) {
   );
 }
 
-function PolarisModal({ active ,onclick}) {
+function PolarisModal({ active, onclick }) {
   const [index, setIndex] = useState(0);
   const [display, setDisplay] = useState(true);
   const navigate = useNavigate();
@@ -184,28 +183,26 @@ function PolarisModal({ active ,onclick}) {
   const content = [
     {
       heading: `How does the 
-      Countdown Timer Banner work?
-      `,
+Bundle Discount Manager work?`,
       subheading:
-        "With Cancode.io Countdown Timer, you can now easily persuade your customers to complete their purchase before the time runs out.",
+        "You can use this Bundle discount app for giving your customer discounts and offers",
       faq: {
         faqText: "Learn more in our FAQ",
         faqUrl: "https://cancode.tawk.help/",
       },
-      src: 'Layer_1.svg',
+      src: 'Group 30.svg',
       footerSrc: [
         thank,
-       logo,
       ],
     },
     {
-      heading: `Create a Countdown Timer`,
-      subheading: "Click the “Create a new timer” on the dashboard",
+      heading: `Create a chekbox`,
+      subheading: "Click the “Create Bundle Discount” on the dashboard",
       faq: {
         faqText: "Learn more in our FAQ",
         faqUrl: "https://cancode.tawk.help/",
       },
-      src: "a_1 1.svg",
+      src: "Screenshot-2023-02-01-at-1.23 1.svg",
       footerSrc: [],
     },
     {
@@ -221,12 +218,12 @@ function PolarisModal({ active ,onclick}) {
     },
     {
       heading: `27/7 Support`,
-      subheading: "If you need any help, please contact our email and live chat",
+      subheading: "If you need any help, please contact our email",
       faq: {
         faqText: "Learn more in our FAQ",
         faqUrl: "https://cancode.tawk.help/",
       },
-      src: "24s.svg",
+      src: "Screen-3 3.svg",
       footerSrc: [],
     },
   ];
@@ -272,9 +269,9 @@ function PolarisModal({ active ,onclick}) {
   );
 }
 export default function OnboardingScreens(props) {
-  const [active,setActive] = useState(true)
+  const [active, setActive] = useState(true)
 
-  const handle = ()  =>{
+  const handle = () => {
     setActive(false)
   }
 

@@ -1,12 +1,12 @@
 .Polaris-Modal-Header--titleHidden {
     display: none!important;
     }
-    #onboardingModal section.Polaris-Modal-Section {
+    section.Polaris-Modal-Section {
         padding: 0;
     }
-    #onboardingModal .Polaris-Modal__BodyWrapper{
-        overflow: hidden;
-    }
+    /* .Polaris-Modal__BodyWrapper{
+        overflow: hidden!important;
+    } */
     .heading p {
         font-size: 20px;
         font-weight: 800;
@@ -75,7 +75,7 @@
         height: 500px;
     }
     
-    #onboardingModal .Polaris-Scrollable--verticalHasScrolling,.Polaris-Scrollable--vertical{
+    .Polaris-Scrollable--verticalHasScrolling,.Polaris-Scrollable--vertical{
         overflow: hidden!important;
     }
     .isloading{
@@ -89,6 +89,31 @@
         background-color: lightgray;
         top: 30%;
     }
+    .image{
+        text-align: center;
+    }
+    .image img:hover{
+        transform: scale(1);
+    }
+    .onboaringImage{
+            display: block!important;
+            margin: 0 20px!important;
+            margin-left: 60px!important;
+    }
 
+    .onboardingScreens .Polaris-Modal-CloseButton{
+        display: none;
+    }
+
+
+    div#all-customers-content-1, div#accepts-marketing-content-1 {
+        overflow-y: scroll;
+        height: 447px;
+        overflow-x: hidden;
+    }
+
+    /* .Polaris-Modal-CloseButton{
+        display: none!important;
+    } */
 
     
