@@ -3,6 +3,7 @@ import React, { useContext } from "react";
 import { useState, useEffect } from "react";
 import { NavLink, useNavigate } from "react-router-dom";
 import { useAuthenticatedFetch } from "../../hooks/useAuthenticatedFetch.js";
+import getShopName from "../Common/getShopName.jsx";
 import CustomModal from "../layouts/Modal.jsx";
 import NavbarMain from "../layouts/NavbarMain.jsx";
 import ToastComp from "../layouts/ToastComp.jsx";
@@ -185,9 +186,55 @@ const BundleDiscount = () => {
     },
   });
   /************************************/
+  const shopName = getShopName()
+  const [themeId, themeIdState] = useState('')
+  const [onboardingScreen, setOnboarding] = useState({
+    loading: true,
+    status: true,
+  });
 
+  // useEffect(() => {
+  //   const getStoreDetails = async () => {
 
+  //     const fetchData = await fetch(`/api/getDetails?shopName=${shopName}`);
+  //     const getdata = await fetchData.json();
+  //     console.log(getdata, "get details data")
+  //     if (getdata.theme !== null) {
+  //       themeIdState(getdata.theme.id)
+  //       if (shopName.includes('admin.shopify.com')) {
+  //         let shop = ''
+  //         if (getdata.theme.session.shop.includes('myshopify.com')) {
+  //           shop = getdata.theme.session.shop.split('.myshopify.com')
+  //           shop = shop[0]
+  //           urlState(`https://admin.shopify.com/store/${shop}/themes/${getdata.theme.id}/editor?context=apps`)
+  //         }
+  //       } else {
+  //         urlState(`https://${shopName}/admin/themes/${getdata.theme.id}/editor?context=apps`)
+  //       }
+  //     }
+  //     if (getdata.data !== null && getdata.data.tag !== undefined) {
+  //       setTag(getdata.data.tag)
+  //     }
+  //     // console.log(getdata,"store data")
+  //     if (getdata.status == 200) {
+  //       if (getdata.data == null) {
 
+  //         setOnboarding({ loading: false, status: true });
+  //         return;
+  //       }
+
+  //       if (getdata.data.onboarding == true) {
+  //         setOnboarding({ loading: false, status: true });
+  //       } else {
+  //         setOnboarding({ loading: false, status: false });
+  //       }
+  //     } else {
+  //       setOnboarding({ loading: true, status: true });
+  //     }
+  //   }
+  //   getStoreDetails()
+
+  // }, []);
 
 
 
@@ -399,165 +446,172 @@ const BundleDiscount = () => {
   };
 
   return (
-    <section className="product_main_page">
-      <div className="containerCustom mb-5">
-        <div className="row sticky">
-          <div className="col-md-12">
-            <div className="Polaris-Page-Header Polaris-Page-Header--hasNavigation Polaris-Page-Header--hasActionMenu Polaris-Page-Header--mediumTitle">
-              <div className="Polaris-Page-Header__Row">
-                <div className="Polaris-Page-Header__BreadcrumbWrapper">
-                  <nav role="navigation">
-                    <NavLink className="count_btn" to="/">
-                      <button
-                        className="Polaris-Breadcrumbs__Breadcrumb"
-                        type="button"
-                      >
-                        <span className="Polaris-Breadcrumbs__Icon">
-                          <span className="Polaris-Icon">
-                            <span className="Polaris-VisuallyHidden"></span>
-                            <svg
-                              viewBox="0 0 20 20"
-                              className="Polaris-Icon__Svg"
-                              focusable="false"
-                              aria-hidden="true"
-                            >
-                              <path d="M17 9h-11.586l3.293-3.293a.999.999 0 1 0-1.414-1.414l-5 5a.999.999 0 0 0 0 1.414l5 5a.997.997 0 0 0 1.414 0 .999.999 0 0 0 0-1.414l-3.293-3.293h11.586a1 1 0 1 0 0-2z"></path>
-                            </svg>
+    <>
+      <section className="product_main_page">
+        <div className="containerCustom mb-5">
+          <div className="row sticky">
+            <div className="col-md-12">
+              <div className="Polaris-Page-Header Polaris-Page-Header--hasNavigation Polaris-Page-Header--hasActionMenu Polaris-Page-Header--mediumTitle">
+                <div className="Polaris-Page-Header__Row">
+                  <div className="Polaris-Page-Header__BreadcrumbWrapper">
+                    <nav role="navigation">
+                      <NavLink className="count_btn" to="/">
+                        <button
+                          className="Polaris-Breadcrumbs__Breadcrumb"
+                          type="button"
+                        >
+                          <span className="Polaris-Breadcrumbs__Icon">
+                            <span className="Polaris-Icon">
+                              <span className="Polaris-VisuallyHidden"></span>
+                              <svg
+                                viewBox="0 0 20 20"
+                                className="Polaris-Icon__Svg"
+                                focusable="false"
+                                aria-hidden="true"
+                              >
+                                <path d="M17 9h-11.586l3.293-3.293a.999.999 0 1 0-1.414-1.414l-5 5a.999.999 0 0 0 0 1.414l5 5a.997.997 0 0 0 1.414 0 .999.999 0 0 0 0-1.414l-3.293-3.293h11.586a1 1 0 1 0 0-2z"></path>
+                              </svg>
+                            </span>
                           </span>
-                        </span>
-                      </button>
-                    </NavLink>
-                  </nav>
-                </div>
-                <div className="Polaris-Page-Header__TitleWrapper">
-                  <div>
-                    <div className="Polaris-Header-Title__TitleAndSubtitleWrapper">
-                      <div className="Polaris-Header-Title__TitleWithMetadataWrapper">
-                        <h1 className="Polaris-Header-Title">
-                          {bundle.discountName}
-                        </h1>
-                        <div class="Polaris-Header-Title__TitleMetadata">
-                          {ispublished == "published" ? (
-                            <Badge status="success">Published</Badge>
-                          ) : (
-                            <Badge>Not published</Badge>
-                          )}
+                        </button>
+                      </NavLink>
+                    </nav>
+                  </div>
+                  <div className="Polaris-Page-Header__TitleWrapper">
+                    <div>
+                      <div className="Polaris-Header-Title__TitleAndSubtitleWrapper">
+                        <div className="Polaris-Header-Title__TitleWithMetadataWrapper">
+                          <h1 className="Polaris-Header-Title">
+                            {bundle.discountName}
+                          </h1>
+                          <div class="Polaris-Header-Title__TitleMetadata">
+                            {ispublished == "published" ? (
+                              <Badge status="success">Published</Badge>
+                            ) : (
+                              <Badge>Not published</Badge>
+                            )}
+                          </div>
                         </div>
                       </div>
                     </div>
+                    <div class="Polaris-Header-Title__SubTitle">
+                      <p>
+                        Discount ID: <span>  {id ? `${id}` : 'Save or Publish to show discount ID'}</span>
+                      </p>
+
+                    </div>
                   </div>
-                  <div class="Polaris-Header-Title__SubTitle">
-                    <p>
-                      Discount ID: <span>  {id ? `${id}` : 'Save or Publish to show discount ID'}</span>
-                    </p>
+                  <div className="Polaris-Page-Header__RightAlign">
+                    <div class="Polaris-ActionMenu">
+                      <div class="Polaris-ActionMenu-Actions__ActionsLayout">
+                        <div class="Polaris-ButtonGroup Polaris-ButtonGroup--extraTight">
+                          {id != null ? <>
 
-                  </div>
-                </div>
-                <div className="Polaris-Page-Header__RightAlign">
-                  <div class="Polaris-ActionMenu">
-                    <div class="Polaris-ActionMenu-Actions__ActionsLayout">
-                      <div class="Polaris-ButtonGroup Polaris-ButtonGroup--extraTight">
-                        {id != null ? <>
+                            <div class="Polaris-ButtonGroup__Item">
+                              <span class="Polaris-ActionMenu-SecondaryAction Polaris-ActionMenu-SecondaryAction--destructive">
+                                <button class="Polaris-Button Polaris-Button--outline" aria-disabled="false" type="button"
+                                  onClick={() => modalActivator("Delete")}
+                                >
+                                  <span class="Polaris-Button__Content">
+                                    <span class="Polaris-Button__Text">Delete</span>
+                                  </span>
+                                </button>
+                              </span>
+                            </div>
 
-                          <div class="Polaris-ButtonGroup__Item">
-                            <span class="Polaris-ActionMenu-SecondaryAction Polaris-ActionMenu-SecondaryAction--destructive">
-                              <button class="Polaris-Button Polaris-Button--outline" aria-disabled="false" type="button"
-                                onClick={() => modalActivator("Delete")}
-                              >
-                                <span class="Polaris-Button__Content">
-                                  <span class="Polaris-Button__Text">Delete</span>
-                                </span>
-                              </button>
-                            </span>
-                          </div>
 
+                            <div class="Polaris-ButtonGroup__Item">
+                              <span class="Polaris-ActionMenu-SecondaryAction">
+                                <button class="Polaris-Button Polaris-Button--outline" aria-disabled="false" type="button"
+                                  onClick={() => modalActivator("Duplicate")}
+                                >
+                                  <span class="Polaris-Button__Content">
+                                    <span class="Polaris-Button__Text">Duplicate</span>
+                                  </span>
+                                </button>
+                              </span>
+                            </div>
+                          </> : ''}
 
                           <div class="Polaris-ButtonGroup__Item">
                             <span class="Polaris-ActionMenu-SecondaryAction">
-                              <button class="Polaris-Button Polaris-Button--outline" aria-disabled="false" type="button"
-                                onClick={() => modalActivator("Duplicate")}
-                              >
-                                <span class="Polaris-Button__Content">
-                                  <span class="Polaris-Button__Text">Duplicate</span>
-                                </span>
-                              </button>
+                              <Button
+                                onClick={() => handelPublish("save")}
+                                loading={btnLoading.type == "save" ? btnLoading.status : false}
+                              >Save</Button>
                             </span>
                           </div>
-                        </> : ''}
 
-                        <div class="Polaris-ButtonGroup__Item">
-                          <span class="Polaris-ActionMenu-SecondaryAction">
-                            <Button
-                              onClick={() => handelPublish("save")}
-                              loading={btnLoading.type == "save" ? btnLoading.status : false}
-                            >Save</Button>
-                          </span>
                         </div>
-
                       </div>
                     </div>
-                  </div>
-                  <div class="Polaris-Page-Header__PrimaryActionWrapper">
-                    {btnMain
-                      ?
-                      <Button primary onClick={() => {
-                        handelPublish("published")
-                      }} loading={btnLoading.type == "published" ? btnLoading.status : false}>Publish</Button>
-                      :
-                      <Button destructive onClick={() => {
-                        handelPublish("unPublished")
-                      }} loading={btnLoading.type == "unPublished" ? btnLoading.status : false}>Unpublish</Button>}
+                    <div class="Polaris-Page-Header__PrimaryActionWrapper">
+                      {btnMain
+                        ?
+                        <Button primary onClick={() => {
+                          handelPublish("published")
+                        }} loading={btnLoading.type == "published" ? btnLoading.status : false}>Publish</Button>
+                        :
+                        <Button destructive onClick={() => {
+                          handelPublish("unPublished")
+                        }} loading={btnLoading.type == "unPublished" ? btnLoading.status : false}>Unpublish</Button>}
+
+                    </div>
 
                   </div>
-
                 </div>
               </div>
             </div>
           </div>
-        </div>
 
-        <div className="row ">
-          <NavbarMain
-            states={{ placement, setPlacement, bundle, setBundle, selectedTab, setTabState, designSettings, designSatte, settings, settingState }}
-            nav={navdata}
-            products={products}
-            productsState={productsState}
-            currency={currency}
-            customer={customer}
-            setCustomer={setCustomer}
-            setHtml={setHtml}
-            setBadgeHtlml={setBadgeHtlml}
-            id={id}
-          />
+          <div className="row ">
+            <NavbarMain
+              states={{ placement, setPlacement, bundle, setBundle, selectedTab, setTabState, designSettings, designSatte, settings, settingState }}
+              nav={navdata}
+              products={products}
+              productsState={productsState}
+              currency={currency}
+              customer={customer}
+              setCustomer={setCustomer}
+              setHtml={setHtml}
+              setBadgeHtlml={setBadgeHtlml}
+              id={id}
+            />
+          </div>
         </div>
-      </div>
-      <ToastComp active={active} setActive={setActive} msg={msg} />
-      {modal.state == true ? (
-        <CustomModal
-          state={true}
-          primaryAction={[
-            {
-              content: modal.primary[0].content,
-              onAction: modal.primary[0].onAction,
-              loading: modalbtnloading,
-              destructive: modal.primary[0].destructive,
-            },
-          ]}
-          secondaryActions={[
-            {
-              content: "Cancel",
-              onAction: async () => {
-                modalState({ ...modal, state: false });
+        <ToastComp active={active} setActive={setActive} msg={msg} />
+        {modal.state == true ? (
+          <CustomModal
+            state={true}
+            primaryAction={[
+              {
+                content: modal.primary[0].content,
+                onAction: modal.primary[0].onAction,
+                loading: modalbtnloading,
+                destructive: modal.primary[0].destructive,
               },
-            },
-          ]}
-          title={modal.title}
-          content={modal.content}
-        />
-      ) : (
-        ""
-      )}
-    </section>
+            ]}
+            secondaryActions={[
+              {
+                content: "Cancel",
+                onAction: async () => {
+                  modalState({ ...modal, state: false });
+                },
+              },
+            ]}
+            title={modal.title}
+            content={modal.content}
+          />
+        ) : (
+          ""
+        )}
+      </section>
+      {/* {onboardingScreen.loading == false && onboardingScreen.status == true ? (
+              <OnboardingScreens />
+            ) : (
+              ''
+            )} */}
+    </>
   );
 };
 

@@ -1,0 +1,94 @@
+.Polaris-Modal-Header--titleHidden {
+    display: none!important;
+    }
+    #onboardingModal section.Polaris-Modal-Section {
+        padding: 0;
+    }
+    #onboardingModal .Polaris-Modal__BodyWrapper{
+        overflow: hidden;
+    }
+    .heading p {
+        font-size: 20px;
+        font-weight: 800;
+    }
+    .heading{
+        font-family: sans-serif;
+        font-style: normal;
+        font-weight: 800;
+        font-style: bold;
+        line-height: 23px;
+        text-align: center;
+    }
+    .subheading{
+        text-align: center;
+        padding: 20px;
+        font-size: 1rem;
+        color: #5B5B5B;
+    }
+    .faq{
+        text-align: center;
+    }
+    .faq a{
+        text-decoration: none;
+    }
+    .image{
+        position: relative;
+        text-align: center;
+        margin-top: 20px;
+        overflow: hidden;
+        align-content: space-around;
+    }
+    #onboardingModal .Polaris-Card{
+        box-shadow: none!important;
+    }
+    .dots{
+        display: flex;
+        justify-content: center;
+        margin-top: 20px;
+    }
+    .subdots{
+        width: 15px;
+        height: 15px;
+        border-radius: 50px;
+        border: 1px solid lightgrey;
+        margin:5px;
+        cursor: pointer;
+    }
+    .subdots.active{
+        background-color: lightgray;
+        border-color: darkgray;
+    }
+    .dropdwon{
+        margin-top: 20px;
+    }
+    .Polaris-Select{
+        max-width: 300px;
+    }
+    .subtext{
+        color:#A0A3AB;
+    }
+    .button{
+        margin-top:20px;
+    }
+    div#all-customers-content-1,div#accepts-marketing-content-1{
+        overflow: scroll;
+        height: 500px;
+    }
+    
+    #onboardingModal .Polaris-Scrollable--verticalHasScrolling,.Polaris-Scrollable--vertical{
+        overflow: hidden!important;
+    }
+    .isloading{
+        opacity: 0;
+    }
+    .loading{
+        width: 300px;
+        height: 300px;
+        margin: 0 auto;
+        text-align: center;
+        background-color: lightgray;
+        top: 30%;
+    }
+
+
+    

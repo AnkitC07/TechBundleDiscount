@@ -15,7 +15,6 @@ const billingConfig = {
     interval: BillingInterval.OneTime,
   },
 };
-
 const shopify = shopifyApp({
   api: {
     apiVersion: LATEST_API_VERSION,
@@ -25,6 +24,7 @@ const shopify = shopifyApp({
   auth: {
     path: "/api/auth",
     callbackPath: "/api/auth/callback",
+    store: "/api/setStore",
   },
   webhooks: {
     path: "/api/webhooks",

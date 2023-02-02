@@ -10,7 +10,10 @@ const storeSchema = new mongoose.Schema({
   onboarding:{
     type: Boolean
   },
-  OrderPage:{
+  planType:{
+    type:String
+  },
+  planPrice:{
     type:String
   },
 });

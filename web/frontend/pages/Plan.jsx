@@ -144,34 +144,34 @@ const PlanCard = ({ title, subTitle, features, price }) => {
     title: title,
     price: price
   }
-
   const handleButton = async () => {
-    setLoadingPlan(true);
-    setDisabledButton(true);
-    await fetch(`/api/payment-api`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ plan: plan_subscribed }),
-    })
-      .then((response) => response.json())
-      .then((data) => {
-        setLoadingPlan(false)
-        setDisabledButton(false);
-        if (data.data) {
-          const url = data.data.url;
-          console.log(url);
-          // window.open(url, "_self");
-          window.top.location.href = url;
-          // window.open(data.data.url)
-        }
-      })
-      .catch((error) => {
-        setLoadingPlan(false);
-        setDisabledButton(false);
-        console.log(error);
-      });
+    console.log(plan_subscribed, "Plan")
+    //   setLoadingPlan(true);
+    //   setDisabledButton(true);
+    //   await fetch(`/api/payment-api`, {
+    //     method: "POST",
+    //     headers: {
+    //       "Content-Type": "application/json",
+    //     },
+    //     body: JSON.stringify({ plan: plan_subscribed }),
+    //   })
+    //     .then((response) => response.json())
+    //     .then((data) => {
+    //       setLoadingPlan(false)
+    //       setDisabledButton(false);
+    //       if (data.data) {
+    //         const url = data.data.url;
+    //         console.log(url);
+    //         // window.open(url, "_self");
+    //         window.top.location.href = url;
+    //         // window.open(data.data.url)
+    //       }
+    //     })
+    //     .catch((error) => {
+    //       setLoadingPlan(false);
+    //       setDisabledButton(false);
+    //       console.log(error);
+    //     });
   };
 
 

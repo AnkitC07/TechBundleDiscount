@@ -14,6 +14,7 @@ import "./database/config.js";
 import AllDiscount from "./routes/AllDiscount.js";
 import GetDatabyId from "./routes/GetDatabyId.js";
 import createHmac from "create-hmac";
+import addStore, { updateStore } from "./model/Controller/store.js";
 const PORT = parseInt(process.env.BACKEND_PORT || process.env.PORT, 10);
 
 const STATIC_PATH =
@@ -34,6 +35,9 @@ app.post(
   shopify.config.webhooks.path,
   shopify.processWebhooks({ webhookHandlers: GDPRWebhookHandlers })
 );
+app.get(shopify.config.auth.store, async (req, res) => {
+  console.log("checing");
+});
 
 app.use(express.json());
 
@@ -86,7 +90,14 @@ app.use(express.json());
 //     }
 //   });
 
-// All endpoints after this point will require an active session
+app.post("/api/setStore", async (req, res) => {
+  console.log("Upper SetStore Hit");
+  console.log("Session", res.locals.shopify.session);
+});
+app.get("/api/setStore", async (req, res) => {
+  console.log("Upper SetStore Hit");
+  console.log("Session", res.locals.shopify.session);
+});
 
 app.get("/api/paymenturl", async (req, res) => {
   console.log(req.query.shop, "Session-----");
@@ -134,6 +145,7 @@ app.get("/api/paymenturl", async (req, res) => {
     });
   }
 });
+// All endpoints after this point will require an active session
 app.use("/api/*", shopify.validateAuthenticatedSession());
 
 // SUBSCRIBED PLAN
@@ -177,6 +189,39 @@ app.post("/api/payment-api", bodyParser.json(), async (req, res) => {
 app.use("/api", bundleRouter);
 app.use("/api", AllDiscount);
 app.use("/api", GetDatabyId);
+app.post("/api/setStore", async (req, res) => {
+  console.log("Lower SetStore Hit");
+  console.log("Session", res.locals.shopify.session);
+});
+app.get("/api/setStore", async (req, res) => {
+  console.log("Lower SetStore Hit");
+  console.log("Session", res.locals.shopify.session);
+});
+
+// app.get("/api/getTheme", async (req, res) => {
+//   console.log("get theme");
+//   try {
+//     const session = res.locals.shopify.session;
+//     const { Theme } = await import(
+//       `@shopify/shopify-api/dist/rest-resources/${Shopify.Context.API_VERSION}/index.js`
+//     );
+//     const themes = await Theme.all({ session });
+//     res.status(200).json({ status: 200, data: themes });
+//   } catch (err) {
+//     res.status(200).json({ status: 400, err: err });
+//   }
+// });
+
+// app.get("/api/updateonboarding", async (req, res) => {
+//   try {
+//     const session = res.locals.shopify.session;
+//     const shopName = session.shop;
+//     await updateStore(shopName);
+//     res.status(200).json({ status: 200, msg: "success" });
+//   } catch (err) {
+//     res.status(200).json({ status: 400, testing: "asdasd" });
+//   }
+// });
 
 app.get("/api/products", async (req, res) => {
   try {
@@ -219,6 +264,12 @@ app.get("/api/getCustomers", async (req, res) => {
 app.use(serveStatic(STATIC_PATH, { index: false }));
 
 app.use("/*", shopify.ensureInstalledOnShop(), async (_req, res, _next) => {
+  // const session = await Shopify.Utils.loadCurrentSession(req, res, true);
+  console.log("------first----");
+  // addStore(
+  //   res.locals.shopify.session.shop,
+  //   res.locals.shopify.session.accessToken
+  // );
   return res
     .status(200)
     .set("Content-Type", "text/html")

@@ -16,11 +16,12 @@ const addStore = async (shopName, storetoken) => {
           storename: shopName,
         },
         {
-            storetoken: storetoken,
+          storetoken: storetoken,
         }
       );
     }
   } catch (error) {
+    console.log(error);
   }
 };
 
