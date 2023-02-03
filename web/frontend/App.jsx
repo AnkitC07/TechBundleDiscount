@@ -6,17 +6,17 @@ import {
   QueryProvider,
   PolarisProvider,
 } from "./components";
+
 // import { useAuthenticatedFetch } from "./hooks/useAuthenticatedFetch";
 // import getShopName from "./components/Common/getShopName";
 // import OnboardingScreens from '../frontend/components/Onboarding/index'
+
 export default function App() {
+ 
   // Any .tsx or .jsx files in /pages will become a route
   // See documentation for <Routes /> for more info
-  
-  const pages = import.meta.globEager("./pages/**/!(*.test.[jt]sx)*.([jt]sx)");
-  
-
-  return (
+const pages = import.meta.globEager("./pages/**/!(*.test.[jt]sx)*.([jt]sx)");
+    return (
     <PolarisProvider>
       <BrowserRouter>
         <AppBridgeProvider>
@@ -38,7 +38,6 @@ export default function App() {
               ]}
             />
             <Routes pages={pages} />
-            
           </QueryProvider>
         </AppBridgeProvider>
       </BrowserRouter>

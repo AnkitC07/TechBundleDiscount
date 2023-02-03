@@ -5,6 +5,7 @@ import Suggestions from "./pages/Suggestion";
 import BundleDiscount from "./components/BundleDiscount/BundleDiscount";
 import Homepage from "./components/Homepage";
 import Plan from "./pages/Plan";
+import { useState } from "react";
 
 /**
  * File-based routing.
@@ -21,6 +22,8 @@ import Plan from "./pages/Plan";
  * @return {Routes} `<Routes/>` from React Router, with a `<Route/>` for each file in `pages`
  */
 export default function Routes({ pages }) {
+  
+
   const routes = useRoutes(pages);
   const routeComponents = routes.map(({ path, component: Component }) => (
     <Route key={path} path={path} element={<Component />} />
@@ -32,7 +35,7 @@ export default function Routes({ pages }) {
     <ReactRouterRoutes>
       {routeComponents}
       <Route path="*" element={<NotFound />} />
-      <Route path="/ProductBadge" element={<ProductBadge />} />
+      {/* <Route path="/ProductBadge" element={<ProductBadge />} /> */}
       <Route path="/Suggestion" element={<Suggestions />} />
       <Route path="/Help" element={<Help />} />
       <Route path="/" element={<Homepage />} />

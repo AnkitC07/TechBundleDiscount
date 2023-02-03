@@ -7,14 +7,19 @@ const storeSchema = new mongoose.Schema({
   storetoken: {
     type: String,
   },
-  onboarding:{
-    type: Boolean
+  onboarding: {
+    type: Boolean,
   },
-  planType:{
-    type:String
-  },
-  planPrice:{
-    type:String
+  plan: {
+    type: {
+      type: String,
+    },
+    price: {
+      type: String,
+    },
+    trialDays: {
+      type: String,
+    },
   },
 });
 

@@ -475,34 +475,34 @@ const AdvanceSettings = ({
     },
   ];
   //---Childrens in choicelists---//
-  const specificChild = () => {
-    return (
-      <>
-        <div className=" Polaris-Text--subdued mt-2">
-          Select at least one product
-        </div>
-        <div className="selected_product_list">
-          {bundle.bundleProducts.map((x, i) => {
-            return (
-              <>
-                {x !== "" ? (
-                  <Checkbox
-                    label={`Product #${i + 1}`}
-                    checked={bundle.advanceSetting.specific.specificSlected.includes(
-                      x.id
-                    )}
-                    onChange={(e) => handleSpecificCheck(x.id, e)}
-                  />
-                ) : (
-                  ""
-                )}
-              </>
-            );
-          })}
-        </div>
-      </>
-    );
-  };
+  // const specificChild = () => {
+  //   return (
+  //     <>
+  //       <div className=" Polaris-Text--subdued mt-2">
+  //         Select at least one product
+  //       </div>
+  //       <div className="selected_product_list">
+  //         {bundle.bundleProducts.map((x, i) => {
+  //           return (
+  //             <>
+  //               {x !== "" ? (
+  //                 <Checkbox
+  //                   label={`Product #${i + 1}`}
+  //                   checked={bundle.advanceSetting.specific.specificSlected.includes(
+  //                     x.id
+  //                   )}
+  //                   onChange={(e) => handleSpecificCheck(x.id, e)}
+  //                 />
+  //               ) : (
+  //                 ""
+  //               )}
+  //             </>
+  //           );
+  //         })}
+  //       </div>
+  //     </>
+  //   );
+  // };
 
   const startDateChild = () => {
     return (
@@ -615,20 +615,20 @@ const AdvanceSettings = ({
 
   };
 
-  const handleSpecificCheck = (value, status) => {
-    if (status == true) {
-      bundle.advanceSetting.specific.specificSlected = [
-        ...bundle.advanceSetting.specific.specificSlected,
-        value,
-      ];
-    } else {
-      let deleted = bundle.advanceSetting.specific.specificSlected;
-      const index = deleted.findIndex((x) => x == value);
-      deleted.splice(index, 1);
-      bundle.advanceSetting.specific.specificSlected = deleted;
-    }
-    setBundle({ ...bundle });
-  };
+  // const handleSpecificCheck = (value, status) => {
+  //   if (status == true) {
+  //     bundle.advanceSetting.specific.specificSlected = [
+  //       ...bundle.advanceSetting.specific.specificSlected,
+  //       value,
+  //     ];
+  //   } else {
+  //     let deleted = bundle.advanceSetting.specific.specificSlected;
+  //     const index = deleted.findIndex((x) => x == value);
+  //     deleted.splice(index, 1);
+  //     bundle.advanceSetting.specific.specificSlected = deleted;
+  //   }
+  //   setBundle({ ...bundle });
+  // };
 
   const choiceListArray = [
     {
@@ -647,13 +647,13 @@ const AdvanceSettings = ({
       checked: bundle.advanceSetting.hideStorefront.status,
       key: "hideStorefront",
     },
-    {
-      label: "Show only on specific product pages",
-      value: "specific",
-      renderChildren: specificChild,
-      checked: bundle.advanceSetting.specific.status,
-      key: "specific",
-    },
+    // {
+    //   label: "Show only on specific product pages",
+    //   value: "specific",
+    //   renderChildren: specificChild,
+    //   checked: bundle.advanceSetting.specific.status,
+    //   key: "specific",
+    // },
     {
       label: "Set start time",
       value: "startTime",

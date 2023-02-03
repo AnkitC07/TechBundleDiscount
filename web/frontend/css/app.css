@@ -442,7 +442,7 @@ div#accordion .card {
 
 .dwxbiy {
   display: grid;
-  grid-template-columns: 130px 200px 130px;
+  grid-template-columns: 242px 148px 21px;
   column-gap: 10px;
   text-align: right;
 }

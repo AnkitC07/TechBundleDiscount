@@ -63,28 +63,6 @@ export default function Help() {
                     </div>
                     <div className="Polaris-Card">
                       <div className="Polaris-Card__Header">
-                        <h2 className="Polaris-Heading">Your Plan</h2>
-                      </div>
-                      <div className="Polaris-Card__Section">
-                        <p>
-                          <span className="Polaris-Badge Polaris-Badge--statusInfo">
-                            <span className="Polaris-VisuallyHidden">
-                              Info{" "}
-                            </span>
-                            Free
-                          </span>
-                          <div className="mt-3">
-                          <p>✅ Unlimited view</p> 
-                          <p>✅ Unlimited product timers </p>
-                          <p>✅ Unlimited top bar timers </p>
-                          <p>✅ Unlimited Cart page timers.</p> 
-                          <p>✅ Adding timer using product tags</p>
-                          </div>
-                        </p>
-                      </div>
-                    </div>
-                    <div className="Polaris-Card">
-                      <div className="Polaris-Card__Header">
                         <h2 className="Polaris-Heading">FAQ</h2>
                       </div>
                       <div className="Polaris-Card__Section">

@@ -180,7 +180,7 @@ const Design = ({ states }) => {
               </div>
 
               <div className="mt-4">
-                <Headings text={"Text Alignment"} />
+                <Headings text={"Offer header text alignment"} />
                 <ButtonGroup segmented>
                   <Button
                     icon={TextAlignmentLeftMajor}

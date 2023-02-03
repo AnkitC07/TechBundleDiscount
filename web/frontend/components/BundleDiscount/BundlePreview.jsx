@@ -1,7 +1,7 @@
 import { Card, Banner } from "@shopify/polaris";
 import React, { useState } from "react";
 import { useEffect } from "react";
-import parser from 'html-react-parser'
+import parser from "html-react-parser";
 export default function BundlePreview({ bundle, currency, design }) {
   const { settings, button, priceSavings } = design;
 
@@ -13,7 +13,7 @@ export default function BundlePreview({ bundle, currency, design }) {
             <div
               style={{
                 background: "white",
-                padding:'0px 10px 10px 10px',
+                padding: "0px 10px 10px 10px",
                 color: `${settings.FontColor}`,
                 fontSize: `${settings.FontSize}px`,
                 fontFamily: settings.FontFamily,
@@ -44,10 +44,10 @@ export default function BundlePreview({ bundle, currency, design }) {
         </div>
       </div>
       <div className="mt-4">
-        <Banner icon={false} onDismiss={() => { }}>
+        <Banner icon={false} onDismiss={() => {}}>
           <p>
-            You can design the bundle style in the "Design" tab after you're done
-            creating your offer.
+            You can design the bundle style in the "Design" tab after you're
+            done creating your offer.
           </p>
         </Banner>
       </div>
@@ -86,7 +86,10 @@ const BundlePreviewPro = ({ bundle, currency, design }) => {
 
     const obj = Object.keys(price);
     for (let i = 0; i < obj.length; i++) {
-      if (bundle.bundleDiscount.addDiscount.status == true && bundle.bundleDiscount.addDiscount.discountType == `${currency}OFF`) {
+      if (
+        bundle.bundleDiscount.addDiscount.status == true &&
+        bundle.bundleDiscount.addDiscount.discountType == `${currency}OFF`
+      ) {
         count = count + Number(price[obj[i]].price);
       } else {
         count = count + Number(price[obj[i]].comparePrice);
@@ -95,7 +98,10 @@ const BundlePreviewPro = ({ bundle, currency, design }) => {
     }
 
     setTotal((Math.round(count * 100) / 100).toFixed(2));
-    if (bundle.bundleDiscount.addDiscount.status == true && bundle.bundleDiscount.addDiscount.discountType == `${currency}OFF`) {
+    if (
+      bundle.bundleDiscount.addDiscount.status == true &&
+      bundle.bundleDiscount.addDiscount.discountType == `${currency}OFF`
+    ) {
       setDisTotal(
         (
           Math.round(
@@ -124,8 +130,7 @@ const BundlePreviewPro = ({ bundle, currency, design }) => {
               [item.id]: { price: priceVal, comparePrice: compareVal },
             };
           }
-        }
-        else if (
+        } else if (
           bundle.bundleDiscount.freeGift.status &&
           bundle.bundleDiscount.freeGift.freeGiftSlected.includes(item.id)
         ) {
@@ -193,7 +198,7 @@ const BundlePreviewPro = ({ bundle, currency, design }) => {
       <div
         style={{
           overflow: "hidden",
-          border: `1px solid ${settings.FontColor}`,
+          border: `1px solid black`,
         }}
       >
         <div
@@ -222,8 +227,9 @@ const BundlePreviewPro = ({ bundle, currency, design }) => {
                             boxSizing: "border-box",
                             width: "70px",
                             height: "48px",
-                            background: `url(${x.image ? x.image.src : "no_image.png"
-                              }) center center / contain no-repeat rgb(237, 237, 237)`,
+                            background: `url(${
+                              x.image ? x.image.src : "no_image.png"
+                            }) center center / contain no-repeat rgb(237, 237, 237)`,
                           }}
                         ></div>
                       </div>
@@ -310,7 +316,9 @@ const BundlePreviewPro = ({ bundle, currency, design }) => {
             padding: "20px 10px 10px 10px",
           }}
         >
-          <span style={{ fontWeight: "bold" }}>{design.priceSavings.Total}</span>
+          <span style={{ fontWeight: "bold" }}>
+            {design.priceSavings.Total}
+          </span>
           <div>
             <p
               style={{
@@ -321,18 +329,25 @@ const BundlePreviewPro = ({ bundle, currency, design }) => {
               }}
             >
               {bundle.bundleDiscount.freeGift.status
-                ? design.priceSavings.FreeGiftTag !== '' ? design.priceSavings.FreeGiftTag : "FREE GIFT INCLUDED"
+                ? design.priceSavings.FreeGiftTag !== ""
+                  ? design.priceSavings.FreeGiftTag
+                  : "FREE GIFT INCLUDED"
                 : bundle.bundleDiscount.freeShiping.status
-                  ? design.priceSavings.FreeShippingTag !== '' ? design.priceSavings.FreeShippingTag : "FREE SHIPPING INCLUDED"
-                  : bundle.bundleDiscount.noDiscount.status
-                    ? ""
-                    : bundle.bundleDiscount.addDiscount.discountType ==
-                      `${currency}OFF`
-                      ?
-                      replaceDiscount(`${currency}${bundle.bundleDiscount.addDiscount.discountValue}`, design.priceSavings.SaveTag)
-                      : replaceDiscount(`${bundle.bundleDiscount.addDiscount.discountValue}%`, design.priceSavings.SaveTag)}
-
-
+                ? design.priceSavings.FreeShippingTag !== ""
+                  ? design.priceSavings.FreeShippingTag
+                  : "FREE SHIPPING INCLUDED"
+                : bundle.bundleDiscount.noDiscount.status
+                ? ""
+                : bundle.bundleDiscount.addDiscount.discountType ==
+                  `${currency}OFF`
+                ? replaceDiscount(
+                    `${currency}${bundle.bundleDiscount.addDiscount.discountValue}`,
+                    design.priceSavings.SaveTag
+                  )
+                : replaceDiscount(
+                    `${bundle.bundleDiscount.addDiscount.discountValue}%`,
+                    design.priceSavings.SaveTag
+                  )}
             </p>
             <div style={{ textAlign: "right" }}>
               <span
@@ -352,7 +367,11 @@ const BundlePreviewPro = ({ bundle, currency, design }) => {
                     color: "rgb(144, 149, 155)",
                   }}
                 >
-                  {bundle.bundleDiscount.noDiscount.status ? '' : total > 0 ? `${currency} ${total}` : ''}
+                  {bundle.bundleDiscount.noDiscount.status
+                    ? ""
+                    : total > 0
+                    ? `${currency} ${total}`
+                    : ""}
                 </span>
                 <span>
                   {currency}
@@ -388,12 +407,11 @@ const BundlePreviewPro = ({ bundle, currency, design }) => {
 };
 
 const replaceDiscount = (dis, val) => {
-  let value = val
-  let discount = dis
-  value = parser(`${value.replace("{discount}", discount)}`)
-  return value
-}
-
+  let value = val;
+  let discount = dis;
+  value = parser(`${value.replace("{discount}", discount)}`);
+  return value;
+};
 
 const Price = ({ design, data, bundle, currency, priceStates }) => {
   const pr = priceStates;
@@ -403,7 +421,7 @@ const Price = ({ design, data, bundle, currency, priceStates }) => {
       <div>
         {pr?.comparePrice !== null && pr?.comparePrice !== undefined ? (
           bundle.bundleDiscount.addDiscount.status &&
-            bundle.bundleDiscount.addDiscount.discountType === "% OFF" ? (
+          bundle.bundleDiscount.addDiscount.discountType === "% OFF" ? (
             <div>
               <span className="text-secondary">
                 <del>
@@ -413,7 +431,7 @@ const Price = ({ design, data, bundle, currency, priceStates }) => {
             </div>
           ) : bundle.bundleDiscount.addDiscount.status &&
             bundle.bundleDiscount.addDiscount.discountType ==
-            `${currency}OFF` ? (
+              `${currency}OFF` ? (
             ""
           ) : (
             <div>
@@ -429,14 +447,18 @@ const Price = ({ design, data, bundle, currency, priceStates }) => {
         )}
         <div style={{ textAlign: "right" }}>
           {bundle.bundleDiscount.freeGift.status &&
-            bundle.bundleDiscount.freeGift.freeGiftSlected.includes(data.id) ? (
+          bundle.bundleDiscount.freeGift.freeGiftSlected.includes(data.id) ? (
             <span
               style={{ color: "green", fontWeight: "700", textAlign: "right" }}
             >
-              {design.priceSavings.freeGift !== '' ? design.priceSavings.freeGift : 'FREE'}
+              {design.priceSavings.freeGift !== ""
+                ? design.priceSavings.freeGift
+                : "FREE"}
             </span>
+          ) : pr?.price == undefined ? (
+            ""
           ) : (
-            pr?.price == undefined ? '' : `${currency} ${pr?.price}`
+            `${currency} ${pr?.price}`
           )}
         </div>
       </div>
@@ -478,14 +500,14 @@ const Variants = ({
             priceObj[v[0].product_id] = {
               price: bundle.bundleDiscount.addDiscount.status
                 ? applyDiscount(
-                  prices,
-                  bundle.bundleDiscount.addDiscount.discountValue
-                )
+                    prices,
+                    bundle.bundleDiscount.addDiscount.discountValue
+                  )
                 : prices,
               comparePrice: bundle.bundleDiscount.addDiscount.status
                 ? prices
                 : comp,
-              selected: true
+              selected: true,
             };
 
             const getselectedVariant = bundle.bundleProducts[
@@ -502,7 +524,6 @@ const Variants = ({
             } else {
               e.target.options[0].selected = true;
             }
-
           }}
         >
           {bundle.advanceSetting.customerOption.status == true ? (

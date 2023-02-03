@@ -5,11 +5,17 @@ const addStore = async (shopName, storetoken) => {
     const findShop = await Stores.findOne({ storename: shopName });
 
     if (!findShop) {
-      await Stores.create({
+      const data = await Stores.create({
         storename: shopName,
         storetoken: storetoken,
         onboarding: true,
+        plan: {
+          type: "Free Plan",
+          price: "0",
+          trialDays: "15",
+        },
       });
+      return data;
     } else {
       await Stores.findOneAndUpdate(
         {
@@ -39,6 +45,22 @@ export const updateStore = async (shopName) => {
   } catch (error) {
     // console.log(error)
   }
+};
+
+export const updatePlan = async (shopName, planType, planPrice) => {
+  try {
+    let findShop = await Stores.findOne({ storename: shopName });
+
+    if (!findShop) {
+      return;
+    }
+
+    findShop.plan.type = planType;
+    findShop.plan.price = planPrice;
+
+    return await findShop.save();
+    
+  } catch (error) {}
 };
 
 export const getStoreAccessToken = async (shopName) => {

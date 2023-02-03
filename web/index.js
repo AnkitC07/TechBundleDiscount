@@ -4,8 +4,9 @@ import { readFileSync } from "fs";
 import express from "express";
 import serveStatic from "serve-static";
 import bodyParser from "body-parser";
-
+import cron from "node-cron";
 import shopify from "./shopify.js";
+import { cronjob } from "./cronJob.js";
 import productCreator from "./product-creator.js";
 import GDPRWebhookHandlers from "./gdpr.js";
 import { title } from "process";
@@ -14,8 +15,8 @@ import "./database/config.js";
 import AllDiscount from "./routes/AllDiscount.js";
 import GetDatabyId from "./routes/GetDatabyId.js";
 import createHmac from "create-hmac";
-import addStore, { updateStore } from "./model/Controller/store.js";
-import cron from 'node-cron'
+import addStore, { updatePlan, updateStore } from "./model/Controller/store.js";
+import Stores from "./model/Stores.js";
 const PORT = parseInt(process.env.BACKEND_PORT || process.env.PORT, 10);
 
 const STATIC_PATH =
@@ -38,14 +39,13 @@ app.post(
   shopify.processWebhooks({ webhookHandlers: GDPRWebhookHandlers })
 );
 
-
 app.use(express.json());
 
 
-cron.schedule("0 0 0 * * *", function () {
-  console.log('Cron Job run every Day')
+// cron.schedule("0 0 0 * * *", function () {
+//   console.log('Cron Job run every Day')
   
-});
+// });
 
 // function verifyWebhook(payload, hmac) {
 //   const message = JSON.stringify(payload).toString();
@@ -96,54 +96,56 @@ cron.schedule("0 0 0 * * *", function () {
 //     }
 //   });
 
+//SUBSCRIBE API
 app.get("/api/paymenturl", async (req, res) => {
-  console.log(req.query.shop, "Session-----");
-  console.log(
-    "----------------------------------------------------------------------------------------"
-  );
+  console.log("Paymenturl");
 
   const session = {
     shop: req.query.shop,
     accessToken: req.query.token,
   };
-  console.log(session);
   try {
     const chargeId = req.query.charge_id;
     const url = `https://${req.query.shop}/admin/apps/surebright-app?shop=${req.query.shop}`;
-    console.log(req.query.planPrice, "Priceee");
 
     const recurring_application_charge =
       new shopify.api.rest.RecurringApplicationCharge({
         session: session,
       });
-    recurring_application_charge.name = "Super Duper Plan";
+    recurring_application_charge.name = req.query.planType;
     recurring_application_charge.status = "accepted";
     recurring_application_charge.return_url = url;
     recurring_application_charge.test = true;
     recurring_application_charge.price = req.query.planPrice;
     recurring_application_charge.terms = "testing Data";
-    await recurring_application_charge.save({
+    const recurringData = await recurring_application_charge.save({
       update: true,
     });
 
+    console.log("Plan--", recurring_application_charge);
+
     // database entry
-    // await updatePlan(
-    //   shopName,
-    //   req.query,
-    //   data.body.recurring_application_charge
-    // );
-    //    res.status(200).json({ data: session });
+    await updatePlan(session.shop, req.query.planType, req.query.planPrice);
+    // res.status(200).json({ data: session,planType:req.query.planType,planPrice:req.query.planPrice });
     res.redirect(`/api/auth?shop=${req.query.shop}`);
   } catch (error) {
     // console.log(error)
-    res.status(404).json({
+    res.status(500).json({
       status: false,
       error: error,
     });
   }
 });
+// CRON FOR PLAN DECRIMENT
+// run every 10 sec */10 * * * * * and run every day 0 0 0 * * *
+cron.schedule("0 0 0 * * *", function () {
+  console.log("running a task every 10 second");
+  cronjob();
+});
+//---------------------------------------------------------------
 // All endpoints after this point will require an active session
 app.use("/api/*", shopify.validateAuthenticatedSession());
+//---------------------------------------------------------------
 
 // Inserted store details
 
@@ -153,33 +155,42 @@ app.get("/api/storeDetails", async (req,res)=>{
 
 // SUBSCRIBED PLAN
 app.post("/api/payment-api", bodyParser.json(), async (req, res) => {
+  console.log("Paymentapi");
   res.setHeader("Access-Control-Allow-Origin", " *");
   try {
     // var shop_name_token = await getStoreAccessToken(req.body.shopName);
     let shopName = res.locals.shopify.session.shop;
     let tokenAccess = res.locals.shopify.session.accessToken;
-
-    const recurring_application_charge =
+    if(req.body.plan.title == "Free Plan"){
+      const data = await updatePlan(shopName, req.body.plan.title, "0");
+      res.status(200).json({
+        status: true,
+        data: {
+          data
+        },
+      });
+    }else{
+      const recurring_application_charge =
       new shopify.api.rest.RecurringApplicationCharge({
         session: res.locals.shopify.session,
       });
-    recurring_application_charge.name = "Super Duper Plan";
-    recurring_application_charge.return_url = `https://def8-125-99-173-2.in.ngrok.io/api/paymenturl?shop=${shopName}&planType=${req.body.plan.title}&planPrice=${req.body.plan.price}&token=${tokenAccess}`;
+    recurring_application_charge.name = req.body.plan.title;
+    recurring_application_charge.return_url = `${process.env.HOST}/api/paymenturl?shop=${shopName}&planType=${req.body.plan.title}&planPrice=${req.body.plan.price}&token=${tokenAccess}`;
     recurring_application_charge.test = true;
     recurring_application_charge.price = req.body.plan.price;
     recurring_application_charge.terms = "testing Data";
+
     await recurring_application_charge.save({
       update: true,
     });
-
     const url = recurring_application_charge.confirmation_url;
-
     res.status(200).json({
       status: true,
       data: {
         url,
       },
     });
+  }
   } catch (error) {
     // console.log(error)
     res.status(404).json({
@@ -188,44 +199,81 @@ app.post("/api/payment-api", bodyParser.json(), async (req, res) => {
     });
   }
 });
+// SUBSCRIBE PLAN ENDS-----
 
+// GET DETAILS FROM STORE
+app.get('/api/getStorePlan',async (req,res)=>{
+  const shop = res.locals.shopify.session.shop;
+  const findshop = await Stores.findOne({
+    storename: shop,
+  });
+  res.status(200).json(findshop)
+})
+
+app.get("/api/getDetails", async (req, res) => {
+  res.setHeader("Access-Control-Allow-Origin", "*");
+  try {
+    const session = res.locals.shopify.session;
+    let findshop;
+    findshop = await Stores.findOne({
+      storename: session.shop,
+    });
+    let data;
+    if (findshop == null) {
+      findshop = await addStore(session.shop, session.accessToken);
+      console.log(findshop, "Created Dataaa");
+    }
+    const theme = await shopify.api.rest.Theme.all({
+      session: session,
+    });
+    let mainTheme = {};
+    for (let i = 0; i < theme.length; i++) {
+      if (theme[i].role == "main") {
+        mainTheme = theme[i];
+        break;
+      }
+    }
+
+    res.status(200).json({ status: 200, data: findshop, theme: mainTheme });
+  } catch (err) {
+    console.log(err);
+    res.status(200).json({ status: 400, testing: "asdasd" });
+  }
+});
 app.use("/api", bundleRouter);
 app.use("/api", AllDiscount);
 app.use("/api", GetDatabyId);
-app.post("/api/setStore", async (req, res) => {
-  console.log("Lower SetStore Hit");
-  console.log("Session", res.locals.shopify.session);
+
+// ONBOARDING APIs
+app.get("/api/getTheme", async (req, res) => {
+  console.log("get theme");
+  try {
+    const session = res.locals.shopify.session;
+
+    const themes = await shopify.api.rest.Theme.all({
+      session: session,
+    });
+    res.status(200).json({
+      status: 200,
+      data: themes,
+      shop: res.locals.shopify.session.shop,
+    });
+  } catch (err) {
+    res.status(200).json({ status: 400, err: err });
+  }
 });
-app.get("/api/setStore", async (req, res) => {
-  console.log("Lower SetStore Hit");
-  console.log("Session", res.locals.shopify.session);
+
+app.get("/api/updateonboarding", async (req, res) => {
+  try {
+    const session = res.locals.shopify.session;
+    const shopName = session.shop;
+    await updateStore(shopName);
+    res.status(200).json({ status: 200, msg: "success" });
+  } catch (err) {
+    res.status(200).json({ status: 400, testing: "asdasd" });
+  }
 });
-
-// app.get("/api/getTheme", async (req, res) => {
-//   console.log("get theme");
-//   try {
-//     const session = res.locals.shopify.session;
-//     const { Theme } = await import(
-//       `@shopify/shopify-api/dist/rest-resources/${Shopify.Context.API_VERSION}/index.js`
-//     );
-//     const themes = await Theme.all({ session });
-//     res.status(200).json({ status: 200, data: themes });
-//   } catch (err) {
-//     res.status(200).json({ status: 400, err: err });
-//   }
-// });
-
-// app.get("/api/updateonboarding", async (req, res) => {
-//   try {
-//     const session = res.locals.shopify.session;
-//     const shopName = session.shop;
-//     await updateStore(shopName);
-//     res.status(200).json({ status: 200, msg: "success" });
-//   } catch (err) {
-//     res.status(200).json({ status: 400, testing: "asdasd" });
-//   }
-// });
-
+// ONBOARDING APIs ENDS-----
 app.get("/api/products", async (req, res) => {
   try {
     const id = req.query.id;
@@ -267,12 +315,6 @@ app.get("/api/getCustomers", async (req, res) => {
 app.use(serveStatic(STATIC_PATH, { index: false }));
 
 app.use("/*", shopify.ensureInstalledOnShop(), async (_req, res, _next) => {
-  // const session = await Shopify.Utils.loadCurrentSession(req, res, true);
-  console.log("------first----");
-  // addStore(
-  //   res.locals.shopify.session.shop,
-  //   res.locals.shopify.session.accessToken
-  // );
   return res
     .status(200)
     .set("Content-Type", "text/html")

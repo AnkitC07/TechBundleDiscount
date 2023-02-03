@@ -10,8 +10,9 @@ import ToastComp from "../layouts/ToastComp.jsx";
 import Preview from "./ProductBadge/Preview.jsx";
 // import Preview from "../"
 const BundleDiscount = () => {
-
-  const [badgeHtml, setBadgeHtlml] = useState('<div style="display: flex; justify-content: flex-end;"><div style="color: rgb(255, 255, 255); display: flex; align-items: center; justify-content: center; font-family: serif; background: rgb(0, 128, 96); font-size: 18px; padding: 5px 10px; border-radius: 55px; border: 1px solid rgb(0, 128, 96); width: 70%; height: 40px; text-align: center; overflow: hidden; font-style: normal; font-weight: bold;">Buy more and save test</div></div>')
+  const [badgeHtml, setBadgeHtlml] = useState(
+    '<div style="display: flex; justify-content: flex-end;"><div style="color: rgb(255, 255, 255); display: flex; align-items: center; justify-content: center; font-family: serif; background: rgb(0, 128, 96); font-size: 18px; padding: 5px 10px; border-radius: 55px; border: 1px solid rgb(0, 128, 96); width: 70%; height: 40px; text-align: center; overflow: hidden; font-style: normal; font-weight: bold;">Buy more and save test</div></div>'
+  );
   const navigate = useNavigate();
   const fetch = useAuthenticatedFetch();
   const [products, productsState] = useState([]);
@@ -26,22 +27,20 @@ const BundleDiscount = () => {
     primary: [],
   });
   const [active, setActive] = useState(false);
-  const [msg, setMsg] = useState('');
+  const [msg, setMsg] = useState("");
   const [btnLoading, setBtnLoading] = useState({
     type: "",
-    status: false
-  })
+    status: false,
+  });
   // Getting Id
   const queryString = window.location.search;
   const urlParams = new URLSearchParams(queryString);
   let id = urlParams.get("id");
 
   const [modalbtnloading, loadingModalbtn] = useState(false);
-  const [btnMain, setBtnMain] = useState(id == null ? true : false)
-  const [banner, setBanner] = useState(false)
-  const [ID, setID] = useState(null)
-
-
+  const [btnMain, setBtnMain] = useState(id == null ? true : false);
+  const [banner, setBanner] = useState(false);
+  const [ID, setID] = useState(null);
 
   //************ Main States ************//
   const dates = new Date();
@@ -59,10 +58,10 @@ const BundleDiscount = () => {
     specificCollection: [],
     tags: "",
   });
-  const [Html, setHtml] = useState('')
-  const [ispublished, setIspublished] = useState(false)
+  const [Html, setHtml] = useState("");
+  const [ispublished, setIspublished] = useState(false);
   const [bundle, setBundle] = useState({
-    discountName: 'Bundle Discount',
+    discountName: "Bundle Discount",
     offerHeader: "Buy more and save",
     bundleProducts: ["", ""],
     bundleDiscount: {
@@ -143,7 +142,7 @@ const BundleDiscount = () => {
       ChooseOption: "Choose an option",
     },
     priceSavings: {
-      freeGift: 'FREE',
+      freeGift: "FREE",
       FreeShippingTag: "FREE SHIPPING INCLUDED",
       FreeGiftTag: "FREE GIFT INCLUDED",
       SaveTag: "SAVE {discount}",
@@ -186,62 +185,8 @@ const BundleDiscount = () => {
     },
   });
   /************************************/
-  const shopName = getShopName()
-  const [themeId, themeIdState] = useState('')
-  const [onboardingScreen, setOnboarding] = useState({
-    loading: true,
-    status: true,
-  });
-
-  // useEffect(() => {
-  //   const getStoreDetails = async () => {
-
-  //     const fetchData = await fetch(`/api/getDetails?shopName=${shopName}`);
-  //     const getdata = await fetchData.json();
-  //     console.log(getdata, "get details data")
-  //     if (getdata.theme !== null) {
-  //       themeIdState(getdata.theme.id)
-  //       if (shopName.includes('admin.shopify.com')) {
-  //         let shop = ''
-  //         if (getdata.theme.session.shop.includes('myshopify.com')) {
-  //           shop = getdata.theme.session.shop.split('.myshopify.com')
-  //           shop = shop[0]
-  //           urlState(`https://admin.shopify.com/store/${shop}/themes/${getdata.theme.id}/editor?context=apps`)
-  //         }
-  //       } else {
-  //         urlState(`https://${shopName}/admin/themes/${getdata.theme.id}/editor?context=apps`)
-  //       }
-  //     }
-  //     if (getdata.data !== null && getdata.data.tag !== undefined) {
-  //       setTag(getdata.data.tag)
-  //     }
-  //     // console.log(getdata,"store data")
-  //     if (getdata.status == 200) {
-  //       if (getdata.data == null) {
-
-  //         setOnboarding({ loading: false, status: true });
-  //         return;
-  //       }
-
-  //       if (getdata.data.onboarding == true) {
-  //         setOnboarding({ loading: false, status: true });
-  //       } else {
-  //         setOnboarding({ loading: false, status: false });
-  //       }
-  //     } else {
-  //       setOnboarding({ loading: true, status: true });
-  //     }
-  //   }
-  //   getStoreDetails()
-
-  // }, []);
-
-
 
   useEffect(() => {
-
-
-
     fetch(`/api/products?id=${lastId}`)
       .then((res) => res.json())
       .then((x) => {
@@ -252,11 +197,15 @@ const BundleDiscount = () => {
         productsState(pro);
         lastIdState(id);
       })
-      .catch((err) => { });
+      .catch((err) => {});
   }, [lastId]);
 
   useEffect(() => {
-    setHtml(document.querySelector("#getHTMLData") !== null ? document.querySelector("#getHTMLData").innerHTML : '')
+    setHtml(
+      document.querySelector("#getHTMLData") !== null
+        ? document.querySelector("#getHTMLData").innerHTML
+        : ""
+    );
 
     fetch("/api/getCurrency")
       .then((res) => res.json())
@@ -277,17 +226,17 @@ const BundleDiscount = () => {
         body: JSON.stringify({ id: id }),
       });
       const data = await res.json();
-      const products = { ...data.data.Content }
-      console.log("Data: ", data)
+      const products = { ...data.data.Content };
+      console.log("Data: ", data);
       setTimeout(() => {
         designSatte(data.data.Design);
         setPlacement(data.data.Placement);
-        settingState(data.data.Badge)
+        settingState(data.data.Badge);
         setHtml(data.data.Html);
         setIspublished(data.data.IsPublished);
         setBtnMain(data.data.IsPublished == "published" ? false : true);
-        setBundle(products)
-      }, 1000)
+        setBundle(products);
+      }, 1000);
     };
 
     if (id !== null) {
@@ -303,9 +252,8 @@ const BundleDiscount = () => {
   }
   // console.log(ID)
   const BanneronDismiss = () => {
-    setBanner(false)
-  }
-
+    setBanner(false);
+  };
 
   const modalActivator = async (type) => {
     if (type == "Delete") {
@@ -387,9 +335,9 @@ const BundleDiscount = () => {
     // console.log("badgeHtml=> ", badgeHtml)
     setBtnLoading({
       type: statusUpdate,
-      status: true
-    })
-    console.log('Handle Publish Bundle=>', bundle)
+      status: true,
+    });
+    console.log("Handle Publish Bundle=>", bundle);
     // const setHTMl = document.querySelector("#getHTMLData") !== null ? document.querySelector("#getHTMLData").innerHTML : '';
     const body = {
       content: bundle,
@@ -399,41 +347,40 @@ const BundleDiscount = () => {
       BadgeHtml: badgeHtml,
       badge: settings,
       ispublished: statusUpdate == "save" ? ispublished : statusUpdate,
-    }
-
+    };
 
     fetch(`/api/setBundle?status=${statusUpdate}&id=${id}`, {
-      method: 'POST',
+      method: "POST",
       headers: {
-        "Content-Type": 'application/json'
+        "Content-Type": "application/json",
       },
-      body: JSON.stringify(body)
+      body: JSON.stringify(body),
     })
-      .then(res => res.json())
-      .then(data => {
-        console.log("Response form Publish=> ", data)
+      .then((res) => res.json())
+      .then((data) => {
+        console.log("Response form Publish=> ", data);
         setBtnLoading({
           type: statusUpdate,
-          status: false
-        })
+          status: false,
+        });
         if (data) {
-          if (data.status == 'published') {
-            setMsg('Published')
-            setBtnMain(false)
+          if (data.status == "published") {
+            setMsg("Published");
+            setBtnMain(false);
             setIspublished("published");
-            setBanner(true)
+            setBanner(true);
             // id = data.id
           } else if (data.status == "save") {
-            setMsg('Save')
+            setMsg("Save");
           } else if (data.status == "Duplicate") {
-            setMsg("Duplicate")
+            setMsg("Duplicate");
             // loadingModalbtn(false)
             setTimeout(() => {
-              navigate("/")
-            }, 1500)
+              navigate("/");
+            }, 1500);
           } else {
-            setMsg('Unpublished')
-            setBtnMain(true)
+            setMsg("Unpublished");
+            setBtnMain(true);
             setIspublished("unpublished");
           }
           setActive(true);
@@ -441,8 +388,7 @@ const BundleDiscount = () => {
         setActive(true);
         setID(data.id);
       })
-      .catch(err => console.log(err))
-
+      .catch((err) => console.log(err));
   };
 
   return (
@@ -496,68 +442,106 @@ const BundleDiscount = () => {
                     </div>
                     <div class="Polaris-Header-Title__SubTitle">
                       <p>
-                        Discount ID: <span>  {id ? `${id}` : 'Save or Publish to show discount ID'}</span>
+                        Discount ID:{" "}
+                        <span>
+                          {" "}
+                          {id ? `${id}` : "Save or Publish to show discount ID"}
+                        </span>
                       </p>
-
                     </div>
                   </div>
                   <div className="Polaris-Page-Header__RightAlign">
                     <div class="Polaris-ActionMenu">
                       <div class="Polaris-ActionMenu-Actions__ActionsLayout">
                         <div class="Polaris-ButtonGroup Polaris-ButtonGroup--extraTight">
-                          {id != null ? <>
+                          {id != null ? (
+                            <>
+                              <div class="Polaris-ButtonGroup__Item">
+                                <span class="Polaris-ActionMenu-SecondaryAction Polaris-ActionMenu-SecondaryAction--destructive">
+                                  <button
+                                    class="Polaris-Button Polaris-Button--outline"
+                                    aria-disabled="false"
+                                    type="button"
+                                    onClick={() => modalActivator("Delete")}
+                                  >
+                                    <span class="Polaris-Button__Content">
+                                      <span class="Polaris-Button__Text">
+                                        Delete
+                                      </span>
+                                    </span>
+                                  </button>
+                                </span>
+                              </div>
 
-                            <div class="Polaris-ButtonGroup__Item">
-                              <span class="Polaris-ActionMenu-SecondaryAction Polaris-ActionMenu-SecondaryAction--destructive">
-                                <button class="Polaris-Button Polaris-Button--outline" aria-disabled="false" type="button"
-                                  onClick={() => modalActivator("Delete")}
-                                >
-                                  <span class="Polaris-Button__Content">
-                                    <span class="Polaris-Button__Text">Delete</span>
-                                  </span>
-                                </button>
-                              </span>
-                            </div>
-
-
-                            <div class="Polaris-ButtonGroup__Item">
-                              <span class="Polaris-ActionMenu-SecondaryAction">
-                                <button class="Polaris-Button Polaris-Button--outline" aria-disabled="false" type="button"
-                                  onClick={() => modalActivator("Duplicate")}
-                                >
-                                  <span class="Polaris-Button__Content">
-                                    <span class="Polaris-Button__Text">Duplicate</span>
-                                  </span>
-                                </button>
-                              </span>
-                            </div>
-                          </> : ''}
+                              <div class="Polaris-ButtonGroup__Item">
+                                <span class="Polaris-ActionMenu-SecondaryAction">
+                                  <button
+                                    class="Polaris-Button Polaris-Button--outline"
+                                    aria-disabled="false"
+                                    type="button"
+                                    onClick={() => modalActivator("Duplicate")}
+                                  >
+                                    <span class="Polaris-Button__Content">
+                                      <span class="Polaris-Button__Text">
+                                        Duplicate
+                                      </span>
+                                    </span>
+                                  </button>
+                                </span>
+                              </div>
+                            </>
+                          ) : (
+                            ""
+                          )}
 
                           <div class="Polaris-ButtonGroup__Item">
                             <span class="Polaris-ActionMenu-SecondaryAction">
                               <Button
                                 onClick={() => handelPublish("save")}
-                                loading={btnLoading.type == "save" ? btnLoading.status : false}
-                              >Save</Button>
+                                loading={
+                                  btnLoading.type == "save"
+                                    ? btnLoading.status
+                                    : false
+                                }
+                              >
+                                Save
+                              </Button>
                             </span>
                           </div>
-
                         </div>
                       </div>
                     </div>
                     <div class="Polaris-Page-Header__PrimaryActionWrapper">
-                      {btnMain
-                        ?
-                        <Button primary onClick={() => {
-                          handelPublish("published")
-                        }} loading={btnLoading.type == "published" ? btnLoading.status : false}>Publish</Button>
-                        :
-                        <Button destructive onClick={() => {
-                          handelPublish("unPublished")
-                        }} loading={btnLoading.type == "unPublished" ? btnLoading.status : false}>Unpublish</Button>}
-
+                      {btnMain ? (
+                        <Button
+                          primary
+                          onClick={() => {
+                            handelPublish("published");
+                          }}
+                          loading={
+                            btnLoading.type == "published"
+                              ? btnLoading.status
+                              : false
+                          }
+                        >
+                          Publish
+                        </Button>
+                      ) : (
+                        <Button
+                          destructive
+                          onClick={() => {
+                            handelPublish("unPublished");
+                          }}
+                          loading={
+                            btnLoading.type == "unPublished"
+                              ? btnLoading.status
+                              : false
+                          }
+                        >
+                          Unpublish
+                        </Button>
+                      )}
                     </div>
-
                   </div>
                 </div>
               </div>
@@ -566,7 +550,18 @@ const BundleDiscount = () => {
 
           <div className="row ">
             <NavbarMain
-              states={{ placement, setPlacement, bundle, setBundle, selectedTab, setTabState, designSettings, designSatte, settings, settingState }}
+              states={{
+                placement,
+                setPlacement,
+                bundle,
+                setBundle,
+                selectedTab,
+                setTabState,
+                designSettings,
+                designSatte,
+                settings,
+                settingState,
+              }}
               nav={navdata}
               products={products}
               productsState={productsState}
@@ -606,11 +601,6 @@ const BundleDiscount = () => {
           ""
         )}
       </section>
-      {/* {onboardingScreen.loading == false && onboardingScreen.status == true ? (
-              <OnboardingScreens />
-            ) : (
-              ''
-            )} */}
     </>
   );
 };
