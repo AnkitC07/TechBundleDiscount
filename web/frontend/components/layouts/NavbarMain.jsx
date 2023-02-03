@@ -53,7 +53,7 @@ const NavbarMain = ({
         );
       case "Design":
         return (
-          <Design states={{ designSettings, designSatte, bundle, setBundle, currency }} />
+          <Design states={{ designSettings, designSatte, bundle, setBundle, currency, setHtml }} />
         );
       case "Badge":
         return <ProductBadge states={{ settings, settingState, bundle, setBadgeHtlml }} />;

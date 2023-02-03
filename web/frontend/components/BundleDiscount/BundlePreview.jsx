@@ -2,18 +2,18 @@ import { Card, Banner } from "@shopify/polaris";
 import React, { useState } from "react";
 import { useEffect } from "react";
 import parser from 'html-react-parser'
-export default function BundlePreview({ bundle, currency, design }) {
+export default function BundlePreview({ bundle, currency, design, setHtml }) {
   const { settings, button, priceSavings } = design;
 
   return (
-    <div id="getHTMLData" className="BundlepreviewStyle">
-      <div className="previewScroll">
+    <div className="BundlepreviewStyle">
+      <div id="getHTMLData" className="previewScroll">
         <div className="customCard">
           {JSON.stringify(bundle.bundleProducts).includes("title") == true ? (
             <div
               style={{
                 background: "white",
-                padding:'0px 10px 10px 10px',
+                padding: '0px 10px 10px 10px',
                 color: `${settings.FontColor}`,
                 fontSize: `${settings.FontSize}px`,
                 fontFamily: settings.FontFamily,
@@ -397,7 +397,7 @@ const replaceDiscount = (dis, val) => {
 
 const Price = ({ design, data, bundle, currency, priceStates }) => {
   const pr = priceStates;
-  console.log(pr, "checkign pricesssssssssssssss", pr?.comparePrice);
+  // console.log(pr, "checkign pricesssssssssssssss", pr?.comparePrice);
   return (
     <>
       <div>

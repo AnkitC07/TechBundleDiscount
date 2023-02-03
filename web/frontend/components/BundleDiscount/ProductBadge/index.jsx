@@ -10,7 +10,9 @@ import { useEffect } from "react";
 
 const ProductBadge = ({ states }) => {
   const { settings, settingState, setBadgeHtlml } = states;
-  setBadgeHtlml(document.querySelector('#PreviewHtml_Get')?.innerHTML)
+  useEffect(() => {
+    setBadgeHtlml(document.querySelector('#PreviewHtml_Get')?.innerHTML)
+  }, [])
   return (
     <>
       <div className="mb-5">

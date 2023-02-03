@@ -19,6 +19,7 @@
     "@shopify/app-bridge-react": "^3.7.0",
     "@shopify/cli": "3.32.0",
     "font-awesome": "^4.7.0",
+    "html-react-parser": "^3.0.8",
     "mongoose": "^6.8.4"
   },
   "author": "TIS-90"

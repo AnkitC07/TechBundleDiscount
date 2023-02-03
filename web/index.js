@@ -4,6 +4,7 @@ import { readFileSync } from "fs";
 import express from "express";
 import serveStatic from "serve-static";
 import bodyParser from "body-parser";
+import cors from "cors";
 import cron from "node-cron";
 import shopify from "./shopify.js";
 import { cronjob } from "./cronJob.js";
@@ -17,6 +18,7 @@ import GetDatabyId from "./routes/GetDatabyId.js";
 import createHmac from "create-hmac";
 import addStore, { updatePlan, updateStore } from "./model/Controller/store.js";
 import Stores from "./model/Stores.js";
+import ThemeExtension from "./routes/themeExtension.js";
 const PORT = parseInt(process.env.BACKEND_PORT || process.env.PORT, 10);
 
 const STATIC_PATH =
@@ -39,6 +41,7 @@ app.post(
 );
 
 app.use(express.json());
+app.use(cors());
 
 // function verifyWebhook(payload, hmac) {
 //   const message = JSON.stringify(payload).toString();
@@ -130,10 +133,12 @@ app.get("/api/paymenturl", async (req, res) => {
   }
 });
 // CRON FOR PLAN DECRIMENT
-cron.schedule("*/10 * * * * *", function () {
-  console.log("running a task every 10 second");
-  cronjob();
-});
+// cron.schedule("*/10 * * * * *", function () {
+//   console.log("running a task every 10 second");
+//   cronjob();
+// });
+app.use("/api", ThemeExtension);
+
 //---------------------------------------------------------------
 // All endpoints after this point will require an active session
 app.use("/api/*", shopify.validateAuthenticatedSession());
@@ -141,8 +146,10 @@ app.use("/api/*", shopify.validateAuthenticatedSession());
 
 // SUBSCRIBED PLAN
 app.post("/api/payment-api", bodyParser.json(), async (req, res) => {
-  console.log("Paymentapi");
+  console.log("Title: ", req.body.plan.title, "Price: ", req.body.plan.price);
+
   res.setHeader("Access-Control-Allow-Origin", " *");
+
   try {
     // var shop_name_token = await getStoreAccessToken(req.body.shopName);
     let shopName = res.locals.shopify.session.shop;
@@ -170,6 +177,17 @@ app.post("/api/payment-api", bodyParser.json(), async (req, res) => {
       },
     });
   } catch (error) {
+    // if (req.body.plan.price < 0) {
+    //   await updatePlan(
+    //     res.locals.shopify.session.shop,
+    //     req.body.plan.title,
+    //     req.body.plan.price
+    //   );
+    //   res.status(200).json({
+    //     status: false,
+    //     data: "Free",
+    //   });
+    // }
     // console.log(error)
     res.status(404).json({
       status: false,

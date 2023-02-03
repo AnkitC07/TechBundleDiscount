@@ -186,7 +186,7 @@ const BundleDiscount = () => {
     },
   });
   /************************************/
- 
+
 
 
 
@@ -208,9 +208,11 @@ const BundleDiscount = () => {
       })
       .catch((err) => { });
   }, [lastId]);
-
   useEffect(() => {
-    setHtml(document.querySelector("#getHTMLData") !== null ? document.querySelector("#getHTMLData").innerHTML : '')
+    console.log('Html===', Html)
+  }, [Html])
+  useEffect(() => {
+
 
     fetch("/api/getCurrency")
       .then((res) => res.json())
@@ -338,18 +340,21 @@ const BundleDiscount = () => {
     },
   ];
   const handelPublish = async (statusUpdate) => {
-    // console.log("badgeHtml=> ", badgeHtml)
+    console.log("Html=> ", Html)
     setBtnLoading({
       type: statusUpdate,
       status: true
     })
     console.log('Handle Publish Bundle=>', bundle)
     // const setHTMl = document.querySelector("#getHTMLData") !== null ? document.querySelector("#getHTMLData").innerHTML : '';
+    setHtml(document.querySelector("#getHTMLData") !== null ? document.querySelector("#getHTMLData").innerHTML : '')
+    const previewhtml = document.querySelector("#getHTMLData") !== null ? document.querySelector("#getHTMLData").innerHTML : ''
+    console.log('PUBLISH==>', document.querySelector("#getHTMLData").innerHTML)
     const body = {
       content: bundle,
       design: designSettings,
       placement: placement,
-      Html: Html,
+      Html: previewhtml,
       BadgeHtml: badgeHtml,
       badge: settings,
       ispublished: statusUpdate == "save" ? ispublished : statusUpdate,
@@ -560,7 +565,7 @@ const BundleDiscount = () => {
           ""
         )}
       </section>
-      
+
     </>
   );
 };
