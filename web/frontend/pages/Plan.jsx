@@ -52,8 +52,7 @@ const Plan = () => {
       <div className="container mt-4">
         <Card sectioned>
           <Text variant="bodyMd" as="p">
-            You're currently on <b>14 Days Free Trial</b> Plan. (0 / unlimited
-            monthly views)
+            You're currently on <b>14 Days Free Trial</b> Plan. 0 / 14 days 
           </Text>
           <div className="mt-3">
             <ProgressBar
@@ -146,32 +145,32 @@ const PlanCard = ({ title, subTitle, features, price }) => {
   }
   const handleButton = async () => {
     console.log(plan_subscribed, "Plan")
-    //   setLoadingPlan(true);
-    //   setDisabledButton(true);
-    //   await fetch(`/api/payment-api`, {
-    //     method: "POST",
-    //     headers: {
-    //       "Content-Type": "application/json",
-    //     },
-    //     body: JSON.stringify({ plan: plan_subscribed }),
-    //   })
-    //     .then((response) => response.json())
-    //     .then((data) => {
-    //       setLoadingPlan(false)
-    //       setDisabledButton(false);
-    //       if (data.data) {
-    //         const url = data.data.url;
-    //         console.log(url);
-    //         // window.open(url, "_self");
-    //         window.top.location.href = url;
-    //         // window.open(data.data.url)
-    //       }
-    //     })
-    //     .catch((error) => {
-    //       setLoadingPlan(false);
-    //       setDisabledButton(false);
-    //       console.log(error);
-    //     });
+      setLoadingPlan(true);
+      setDisabledButton(true);
+      await fetch(`/api/payment-api`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ plan: plan_subscribed }),
+      })
+        .then((response) => response.json())
+        .then((data) => {
+          setLoadingPlan(false)
+          setDisabledButton(false);
+          if (data.data) {
+            const url = data.data.url;
+            console.log(url);
+            // window.open(url, "_self");
+            window.top.location.href = url;
+            // window.open(data.data.url)
+          }
+        })
+        .catch((error) => {
+          setLoadingPlan(false);
+          setDisabledButton(false);
+          console.log(error);
+        });
   };
 
 

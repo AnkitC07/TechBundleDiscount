@@ -15,6 +15,7 @@ import AllDiscount from "./routes/AllDiscount.js";
 import GetDatabyId from "./routes/GetDatabyId.js";
 import createHmac from "create-hmac";
 import addStore, { updateStore } from "./model/Controller/store.js";
+import cron from 'node-cron'
 const PORT = parseInt(process.env.BACKEND_PORT || process.env.PORT, 10);
 
 const STATIC_PATH =
@@ -23,6 +24,7 @@ const STATIC_PATH =
     : `${process.cwd()}/frontend/`;
 
 const app = express();
+
 
 // Set up Shopify authentication and webhook handling
 app.get(shopify.config.auth.path, shopify.auth.begin());
@@ -35,11 +37,15 @@ app.post(
   shopify.config.webhooks.path,
   shopify.processWebhooks({ webhookHandlers: GDPRWebhookHandlers })
 );
-app.get(shopify.config.auth.store, async (req, res) => {
-  console.log("checing");
-});
+
 
 app.use(express.json());
+
+
+cron.schedule("0 0 0 * * *", function () {
+  console.log('Cron Job run every Day')
+  
+});
 
 // function verifyWebhook(payload, hmac) {
 //   const message = JSON.stringify(payload).toString();
@@ -90,15 +96,6 @@ app.use(express.json());
 //     }
 //   });
 
-app.post("/api/setStore", async (req, res) => {
-  console.log("Upper SetStore Hit");
-  console.log("Session", res.locals.shopify.session);
-});
-app.get("/api/setStore", async (req, res) => {
-  console.log("Upper SetStore Hit");
-  console.log("Session", res.locals.shopify.session);
-});
-
 app.get("/api/paymenturl", async (req, res) => {
   console.log(req.query.shop, "Session-----");
   console.log(
@@ -147,6 +144,12 @@ app.get("/api/paymenturl", async (req, res) => {
 });
 // All endpoints after this point will require an active session
 app.use("/api/*", shopify.validateAuthenticatedSession());
+
+// Inserted store details
+
+app.get("/api/storeDetails", async (req,res)=>{
+    console.log("storedetails")
+})
 
 // SUBSCRIBED PLAN
 app.post("/api/payment-api", bodyParser.json(), async (req, res) => {
