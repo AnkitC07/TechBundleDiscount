@@ -1,4 +1,4 @@
-import { Badge, Button } from "@shopify/polaris";
+import { Badge, Box, Button, Spinner } from "@shopify/polaris";
 import React, { useContext } from "react";
 import { useState, useEffect } from "react";
 import { NavLink, useNavigate } from "react-router-dom";
@@ -19,6 +19,7 @@ const BundleDiscount = () => {
   const [lastId, lastIdState] = useState(0);
   const [currency, setCurrency] = useState("");
   const [customer, setCustomer] = useState([]);
+  const [loading,loadingState] = useState(true)
 
   const [modal, modalState] = useState({
     status: false,
@@ -179,9 +180,7 @@ const BundleDiscount = () => {
         b: true,
         i: false,
         u: false,
-      },
-      Desktop: "right",
-      Mobile: "left",
+      }
     },
   });
   /************************************/
@@ -236,6 +235,7 @@ const BundleDiscount = () => {
         setIspublished(data.data.IsPublished);
         setBtnMain(data.data.IsPublished == "published" ? false : true);
         setBundle(products);
+        loadingState(false)
       }, 1000);
     };
 
@@ -561,6 +561,7 @@ const BundleDiscount = () => {
                 designSatte,
                 settings,
                 settingState,
+                loading
               }}
               nav={navdata}
               products={products}

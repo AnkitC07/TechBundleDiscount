@@ -29,9 +29,8 @@ const Content = ({
   design,
   customer,
   setCustomer,
-  setHtml
+  setHtml,
 }) => {
-
   const [bundleDiv, setbundleDiv] = useState(bundle.bundleProducts);
 
   // bundle.bundleProducts = bundleDiv;
