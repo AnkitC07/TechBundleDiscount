@@ -19,7 +19,7 @@ const BundleDiscount = () => {
   const [lastId, lastIdState] = useState(0);
   const [currency, setCurrency] = useState("");
   const [customer, setCustomer] = useState([]);
-  const [loading,loadingState] = useState(true)
+  const [loading,loadingState] = useState(false)
 
   const [modal, modalState] = useState({
     status: false,
@@ -240,6 +240,7 @@ const BundleDiscount = () => {
     };
 
     if (id !== null) {
+      loadingState(true)
       getDataById();
     }
     return () => {

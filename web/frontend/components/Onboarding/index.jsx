@@ -52,8 +52,7 @@ function Installation() {
   const [imgLoading, loadingstate] = useState(true);
   const [optionsValues, optionsState] = useState([])
   const fetch = useAuthenticatedFetch();
-  let shopName = getShopName();
-
+  const [shop,shopState] = useState('')
   useEffect(() => {
     optionsData()
   }, [])
@@ -63,10 +62,9 @@ function Installation() {
   }, []);
 
   const optionsData = async () => {
-    const fetchData = await fetch(`/api/getTheme?shopName=${shopName}`)
+    const fetchData = await fetch(`/api/getTheme`)
     const getData = await fetchData.json()
-    console.log(getData, "onboarding page")
-    shopName = getData.shop
+    shopState(getData.shop)
     let newoptions = getData.data.map(x => { return { label: x.name, value: `${x.id}` } })
     let selectedOptions = getData.data.filter(x => x.role == 'main')
     setSelected(`${selectedOptions[0].id}`)
@@ -112,7 +110,8 @@ function Installation() {
         {dropdown()}
         <div className="button">
           <Button primary onClick={() => {
-            window.open(`https://${shopName}/admin/themes/${selected}/editor?context=apps`)
+            let shopDomain = shop.replace(".myshopify.com","")
+            window.open(`https://admin.shopify.com/store/${shopDomain}/themes/${selected}/editor?context=apps`)
           }}>Preview in theme</Button>
         </div>
       </div>
@@ -178,7 +177,6 @@ function PolarisModal({ active, onclick }) {
   const [display, setDisplay] = useState(true);
   const navigate = useNavigate();
   const fetch = useAuthenticatedFetch();
-  const shopName = getShopName();
 
   const content = [
     {
@@ -239,7 +237,7 @@ Bundle Discount Manager work?`,
   const handleChange = async () => {
     if (display == false) {
       const fetchData = await fetch(
-        `/api/updateonboarding?shopName=${shopName}`
+        `/api/updateonboarding`
       );
       const getData = await fetchData.json();
       if (getData.status == 200) {

@@ -415,10 +415,9 @@ const replaceDiscount = (dis, val) => {
 
 const Price = ({ design, data, bundle, currency, priceStates }) => {
   const pr = priceStates;
-  console.log(pr, "checkign pricesssssssssssssss", pr?.comparePrice);
   return (
     <>
-      <div>
+      <div className='price'>
         {pr?.comparePrice !== null && pr?.comparePrice !== undefined ? (
           bundle.bundleDiscount.addDiscount.status &&
           bundle.bundleDiscount.addDiscount.discountType === "% OFF" ? (
@@ -482,6 +481,7 @@ const Variants = ({
     <>
       <div style={{ margin: "10px 0px", width: "100%" }}>
         <select
+         data-index={xIndex}
           style={{
             width: "100%",
             padding: "5px",

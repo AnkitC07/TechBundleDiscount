@@ -23,7 +23,7 @@ import CheckHead from "./layouts/CheckHead";
 
 // import { ProductsCard } from "./ProductsCard";
 
-export default function Homepage() {
+export default function Homepage({ themes }) {
   const fetch = useAuthenticatedFetch();
   const [discountData, setDiscountData] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -38,6 +38,7 @@ export default function Homepage() {
     };
     handelPublish();
   }, []);
+
   return (
     <Page>
       <section className="countdown_main">
@@ -87,15 +88,15 @@ export default function Homepage() {
                     <>
                       <Card>
                         <div className="p-5">
-                        <div className="text-center">
-                              <img
-                                alt=""
-                                src="discount.png"
-                                className="Polaris-EmptyState__Image"
-                                role="presentation"
-                                style={{width:"176px"}}
-                              />
-                            </div>
+                          <div className="text-center">
+                            <img
+                              alt=""
+                              src="discount.png"
+                              className="Polaris-EmptyState__Image"
+                              role="presentation"
+                              style={{ width: "176px" }}
+                            />
+                          </div>
                           <div className="p-2">
                             <p className="Polaris-DisplayText Polaris-DisplayText--sizeSmall text-center">
                               This is where you'll manage your discount
@@ -109,9 +110,7 @@ export default function Homepage() {
                           </div>
                           <div className="mt-5 text-center">
                             <NavLink className="count_btn" to="/bundleDiscount">
-                                <Button primary>
-                                Create Bundle Discount
-                                </Button>
+                              <Button primary>Create Bundle Discount</Button>
                             </NavLink>
                           </div>
                         </div>
@@ -124,6 +123,26 @@ export default function Homepage() {
             </div>
           </div>
         </div>
+
+        <div className="text-center mt-3" style={{ fontSize: "15px" }}>
+          <p>Bundle Discount not displaying?</p>
+          <p className="d-flex justify-content-center">
+            Make sure they are{" "}
+            <a
+              href={`https://admin.shopify.com/store/${themes.session.shop.replace(
+                ".myshopify.com",
+                ""
+              )}/themes/${themes.id}/editor`}
+              className="Polaris-Link text-decoration-none"
+              target="_blank"
+              style={{ display: "flex", marginLeft: "5px" }}
+            >
+              enabled in your theme
+              <span class="Polaris-Icon"><span class="Polaris-VisuallyHidden">(opens a new window)</span><svg viewBox="0 0 20 20" class="Polaris-Icon__Svg" focusable="false" aria-hidden="true"><path d="M14 13v1a1 1 0 0 1-1 1H6c-.575 0-1-.484-1-1V7a1 1 0 0 1 1-1h1c1.037 0 1.04 1.5 0 1.5-.178.005-.353 0-.5 0v6h6V13c0-1 1.5-1 1.5 0zm-3.75-7.25A.75.75 0 0 1 11 5h4v4a.75.75 0 0 1-1.5 0V7.56l-3.22 3.22a.75.75 0 1 1-1.06-1.06l3.22-3.22H11a.75.75 0 0 1-.75-.75z"></path></svg></span>
+            </a>
+          </p>
+        </div>
+
         <div className="container-fluid ref_app">
           <div className="row ">
             <div className="col-md-12">
