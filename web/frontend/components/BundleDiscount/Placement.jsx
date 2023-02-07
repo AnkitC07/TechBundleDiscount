@@ -1,17 +1,19 @@
-import { useState } from "react";
+import { Stack, Tag, TextField } from "@shopify/polaris";
+import { useEffect, useState } from "react";
 import CheckBoxComponent from "../Fields/CheckBoxComponent";
 import InputComponent from "../Fields/InputComponent";
+import InputWithTags from "../Fields/InputWithTags";
 import ResourcePickerComp from "../Fields/ResourcePickerComp";
 import CustomPosition from "../layouts/CustomPosition";
 import BundlePreview from "./BundlePreview";
 
 const Placement = ({ states }) => {
-  const { placement, setPlacement, bundle, designSettings, id, currency } = states
+  const { placement, setPlacement, bundle, designSettings, id, currency } =
+    states;
 
   const [open, setOpen] = useState(false);
   const [openc, setOpenc] = useState(false);
   const [selectedPro, setProducts] = useState(placement.selectProduct);
-
   const updateState = async (keyData) => {
     Object.keys(selectedPro).forEach((key) => {
       selectedPro[key] = false;
@@ -57,10 +59,11 @@ const Placement = ({ states }) => {
                   </div>
                   <div className="Polaris-FormLayout__Item ">
                     <button
-                      className={`Polaris-Button Polaris-Button--fullWidth ${selectedPro.specificProducts == true
-                        ? ""
-                        : "disable-div"
-                        }`}
+                      className={`Polaris-Button Polaris-Button--fullWidth ${
+                        selectedPro.specificProducts == true
+                          ? ""
+                          : "disable-div"
+                      }`}
                       type="button"
                       onClick={() => setOpen(true)}
                       id="spcProduct-btn"
@@ -95,10 +98,11 @@ const Placement = ({ states }) => {
 
                   <div className="Polaris-FormLayout__Item ">
                     <button
-                      className={`Polaris-Button Polaris-Button--fullWidth ${selectedPro.specificCollections == true
-                        ? ""
-                        : "disable-div"
-                        }`}
+                      className={`Polaris-Button Polaris-Button--fullWidth ${
+                        selectedPro.specificCollections == true
+                          ? ""
+                          : "disable-div"
+                      }`}
                       type="button"
                       onClick={() => setOpenc(true)}
                       id="spcProduct-btn"
@@ -122,18 +126,14 @@ const Placement = ({ states }) => {
                   />
                   <div
                     id="customPosition"
-                    className={`Polaris-FormLayout__Item ${selectedPro.allProductsWithTags == true ? "" : "hide-div"
-                      }`}
+                    className={`Polaris-FormLayout__Item ${
+                      selectedPro.allProductsWithTags == true ? "" : "hide-div"
+                    }`}
                   >
-                    <InputComponent
-                      placeholder={"Add tags"}
-                      default={placement.tags}
-                      onChange={(e) => {
-                        setPlacement({
-                          ...placement,
-                          tags: e.target.value,
-                        });
-                      }}
+                    <InputWithTags
+                      tags={placement.tags}
+                      states={{ placement, setPlacement }}
+                      placeholder={"Enter tags"}
                     />
                   </div>
                   <CheckBoxComponent
@@ -161,7 +161,11 @@ const Placement = ({ states }) => {
           </div>
         </div>
         <div className="col-lg-6 col-md-5">
-          <BundlePreview bundle={bundle} design={designSettings} currency={currency} />
+          <BundlePreview
+            bundle={bundle}
+            design={designSettings}
+            currency={currency}
+          />
         </div>
       </div>
       <div>

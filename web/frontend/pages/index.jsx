@@ -6,8 +6,11 @@ import OnboardingScreens from '../components/Onboarding';
 import { useEffect, useState } from 'react';
 import { useAuthenticatedFetch } from '../hooks/useAuthenticatedFetch';
 import addStore from '../../model/Controller/store';
+import { useNavigate } from 'react-router-dom';
 
 export default function HomePage() {
+  
+  const Navigate = useNavigate()
   const fetch = useAuthenticatedFetch();
 
   const shopName = getShopName()
@@ -20,9 +23,12 @@ export default function HomePage() {
 
   useEffect(() => {
     const getStoreDetails = async () => {
-
       const fetchData = await fetch(`/api/getDetails`);
       const getdata = await fetchData.json();
+      if(getdata.data.plan.trialDays == "0" && getdata.data.plan.type == "Free Plan"){
+        console.log("Your trial days are complited")
+        Navigate("/Plan")
+      }
 
       console.log(getdata, "get details data")
       if (getdata.theme !== null) {

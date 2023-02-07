@@ -28,6 +28,7 @@ const STATIC_PATH =
 
 const app = express();
 
+
 // Set up Shopify authentication and webhook handling
 app.get(shopify.config.auth.path, shopify.auth.begin());
 app.get(
@@ -42,6 +43,12 @@ app.post(
 
 app.use(express.json());
 app.use(cors());
+
+
+// cron.schedule("0 0 0 * * *", function () {
+//   console.log('Cron Job run every Day')
+
+// });
 
 // function verifyWebhook(payload, hmac) {
 //   const message = JSON.stringify(payload).toString();
@@ -133,16 +140,23 @@ app.get("/api/paymenturl", async (req, res) => {
   }
 });
 // CRON FOR PLAN DECRIMENT
-// cron.schedule("*/10 * * * * *", function () {
-//   console.log("running a task every 10 second");
-//   cronjob();
-// });
 app.use("/api", ThemeExtension);
 
+// run every 10 sec */10 * * * * * and run every day 0 0 0 * * *
+cron.schedule("0 0 0 * * *", function () {
+  console.log("running a task every 10 second");
+  cronjob();
+});
 //---------------------------------------------------------------
 // All endpoints after this point will require an active session
 app.use("/api/*", shopify.validateAuthenticatedSession());
 //---------------------------------------------------------------
+
+// Inserted store details
+
+app.get("/api/storeDetails", async (req, res) => {
+  console.log("storedetails")
+})
 
 // SUBSCRIBED PLAN
 app.post("/api/payment-api", bodyParser.json(), async (req, res) => {
@@ -154,28 +168,36 @@ app.post("/api/payment-api", bodyParser.json(), async (req, res) => {
     // var shop_name_token = await getStoreAccessToken(req.body.shopName);
     let shopName = res.locals.shopify.session.shop;
     let tokenAccess = res.locals.shopify.session.accessToken;
-
-    const recurring_application_charge =
-      new shopify.api.rest.RecurringApplicationCharge({
-        session: res.locals.shopify.session,
+    if (req.body.plan.title == "Free Plan") {
+      const data = await updatePlan(shopName, req.body.plan.title, "0");
+      res.status(200).json({
+        status: true,
+        data: {
+          data
+        },
       });
-    recurring_application_charge.name = req.body.plan.title;
-    recurring_application_charge.return_url = `${process.env.HOST}/api/paymenturl?shop=${shopName}&planType=${req.body.plan.title}&planPrice=${req.body.plan.price}&token=${tokenAccess}`;
-    recurring_application_charge.test = true;
-    recurring_application_charge.price = req.body.plan.price;
-    recurring_application_charge.terms = "testing Data";
-    await recurring_application_charge.save({
-      update: true,
-    });
+    } else {
+      const recurring_application_charge =
+        new shopify.api.rest.RecurringApplicationCharge({
+          session: res.locals.shopify.session,
+        });
+      recurring_application_charge.name = req.body.plan.title;
+      recurring_application_charge.return_url = `${process.env.HOST}/api/paymenturl?shop=${shopName}&planType=${req.body.plan.title}&planPrice=${req.body.plan.price}&token=${tokenAccess}`;
+      recurring_application_charge.test = true;
+      recurring_application_charge.price = req.body.plan.price;
+      recurring_application_charge.terms = "testing Data";
 
-    const url = recurring_application_charge.confirmation_url;
-
-    res.status(200).json({
-      status: true,
-      data: {
-        url,
-      },
-    });
+      await recurring_application_charge.save({
+        update: true,
+      });
+      const url = recurring_application_charge.confirmation_url;
+      res.status(200).json({
+        status: true,
+        data: {
+          url,
+        },
+      });
+    }
   } catch (error) {
     // if (req.body.plan.price < 0) {
     //   await updatePlan(
@@ -196,8 +218,15 @@ app.post("/api/payment-api", bodyParser.json(), async (req, res) => {
   }
 });
 // SUBSCRIBE PLAN ENDS-----
-
 // GET DETAILS FROM STORE
+app.get('/api/getStorePlan', async (req, res) => {
+  const shop = res.locals.shopify.session.shop;
+  const findshop = await Stores.findOne({
+    storename: shop,
+  });
+  res.status(200).json(findshop)
+})
+
 app.get("/api/getDetails", async (req, res) => {
   res.setHeader("Access-Control-Allow-Origin", "*");
   try {
@@ -278,6 +307,8 @@ app.get("/api/products", async (req, res) => {
   }
 });
 app.get("/api/getCurrency", async (req, res) => {
+  console.log(process.env.HOST)
+
   try {
     const shop = await shopify.api.rest.Shop.all({
       session: res.locals.shopify.session,

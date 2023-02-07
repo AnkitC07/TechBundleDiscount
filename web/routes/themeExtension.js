@@ -34,7 +34,7 @@ const updateBundle = async (specBundle, session) => {
 };
 
 const getproductsById = async (ids, session) => {
-	console.log(ids);
+	console.log("For Updated data: ", ids);
 	const newBundleData = await shopify.api.rest.Product.all({
 		session: session,
 		ids: ids.toString(),
@@ -43,6 +43,7 @@ const getproductsById = async (ids, session) => {
 };
 
 const dbquery = async (query) => {
+	console.log(query, "Query")
 	return await Bundle.findOne(query);
 };
 const splitCollectionId = (str) => {
@@ -50,6 +51,7 @@ const splitCollectionId = (str) => {
 	temp.pop()
 	return temp;
 }
+
 ThemeExtension.post("/bunldeDiscount", async (req, res) => {
 	res.setHeader("Access-Control-Allow-Origin", `*`);
 	const body = req.body;
@@ -103,12 +105,19 @@ ThemeExtension.post("/bunldeDiscount", async (req, res) => {
 
 	console.log(collectionId, 'collectionId')
 	for (let i = 0; i < queries.length; i++) {
+
 		let data = await dbquery(queries[i]);
 		if (data !== null) {
 			console.log(data.Placement.selectProduct, "<=Data");
+
 			if (data.Placement.selectProduct.customPosition) {
 				console.log("Inside custom position");
-			} else if (
+				const updatedBundle = await updateBundle(data, session);
+				data = updatedBundle;
+				res.send({ Store, data });
+				break;
+			}
+			else if (
 				data.Placement.selectProduct.specificProducts == true &&
 				data.Placement.specificProducts.some((x) => x.id.includes(id))
 			) {
@@ -117,24 +126,40 @@ ThemeExtension.post("/bunldeDiscount", async (req, res) => {
 				data = updatedBundle;
 				res.send({ Store, data });
 				break;
-			} else if (
+			}
+			else if (
 				data.Placement.selectProduct.allProductsWithTags == true
 			) {
-
-				console.log("Inside tags");
+				let flag = false;
+				const productTag = tag.split(/\s+/)
+				const bundleTag = data.Placement.tags.split(/\s+/)
+				console.log("Inside tags", bundleTag, 'and', productTag);
+				for (let i = 0; i < productTag.length; i++) {
+					if (bundleTag.includes(productTag[i])) {
+						flag = true;
+						res.send({ Store, data });
+						break;
+					}
+				}
+				if (flag) {
+					break;
+				} else {
+					continue;
+				}
+			}
+			else if (data.Placement.selectProduct.specificCollections && collectionId.includes(data.Placement.specificCollection[0].id.split('Collection/')[1])) {
+				console.log("Inside all specific collection", collectionId.includes(data.Placement.specificCollection[0].id.split('Collection/')[1]), data.Placement.specificCollection[0].id.split('Collection/')[1]);
 				res.send({ Store, data });
 				break;
-			} else if (data.Placement.selectProduct.specificCollections && collectionId.includes(data.Placement.specificCollection[0].id.split('Collection/')[1])) {
-				console.log("Inside all specific collection", data.Placement.specificCollection[0].id.split('Collection/')[1]);
-				res.send({ Store, data });
-				break;
-			} else if (data.Placement.selectProduct.allCollections == true) {
+			}
+			else if (data.Placement.selectProduct.allCollections == true) {
 				console.log("Inside all collection");
 				const updatedBundle = await updateBundle(data, session);
 				data = updatedBundle;
 				res.send({ Store, data });
 				break;
-			} else if (data.Placement.selectProduct.allProducts == true) {
+			}
+			else if (data.Placement.selectProduct.allProducts == true) {
 				console.log("Inside all Products");
 				const updatedBundle = await updateBundle(data, session);
 				data = updatedBundle;
@@ -144,42 +169,6 @@ ThemeExtension.post("/bunldeDiscount", async (req, res) => {
 		}
 	}
 	// queries.forEach(async (query) => {});
-
-	// for (let i = 0; i < bundle.length; i++) {
-	//   if (
-	//     bundle[i].Placement.selectProduct.specificProducts &&
-	//     bundle[i].Placement.specificProducts.some((x) => x.id.includes(id))
-	//   ) {
-	//     const updatedBundle = await updateBundle([bundle[i]], session);
-	//     bundle = updatedBundle;
-
-	//     res.send({ Store, bundle, type: "all" });
-	//   }
-	// }
-
-	// for (let i = 0; i < bundle.length; i++) {
-	//   if (
-	//     bundle[i].Placement.selectProduct.allProductsWithTags &&
-	//     bundle[i].Placement.tags.includes(tag)
-	//   ) {
-	//     console.log("Inside tags");
-	//   }
-	// }
-	// for (let i = 0; i < bundle.length; i++) {
-	//   if (bundle[i].Placement.selectProduct.allCollections) {
-	//     console.log("Inside all collection");
-	//   }
-	// }
-	// for (let i = 0; i < bundle.length; i++) {
-	//   if (bundle[i].Placement.selectProduct.allProducts) {
-	//     console.log("Inside all Products");
-	//     const updatedBundle = await updateBundle([bundle[i]], session);
-	//     bundle = updatedBundle;
-
-	//     res.send({ Store, bundle, type: "all" });
-	//     // return;
-	//   }
-	// }
 
 	// if (specificBundle !== false) {
 	//   const updatedBundle = await updateBundle(specificBundle, session);

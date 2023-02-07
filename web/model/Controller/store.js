@@ -58,7 +58,8 @@ export const updatePlan = async (shopName, planType, planPrice) => {
     findShop.plan.type = planType;
     findShop.plan.price = planPrice;
 
-    await findShop.save();
+    return await findShop.save();
+    
   } catch (error) {}
 };
 

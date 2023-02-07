@@ -442,7 +442,7 @@ div#accordion .card {
 
 .dwxbiy {
   display: grid;
-  grid-template-columns: 130px 200px 130px;
+  grid-template-columns: 242px 148px 21px;
   column-gap: 10px;
   text-align: right;
 }
@@ -675,4 +675,20 @@ div#accordion .card {
 }
 .frontpage p.Polaris-Text--root.Polaris-Text--headingLg.Polaris-Text--semibold {
     font-weight: unset;
+}
+
+#addTagsData{
+  overflow: hidden!important;
+}
+.gettingData{
+  position: fixed;
+  top: calc(100vh - 518px);
+  z-index: 999999;
+  background: #aed8e9;
+  border-radius: 5px;
+  display: flex;
+  width: 100%;
+  padding: 7px;
+  color:#2f686f;
+  font-size: 15px;
 }

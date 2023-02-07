@@ -289,8 +289,8 @@ const ProductBadgeSettings = ({states}) => {
               </Button>
             </ButtonGroup>
           </div>
-
-          <p className="mt-4 Polaris-TextStyle--variationStrong">Desktop Alignment</p>
+{/* 
+          <p className="mt-4 Polaris-TextStyle--variationStrong">Text Alignment</p>
           <div className="mt-2">
             <ButtonGroup segmented>
               <Button
@@ -315,10 +315,10 @@ const ProductBadgeSettings = ({states}) => {
                 }}
               />
             </ButtonGroup>
-          </div>
+          </div> */}
 
-          <p className="mt-4 Polaris-TextStyle--variationStrong">Mobile Alignment</p>
-          <div className="mt-2">
+          {/* <p className="mt-4 Polaris-TextStyle--variationStrong">Mobile Alignment</p> */}
+          {/* <div className="mt-2">
             <ButtonGroup segmented>
               <Button
                 icon={TextAlignmentLeftMajor}
@@ -342,7 +342,7 @@ const ProductBadgeSettings = ({states}) => {
                 }}
               />
             </ButtonGroup>
-          </div>
+          </div> */}
         </Card>
       </div>
     </>

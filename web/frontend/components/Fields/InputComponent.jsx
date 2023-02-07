@@ -11,6 +11,7 @@ function InputComponent(props) {
         style={{ marginRight: "2px" }}
       >
         <div className="Polaris-TextField Polaris-TextField--hasValue ">
+          
           <input
             id={props.id}
             min={props.min}

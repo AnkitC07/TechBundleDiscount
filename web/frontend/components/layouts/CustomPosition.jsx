@@ -15,12 +15,12 @@ const CustomPosition = ({
           id="insideTopSpacingHelpText"
           style={{ marginTop: "5px" }}
         >
-          Countdown timer app block can be added, removed, repositioned, and
-          customized through the theme editor using timer ID.
+          Bundle Discount app block can be added, removed, repositioned, and
+          customized through the theme editor using Discount ID.
         </div>
       </div>
 
-      <div id="timer-card" className={`Polaris-Card__Section ${checked == true ? '' : "hide-div"}`}>
+      <div id="bundle-card" className={`Polaris-Card__Section ${checked == true ? '' : "hide-div"}`}>
         <span className="Polaris-Text--root Polaris-Text--headingMd Polaris-Text--semibold">
           Timer code snippet
         </span>
@@ -28,7 +28,7 @@ const CustomPosition = ({
           {id == undefined ? <p>Save or Publish to show code snippet</p>
             :
             <TextField
-              value={`<div class="count-down-timer-app" id="${id}"></div>`}
+              value={`<div class="bundle-discount-timer-app" id="${id}"></div>`}
               multiline={5}
             />}
         </div>

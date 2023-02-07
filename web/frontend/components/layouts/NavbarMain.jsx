@@ -1,3 +1,4 @@
+import { Spinner } from "@shopify/polaris";
 import React, { useState } from "react";
 import { useEffect } from "react";
 import { NavLink, Outlet } from "react-router-dom";
@@ -17,10 +18,21 @@ const NavbarMain = ({
   states,
   setHtml,
   setBadgeHtlml,
-  id
+  id,
 }) => {
-
-  const { placement, setPlacement, bundle, setBundle, selectedTab, setTabState, designSettings, designSatte, settings, settingState } = states
+  const {
+    placement,
+    setPlacement,
+    bundle,
+    setBundle,
+    selectedTab,
+    setTabState,
+    designSettings,
+    designSatte,
+    settings,
+    settingState,
+    loading
+  } = states;
   const navRender = (title) => {
     switch (title) {
       case "Content":
@@ -47,7 +59,7 @@ const NavbarMain = ({
               bundle,
               setBundle,
               id,
-              currency
+              currency,
             }}
           />
         );
@@ -56,7 +68,11 @@ const NavbarMain = ({
           <Design states={{ designSettings, designSatte, bundle, setBundle, currency, setHtml }} />
         );
       case "Badge":
-        return <ProductBadge states={{ settings, settingState, bundle, setBadgeHtlml }} />;
+        return (
+          <ProductBadge
+            states={{ settings, settingState, bundle, setBadgeHtlml }}
+          />
+        );
     }
   };
 
@@ -72,8 +88,9 @@ const NavbarMain = ({
                 onClick={() => {
                   setTabState(x.title);
                 }}
-                className={`countdown_tab ${x.title === selectedTab ? "NavTabActive" : ""
-                  }`}
+                className={`countdown_tab ${
+                  x.title === selectedTab ? "NavTabActive" : ""
+                }`}
               >
                 {x.title}
               </li>
@@ -82,7 +99,13 @@ const NavbarMain = ({
         </ul>
         <Outlet />
       </div>
-      <div className="topSpace">{navRender(selectedTab)}</div>
+      <div className="topSpace">
+       {loading == true?<div className="gettingData">
+          <Spinner size="small"/>
+          <p className="px-3 text-secondary">Loading</p>
+        </div>:""}
+        {navRender(selectedTab)}
+      </div>
       {/* <Content /> */}
     </>
   );
