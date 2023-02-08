@@ -1,31 +1,23 @@
 import { Tag, Stack } from "@shopify/polaris";
 import { useEffect, useState } from "react";
 
-const InputWithTags = ({ states, label, placeholder }) => {
-  const { placement, setPlacement } = states;
+const InputWithTags = ({states,label,placeholder}) => {
+  const {placement,setPlacement} = states
   const [tags, tagsState] = useState(placement.tags.split(","));
 
-  const removeTag = async (e) => {
-    const remove = tags.filter((x) => x !== e);
-    tagsState(remove);
-    placement.tags = remove.join(",");
-    setPlacement({ ...placement });
-  };
+  const removeTag = async (e) =>{
+        const remove = tags.filter(x=>x !== e)
+        tagsState(remove)
+        placement.tags = remove.join(",")
+        setPlacement({...placement})
+  }
 
-  console.log(placement);
-  const tagMarkup = tags.map((option) => {
-    return (
-      <>
-        {option !== "" ? (
-          <Tag key={option} onRemove={() => removeTag(option)}>
-            {option}
-          </Tag>
-        ) : (
-          ""
-        )}
-      </>
-    );
-  });
+  console.log(placement)
+  const tagMarkup = tags.map((option) => (
+    <Tag key={option} onRemove={()=>removeTag(option)}>
+      {option}
+    </Tag>
+  ));
 
   return (
     <>
@@ -61,15 +53,12 @@ const InputWithTags = ({ states, label, placeholder }) => {
                   type="text"
                   aria-labelledby="PolarisTextField1Label PolarisTextField1-VerticalContent"
                   aria-invalid="false"
-                  onKeyDown={(e) => {
-                    const values = e.target.value;
-                    if (e.keyCode == 13 && e.target.value !== "" || e.keyCode == 44 && e.target.value !== "") {
-                      tagsState(() => [...tags, values]);
-                      setPlacement({
-                        ...placement,
-                        tags: [...tags, values].join(","),
-                      });
-                      e.target.value = "";
+                  onKeyDown={(e)=>{
+                    const values = e.target.value
+                    if(e.keyCode == 13 || e.keyCode == 44){
+                        tagsState(()=> [...tags,values])
+                        setPlacement({...placement,tags:[...tags,values].join(",")})
+                        e.target.value = ""
                     }
                   }}
                 />

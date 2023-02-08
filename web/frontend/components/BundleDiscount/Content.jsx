@@ -44,10 +44,10 @@ const Content = ({
         : [...bundle.bundleProducts])
   }, [bundle])
 
-  const ref = useRef()
-  setTimeout(() => {
-    setHtml(ref.current.innerHTML)
-  }, 100);
+  // const ref = useRef()
+  // setTimeout(() => {
+  //   setHtml(ref.current.innerHTML)
+  // }, 100);
 
 
   const updateRadio = (key) => {
@@ -435,8 +435,8 @@ const Content = ({
             </div>
           </div>
         </div>
-        <div className="col-lg-6 col-md-6 col-sm-6" ref={ref}>
-          <BundlePreview bundle={bundle} currency={currency} design={design} />
+        <div className="col-lg-6 col-md-6 col-sm-6" >
+          <BundlePreview bundle={bundle} currency={currency} design={design} setHtml={setHtml} />
         </div>
       </div>
     </>

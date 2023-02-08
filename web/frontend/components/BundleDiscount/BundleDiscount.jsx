@@ -149,8 +149,8 @@ const BundleDiscount = () => {
       SaveTag: "SAVE {discount}",
       Total: "Total",
       tagColor: "#008060",
-      priceColor: "#008060",
-      ComparePriceColor: "#008060",
+      priceColor: "#050505",
+      ComparePriceColor: "#797979",
       showTotal: false,
       ShowPriceUnit: false,
       ShowComparePrice: false,
@@ -200,11 +200,6 @@ const BundleDiscount = () => {
   }, [lastId]);
 
   useEffect(() => {
-    setHtml(
-      document.querySelector("#getHTMLData") !== null
-        ? document.querySelector("#getHTMLData").innerHTML
-        : ""
-    );
 
     fetch("/api/getCurrency")
       .then((res) => res.json())
@@ -333,18 +328,21 @@ const BundleDiscount = () => {
     },
   ];
   const handelPublish = async (statusUpdate) => {
-    // console.log("badgeHtml=> ", badgeHtml)
+    console.log("Html=> ", Html)
     setBtnLoading({
       type: statusUpdate,
       status: true,
     });
     console.log("Handle Publish Bundle=>", bundle);
     // const setHTMl = document.querySelector("#getHTMLData") !== null ? document.querySelector("#getHTMLData").innerHTML : '';
+    setHtml(document.querySelector("#getHTMLData") !== null ? document.querySelector("#getHTMLData").innerHTML : '')
+    const previewhtml = document.querySelector("#getHTMLData") !== null ? document.querySelector("#getHTMLData").innerHTML : ''
+    console.log('PUBLISH==>', document.querySelector("#getHTMLData").innerHTML)
     const body = {
       content: bundle,
       design: designSettings,
       placement: placement,
-      Html: Html,
+      Html: previewhtml,
       BadgeHtml: badgeHtml,
       badge: settings,
       ispublished: statusUpdate == "save" ? ispublished : statusUpdate,

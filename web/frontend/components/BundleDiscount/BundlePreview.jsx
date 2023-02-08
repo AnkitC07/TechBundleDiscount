@@ -2,12 +2,12 @@ import { Card, Banner } from "@shopify/polaris";
 import React, { useState } from "react";
 import { useEffect } from "react";
 import parser from "html-react-parser";
-export default function BundlePreview({ bundle, currency, design }) {
+export default function BundlePreview({ bundle, currency, design, setHtml }) {
   const { settings, button, priceSavings } = design;
 
   return (
-    <div id="getHTMLData" className="BundlepreviewStyle">
-      <div className="previewScroll">
+    <div className="BundlepreviewStyle">
+      <div id="getHTMLData" className="previewScroll">
         <div className="customCard">
           {JSON.stringify(bundle.bundleProducts).includes("title") == true ? (
             <div
@@ -322,7 +322,7 @@ const BundlePreviewPro = ({ bundle, currency, design }) => {
           <div>
             <p
               style={{
-                color: "#008060",
+                color: design.priceSavings.tagColor,
                 letterSpacing: "1px",
                 fontWeight: "bold",
                 textAlign: "right",
@@ -417,12 +417,12 @@ const Price = ({ design, data, bundle, currency, priceStates }) => {
   const pr = priceStates;
   return (
     <>
-      <div className='price'>
+      <div className="price">
         {pr?.comparePrice !== null && pr?.comparePrice !== undefined ? (
           bundle.bundleDiscount.addDiscount.status &&
           bundle.bundleDiscount.addDiscount.discountType === "% OFF" ? (
-            <div>
-              <span className="text-secondary">
+            <div className="bundle-app-dlt-price">
+              <span style={{color:design.priceSavings.ComparePriceColor}}>
                 <del>
                   {currency} {pr?.comparePrice}
                 </del>
@@ -433,8 +433,8 @@ const Price = ({ design, data, bundle, currency, priceStates }) => {
               `${currency}OFF` ? (
             ""
           ) : (
-            <div>
-              <span className="text-secondary">
+            <div className="bundle-app-dlt-price">
+              <span style={{color:design.priceSavings.ComparePriceColor}}>
                 <del>
                   {currency} {pr?.comparePrice}
                 </del>
@@ -444,11 +444,11 @@ const Price = ({ design, data, bundle, currency, priceStates }) => {
         ) : (
           ""
         )}
-        <div style={{ textAlign: "right" }}>
+        <div className="bundle-app-main-price" style={{ textAlign: "right",color:design.priceSavings.priceColor }}>
           {bundle.bundleDiscount.freeGift.status &&
           bundle.bundleDiscount.freeGift.freeGiftSlected.includes(data.id) ? (
             <span
-              style={{ color: "green", fontWeight: "700", textAlign: "right" }}
+              style={{ color: design.priceSavings.tagColor, fontWeight: "700", textAlign: "right" }}
             >
               {design.priceSavings.freeGift !== ""
                 ? design.priceSavings.freeGift
@@ -481,7 +481,8 @@ const Variants = ({
     <>
       <div style={{ margin: "10px 0px", width: "100%" }}>
         <select
-         data-index={xIndex}
+          id="select1"
+          data-index={xIndex}
           style={{
             width: "100%",
             padding: "5px",
