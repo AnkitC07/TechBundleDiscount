@@ -129,7 +129,7 @@ export default function Homepage({ themes }) {
           <p className="d-flex justify-content-center">
             Make sure they are{" "}
             <a
-              href={`https://admin.shopify.com/store/${themes.session.shop.replace(
+              href={`https://admin.shopify.com/store/${themes?.session?.shop?.replace(
                 ".myshopify.com",
                 ""
               )}/themes/${themes.id}/editor`}
@@ -161,7 +161,7 @@ export default function Homepage({ themes }) {
               </div>
             </div>
             <CheckBoxRef
-              title="Shop Pre Order Manager "
+              title="Shop Pre Order Manager"
               src="Main_revised_PreOrder-Lite-App-ScreenShot.png"
               description="Get more sales and revenue by taking preorders for coming soon items and items out of stock. Capture purchase intent, get more sales."
               rating="4.7"

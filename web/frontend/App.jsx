@@ -32,6 +32,10 @@ const pages = import.meta.globEager("./pages/**/!(*.test.[jt]sx)*.([jt]sx)");
                   destination: "/Suggestion",
                 },
                 {
+                  label: "CanCode.io Apps",
+                  destination: "/Apps",
+                },
+                {
                   label: "Help",
                   destination: "/Help",
                 },

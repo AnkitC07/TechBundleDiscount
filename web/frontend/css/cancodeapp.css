@@ -1,0 +1,27 @@
+.showappsCard{
+    padding: 10px;
+    border:1px solid lightgray;
+    border-radius: 10px;
+}
+
+.appImage{
+    width: 100%;
+    border-radius: 5px;
+}
+
+.apptitle p{
+    font-size: 18px;
+    font-weight: 600;
+}
+.appdescription{
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 2; /* number of lines to show */
+            line-clamp: 2;
+    -webkit-box-orient: vertical;
+}
+.apprating p{
+    font-weight: 600;
+}
+

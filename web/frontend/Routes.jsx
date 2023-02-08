@@ -6,6 +6,7 @@ import BundleDiscount from "./components/BundleDiscount/BundleDiscount";
 import Homepage from "./components/Homepage";
 import Plan from "./pages/Plan";
 import { useState } from "react";
+import CancodeApps from "./pages/CancodeApps";
 
 /**
  * File-based routing.
@@ -35,12 +36,12 @@ export default function Routes({ pages }) {
     <ReactRouterRoutes>
       {routeComponents}
       <Route path="*" element={<NotFound />} />
-      {/* <Route path="/ProductBadge" element={<ProductBadge />} /> */}
       <Route path="/Suggestion" element={<Suggestions />} />
       <Route path="/Help" element={<Help />} />
       <Route path="/" element={<Homepage />} />
       <Route path="/bundleDiscount" element={<BundleDiscount />} />
       <Route path="/Plan" element={<Plan />} />
+      <Route path="/Apps" element={<CancodeApps />} />
     </ReactRouterRoutes>
   );
 }
