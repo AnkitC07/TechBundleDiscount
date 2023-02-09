@@ -22,8 +22,10 @@ const Placement = ({ states }) => {
     console.log(selectedPro);
     setProducts(selectedPro);
     setPlacement({ ...placement, selectProduct: selectedPro });
+
   };
 
+  console.log(placement)
   return (
     <>
       <div className="row">

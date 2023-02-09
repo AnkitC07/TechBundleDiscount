@@ -211,7 +211,7 @@ const BundlePreviewPro = ({ bundle, currency, design }) => {
             // console.log(price[x.id], "checking price obj");
             return x != "" ? (
               <>
-                <div style={{ width: "100%" }}>
+                <div className={`bundleAppProductRow`} data-variant={x.variants[0].id} data-id={x.id} style={{ width: "100%" }}>
                   <div
                     style={{
                       display: "flex",
@@ -219,19 +219,16 @@ const BundlePreviewPro = ({ bundle, currency, design }) => {
                       justifyContent: "space-between",
                     }}
                   >
-                    <div style={{ display: "flex", alignItems: "center" }}>
+                    <div style={{maxWidth:"225px",display: "flex", alignItems: "center" }}>
                       <div>
                         <div
                           style={{
                             border: "1px solid lightgray",
-                            boxSizing: "border-box",
-                            width: "70px",
-                            height: "48px",
-                            background: `url(${
-                              x.image ? x.image.src : "no_image.png"
-                            }) center center / contain no-repeat rgb(237, 237, 237)`,
+                            display:"flex"
                           }}
-                        ></div>
+                        >
+                          <img height={48} src={x.image ? x.image.src : "no_image.png"}/>
+                        </div>
                       </div>
                       <div style={{ margin: "0px 7px" }}>{x.title}</div>
                     </div>
@@ -326,6 +323,7 @@ const BundlePreviewPro = ({ bundle, currency, design }) => {
                 letterSpacing: "1px",
                 fontWeight: "bold",
                 textAlign: "right",
+                marginBottom:'0px 0px 6px 0px'
               }}
             >
               {bundle.bundleDiscount.freeGift.status
@@ -359,6 +357,7 @@ const BundlePreviewPro = ({ bundle, currency, design }) => {
                 }}
               >
                 <span
+                 className="bundleAppDiscountedPrice"
                   style={{
                     whiteSpace: "nowrap",
                     textDecoration: "line-through",
@@ -373,7 +372,7 @@ const BundlePreviewPro = ({ bundle, currency, design }) => {
                     ? `${currency} ${total}`
                     : ""}
                 </span>
-                <span>
+                <span className="bundleAppTotal">
                   {currency}
                   {disTotal}
                 </span>
@@ -417,7 +416,8 @@ const Price = ({ design, data, bundle, currency, priceStates }) => {
   const pr = priceStates;
   return (
     <>
-      <div className="price">
+      <div className="bundleAppprice" style={{textAlign:'right'}}>
+        <div className="bundle-app-delete-price">
         {pr?.comparePrice !== null && pr?.comparePrice !== undefined ? (
           bundle.bundleDiscount.addDiscount.status &&
           bundle.bundleDiscount.addDiscount.discountType === "% OFF" ? (
@@ -444,6 +444,7 @@ const Price = ({ design, data, bundle, currency, priceStates }) => {
         ) : (
           ""
         )}
+        </div>
         <div className="bundle-app-main-price" style={{ textAlign: "right",color:design.priceSavings.priceColor }}>
           {bundle.bundleDiscount.freeGift.status &&
           bundle.bundleDiscount.freeGift.freeGiftSlected.includes(data.id) ? (
@@ -483,6 +484,8 @@ const Variants = ({
         <select
           id="select1"
           data-index={xIndex}
+          data-proId={v[0].product_id}
+          className="bundleAppDiscountSelect"
           style={{
             width: "100%",
             padding: "5px",
@@ -528,7 +531,7 @@ const Variants = ({
           }}
         >
           {bundle.advanceSetting.customerOption.status == true ? (
-            <option selected disabled>
+            <option selected="true" disabled>
               {button.ChooseOption == ""
                 ? "Choose an option"
                 : button.ChooseOption}

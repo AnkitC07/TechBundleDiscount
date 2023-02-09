@@ -32,7 +32,6 @@ export default function Homepage({ themes }) {
     const handelPublish = async () => {
       const res = await fetch("/api/getAllDiscount");
       const data = await res.json();
-      console.log("response", data);
       setDiscountData(data.status);
       setLoading(false);
     };

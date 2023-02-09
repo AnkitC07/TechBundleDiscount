@@ -27,6 +27,21 @@ const CancodeApps = () => {
       rating: "",
       link: "https://apps.shopify.com/cancodeio_checklist",
     },
+    {
+      title: "Wily Simple Pre Order Button",
+      src: "Main_revised_PreOrder-Lite-App-ScreenShot.png",
+      description:
+        "Don't miss a sale by making pre-order an option to customers",
+      rating: "",
+      link: "https://apps.shopify.com/cancodeiopreorderbutton",
+    },
+    {
+      title: "CanCode.io Countdown Timer Bar",
+      src: "CNOIn56R4vsCEAE=.webp",
+      description: "Quick sales made easy in short time with Countdown Timer",
+      rating: "",
+      link: "https://apps.shopify.com/cancode-io-countdown-timer-bar",
+    },
   ];
   return (
     <>
@@ -39,7 +54,7 @@ const CancodeApps = () => {
         <div className="row">
           {app.map((x) => {
             return (
-              <div className="col-lg-4 col-md-6 col-sm-6 col-xs-12 mt-4">
+              <div className="col-lg-4 col-md-4 col-sm-6 col-xs-12 mt-4">
                 <ShowApps
                   title={x.title}
                   src={x.src}
