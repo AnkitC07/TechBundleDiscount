@@ -14,7 +14,7 @@ const Preview = ({ data }) => {
     padding: "5px 10px",
     borderRadius: `${Radius}px`,
     border: `1px solid ${Border}`,
-    width: `${Width}%`,
+    width: `${Width}px`,
     height: `${Height}px`,
     textAlign: "center",
     overflow: 'hidden',
@@ -39,6 +39,7 @@ const Preview = ({ data }) => {
               <div
                 style={{
                   display: "flex",
+                  margin:"-5px",
                   justifyContent: `${data.Design.BadgePosition.right == true
                     ? "flex-end"
                     : "flex-start"

@@ -129,10 +129,8 @@ app.get("/api/paymenturl", async (req, res) => {
 
     // database entry
     await updatePlan(session.shop, req.query.planType, req.query.planPrice);
-    // res.status(200).json({ data: session,planType:req.query.planType,planPrice:req.query.planPrice });
     res.redirect(`/api/auth?shop=${req.query.shop}`);
   } catch (error) {
-    // console.log(error)
     res.status(500).json({
       status: false,
       error: error,

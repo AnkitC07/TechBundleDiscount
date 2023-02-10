@@ -175,15 +175,38 @@ const queries = [
   },
 ];
 
-const getProducts = async (name, value, session) => {
-  const obj = {
-    session: session,
-	query:{handle:"floral-white-top"}
+const getProductByhandle = async (value, session) => {
+  const client = new shopify.api.clients.Graphql({ session });
+  const data = await client.query({
+    data: {
+      query: `query getProductIdFromHandle($handle: String!) {
+        productByHandle(handle: $handle) {
+          id
+          tags
+          collections(first:50) {
+            edges {
+              node {
+                id
+              }
+            }
+          }
+        }
+      }`,
+      variables: {
+        handle: value,
+      },
+    },
+  });
+
+  const collection = data.body.data.productByHandle.collections.edges.map(
+    (x) => x.node.id
+  );
+  const product = {
+    id: data.body.data.productByHandle.id,
+    tags: data.body.data.productByHandle.tags,
+    collection: collection,
   };
-//   obj[name] = value;
-//   console.log(obj)
-  const newBundleData = await shopify.api.rest.Product.find(obj);
-  return newBundleData;
+  return product;
 };
 
 ThemeExtension.post("/getBadge", async (req, res) => {
@@ -194,11 +217,8 @@ ThemeExtension.post("/getBadge", async (req, res) => {
     shop: store.storename,
     accessToken: store.storetoken,
   };
-
-  console.log(body.handle)
-  const query = {handle:body.handle}
-  const prod = await getProducts("query",query, session);
- console.log(prod.title)
+  const prod = await getProductByhandle(body.handle, session);
+  
   const badgeQuery = [
     {
       "Placement.selectProduct.customPosition": { $eq: true },
@@ -207,15 +227,23 @@ ThemeExtension.post("/getBadge", async (req, res) => {
       $and: [
         { "Placement.selectProduct.specificProducts": { $eq: true } },
         {
-          "Placement.specificProducts.id": [`gid://shopify/Product/${prod.id}`],
+          "Placement.specificProducts": {
+            $elemMatch: { id: prod.id },
+          },
         },
       ],
     },
     {
-      "Placement.selectProduct.allProductsWithTags": { $eq: true },
+      $and:[
+        {"Placement.selectProduct.allProductsWithTags": { $eq: true }},
+        {"Placement.tags":{$in:prod.tags}}
+      ]
     },
     {
-      "Placement.selectProduct.specificCollections": { $eq: true },
+      $and: [
+        { "Placement.selectProduct.specificCollections": { $eq: true } },
+        { "Placement.specificCollection.id": { $in: prod.collection } },
+      ],
     },
     {
       "Placement.selectProduct.allCollections": { $eq: true },
@@ -224,102 +252,200 @@ ThemeExtension.post("/getBadge", async (req, res) => {
       "Placement.selectProduct.allProducts": { $eq: true },
     },
   ];
+
   const data = await Bundle.findOne({
     Store: body.shop,
     IsPublished: "published",
     $or: badgeQuery,
   });
-  res.status(200).send(data);
-});
 
-ThemeExtension.post("/bunldeDiscount", async (req, res) => {
-  res.setHeader("Access-Control-Allow-Origin", `*`);
-  const body = req.body;
-  const shop = body.shop;
-  const id = body.id;
-  const tag = body.tag;
-  const collectionId = splitCollectionId(req.query.collectionId);
-
-  const Store = await Stores.findOne({
-    storename: shop,
-  });
-  const token = Store.storetoken;
-  const session = {
-    shop: shop,
-    accessToken: token,
-  };
-  // let bundle = await Bundle.find({ Store: shop, IsPublished: "published" });
-
-  for (let i = 0; i < queries.length; i++) {
-    queries[i].Store = shop;
-    queries[i].IsPublished = "published";
-    let data = await dbquery(queries[i]);
-    console.log(data);
-    if (data !== null) {
-      if (data.Placement.selectProduct.customPosition) {
-        console.log("Inside custom position");
-        const updatedBundle = await updateBundle(data, session);
-        data = updatedBundle;
-        res.send({ Store, data });
-        break;
-      } else if (
-        data.Placement.selectProduct.specificProducts == true &&
-        data.Placement.specificProducts.some((x) => x.id.includes(id))
-      ) {
-        console.log("Inside specific");
-        const updatedBundle = await updateBundle(data, session);
-        data = updatedBundle;
-        res.send({ Store, data });
-        break;
-      } else if (data.Placement.selectProduct.allProductsWithTags == true) {
-        let flag = false;
-        const productTag = tag.split(/\s+/);
-        const bundleTag = data.Placement.tags.split(/\s+/);
-        console.log("Inside tags", bundleTag, "and", productTag);
-        for (let i = 0; i < productTag.length; i++) {
-          if (bundleTag.includes(productTag[i])) {
-            flag = true;
-            res.send({ Store, data });
-            break;
-          }
-        }
-        if (flag) {
-          break;
-        } else {
-          continue;
-        }
-      } else if (
-        data.Placement.selectProduct.specificCollections &&
-        collectionId.includes(
-          data.Placement.specificCollection[0].id.split("Collection/")[1]
-        )
-      ) {
-        console.log(
-          "Inside all specific collection",
-          collectionId.includes(
-            data.Placement.specificCollection[0].id.split("Collection/")[1]
-          ),
-          data.Placement.specificCollection[0].id.split("Collection/")[1]
-        );
-        res.send({ Store, data });
-        break;
-      } else if (data.Placement.selectProduct.allCollections == true) {
-        console.log("Inside all collection");
-        const updatedBundle = await updateBundle(data, session);
-        data = updatedBundle;
-        res.send({ Store, data });
-        break;
-      } else if (data.Placement.selectProduct.allProducts == true) {
-        console.log("Inside all Products");
-        const updatedBundle = await updateBundle(data, session);
-        data = updatedBundle;
-        res.send({ Store, data });
-        break;
-      }
-    }
+  console.log(body,"------------------")
+  if(body.page == "product"){
+    res.send({ store, data });
+  }else{
+    res.send(data);
   }
-
-  console.log("theme hit");
+ 
 });
+
+// ThemeExtension.post("/bunldeDiscount", async (req, res) => {
+//   res.setHeader("Access-Control-Allow-Origin", `*`);
+//   const body = req.body;
+//   const shop = body.shop;
+//   const handle = body.handle;
+
+  
+// //   const tag = body.tag;
+// //   const collectionId = splitCollectionId(req.query.collectionId);
+
+
+//   const Store = await Stores.findOne({
+//     storename: shop,
+//   });
+//   const token = Store.storetoken;
+//   const session = {
+//     shop: shop,
+//     accessToken: token,
+//   };
+
+
+
+//   const prod = await getProductByhandle(body.handle, session);
+  
+//   const badgeQuery = [
+//     {
+//       "Placement.selectProduct.customPosition": { $eq: true },
+//     },
+//     {
+//       $and: [
+//         { "Placement.selectProduct.specificProducts": { $eq: true } },
+//         {
+//           "Placement.specificProducts": {
+//             $elemMatch: { id: prod.id },
+//           },
+//         },
+//       ],
+//     },
+//     {
+//       $and:[
+//         {"Placement.selectProduct.allProductsWithTags": { $eq: true }},
+//         {"Placement.tags":{$in:prod.tags}}
+//       ]
+//     },
+//     {
+//       $and: [
+//         { "Placement.selectProduct.specificCollections": { $eq: true } },
+//         { "Placement.specificCollection.id": { $in: prod.collection } },
+//       ],
+//     },
+//     {
+//       "Placement.selectProduct.allCollections": { $eq: true },
+//     },
+//     {
+//       "Placement.selectProduct.allProducts": { $eq: true },
+//     },
+//   ];
+
+//   const data = await Bundle.findOne({
+//     Store: body.shop,
+//     IsPublished: "published",
+//     $or: badgeQuery,
+//   });
+
+// res.send({ Store, data });
+// //   const badgeQuery = [
+// //     {
+// //       "Placement.selectProduct.customPosition": { $eq: true },
+// //     },
+// //     {
+// //       $and: [
+// //         { "Placement.selectProduct.specificProducts": { $eq: true } },
+// //         {
+// //           "Placement.specificProducts": {
+// //             $elemMatch: { id: prod.id },
+// //           },
+// //         },
+// //       ],
+// //     },
+// //     {
+// //       $and:[
+// //         {"Placement.selectProduct.allProductsWithTags": { $eq: true }},
+// //         {"Placement.tags":{$in:prod.tags}}
+// //       ]
+// //     },
+// //     {
+// //       $and: [
+// //         { "Placement.selectProduct.specificCollections": { $eq: true } },
+// //         { "Placement.specificCollection.id": { $in: prod.collection } },
+// //       ],
+// //     },
+// //     {
+// //       "Placement.selectProduct.allCollections": { $eq: true },
+// //     },
+// //     {
+// //       "Placement.selectProduct.allProducts": { $eq: true },
+// //     },
+// //   ];
+  
+// //   const data = await Bundle.findOne({
+// //     Store: body.shop,
+// //     IsPublished: "published",
+// //     $or: badgeQuery,
+// //   });
+
+// //   res.send({ Store, data });
+//   // let bundle = await Bundle.find({ Store: shop, IsPublished: "published" });
+
+//   // for (let i = 0; i < queries.length; i++) {
+//   //   queries[i].Store = shop;
+//   //   queries[i].IsPublished = "published";
+//   //   let data = await dbquery(queries[i]);
+//   //   console.log(data);
+//   //   if (data !== null) {
+//   //     if (data.Placement.selectProduct.customPosition) {
+//   //       console.log("Inside custom position");
+//   //       const updatedBundle = await updateBundle(data, session);
+//   //       data = updatedBundle;
+//   //       res.send({ Store, data });
+//   //       break;
+//   //     } else if (
+//   //       data.Placement.selectProduct.specificProducts == true &&
+//   //       data.Placement.specificProducts.some((x) => x.id.includes(id))
+//   //     ) {
+//   //       console.log("Inside specific");
+//   //       const updatedBundle = await updateBundle(data, session);
+//   //       data = updatedBundle;
+//   //       res.send({ Store, data });
+//   //       break;
+//   //     } else if (data.Placement.selectProduct.allProductsWithTags == true) {
+//   //       let flag = false;
+//   //       const productTag = tag.split(/\s+/);
+//   //       const bundleTag = data.Placement.tags.split(/\s+/);
+//   //       console.log("Inside tags", bundleTag, "and", productTag);
+//   //       for (let i = 0; i < productTag.length; i++) {
+//   //         if (bundleTag.includes(productTag[i])) {
+//   //           flag = true;
+//   //           res.send({ Store, data });
+//   //           break;
+//   //         }
+//   //       }
+//   //       if (flag) {
+//   //         break;
+//   //       } else {
+//   //         continue;
+//   //       }
+//   //     } else if (
+//   //       data.Placement.selectProduct.specificCollections &&
+//   //       collectionId.includes(
+//   //         data.Placement.specificCollection[0].id.split("Collection/")[1]
+//   //       )
+//   //     ) {
+//   //       console.log(
+//   //         "Inside all specific collection",
+//   //         collectionId.includes(
+//   //           data.Placement.specificCollection[0].id.split("Collection/")[1]
+//   //         ),
+//   //         data.Placement.specificCollection[0].id.split("Collection/")[1]
+//   //       );
+//   //       res.send({ Store, data });
+//   //       break;
+//   //     } else if (data.Placement.selectProduct.allCollections == true) {
+//   //       console.log("Inside all collection");
+//   //       const updatedBundle = await updateBundle(data, session);
+//   //       data = updatedBundle;
+//   //       res.send({ Store, data });
+//   //       break;
+//   //     } else if (data.Placement.selectProduct.allProducts == true) {
+//   //       console.log("Inside all Products");
+//   //       const updatedBundle = await updateBundle(data, session);
+//   //       data = updatedBundle;
+//   //       res.send({ Store, data });
+//   //       break;
+//   //     }
+//   //   }
+//   // }
+
+//   console.log("theme hit");
+// });
 
 export default ThemeExtension;

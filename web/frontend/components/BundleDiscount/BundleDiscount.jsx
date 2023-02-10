@@ -57,7 +57,7 @@ const BundleDiscount = () => {
     },
     specificProducts: [],
     specificCollection: [],
-    tags: "",
+    tags: [],
   });
   const [Html, setHtml] = useState("");
   const [ispublished, setIspublished] = useState(false);
@@ -327,17 +327,16 @@ const BundleDiscount = () => {
       path: "",
     },
   ];
+
   const handelPublish = async (statusUpdate) => {
     console.log("Html=> ", Html)
     setBtnLoading({
       type: statusUpdate,
       status: true,
     });
-    console.log("Handle Publish Bundle=>", bundle);
-    // const setHTMl = document.querySelector("#getHTMLData") !== null ? document.querySelector("#getHTMLData").innerHTML : '';
     setHtml(document.querySelector("#getHTMLData") !== null ? document.querySelector("#getHTMLData").innerHTML : '')
     const previewhtml = document.querySelector("#getHTMLData") !== null ? document.querySelector("#getHTMLData").innerHTML : ''
-    console.log('PUBLISH==>', document.querySelector("#getHTMLData").innerHTML)
+    // console.log('PUBLISH==>', document.querySelector("#getHTMLData").innerHTML)
     const body = {
       content: bundle,
       design: designSettings,

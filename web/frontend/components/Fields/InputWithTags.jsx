@@ -3,12 +3,11 @@ import { useEffect, useState } from "react";
 
 const InputWithTags = ({ states, label, placeholder }) => {
   const { placement, setPlacement } = states;
-  const [tags, tagsState] = useState(placement.tags.split(","));
+  const [tags, tagsState] = useState(placement.tags);
 
   const removeTag = async (e) => {
     const remove = tags.filter((x) => x !== e);
     tagsState(remove);
-    placement.tags = remove.join(",");
     setPlacement({ ...placement });
   };
 
@@ -67,7 +66,7 @@ const InputWithTags = ({ states, label, placeholder }) => {
                       tagsState(() => [...tags, values]);
                       setPlacement({
                         ...placement,
-                        tags: [...tags, values].join(","),
+                        tags: [...tags, values],
                       });
                       e.target.value = "";
                     }

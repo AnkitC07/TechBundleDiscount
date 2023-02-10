@@ -8,18 +8,11 @@ import {
   Button,
   hsbToHex,
 } from "@shopify/polaris";
-import { useState, useCallback } from "react";
-import {
-  TextAlignmentRightMajor,
-  TextAlignmentCenterMajor,
-  TextAlignmentLeftMajor,
-} from "@shopify/polaris-icons";
+import { useState, useCallback, useEffect } from "react";
 import Colorpicker from "../../Common/ColorPicker";
 
 const ProductBadgeSettings = ({states}) => {
   const {settings, settingState} = states
-  const [selected, setSelected] = useState("12323");
-
   const fontFamily = [
     { label: "Serif", value: "serif", style: { fontFamily: "serif" } },
     {
@@ -36,10 +29,10 @@ const ProductBadgeSettings = ({states}) => {
     { label: "Fantasy", value: "fantasy", style: { fontFamily: "fantasy" } },
   ];
 
-  const handleSelectChange = useCallback((value) => setSelected(value), []);
-  const UpdateState = (key, value) => {
-    settingState({ ...settings, [key]: value });
-  };
+  // const handleSelectChange = useCallback((value) => setSelected(value), []);
+  // const UpdateState = (key, value) => {
+  //   settingState({ ...settings, [key]: value });
+  // };
 
   const updateRadio = (key, subkey, value) => {
     const data = settings.Design[key];
@@ -65,6 +58,10 @@ const ProductBadgeSettings = ({states}) => {
     }
     settingState({...settings})
   }
+
+  // useEffect(()=>{
+  //   const hmtl = document.querySelector('#PreviewHtml_Get').innerHTML
+  // },[settings])
   
   const suffixStyles = {
     minWidth: "24px",
@@ -190,8 +187,9 @@ const ProductBadgeSettings = ({states}) => {
               onChange={(e) => {
                 updateRange("Width", e);
               }}
+              max={500}
               output
-              suffix={<p style={suffixStyles}>{settings.Design.Width}%</p>}
+              suffix={<p style={suffixStyles}>{settings.Design.Width}px</p>}
             />
           </div>
 
