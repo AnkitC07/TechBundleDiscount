@@ -89,8 +89,8 @@ const Content = ({
       selected: "true",
     },
     {
-      data: `${currency}OFF`,
-      value: `${currency}OFF`,
+      data: `${currency.curr}OFF`,
+      value: `${currency.curr}OFF`,
     },
   ];
 

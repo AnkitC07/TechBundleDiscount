@@ -17,7 +17,7 @@ const BundleDiscount = () => {
   const fetch = useAuthenticatedFetch();
   const [products, productsState] = useState([]);
   const [lastId, lastIdState] = useState(0);
-  const [currency, setCurrency] = useState("");
+  const [currency, setCurrency] = useState({});
   const [customer, setCustomer] = useState([]);
   const [loading,loadingState] = useState(false)
 
@@ -203,7 +203,10 @@ const BundleDiscount = () => {
 
     fetch("/api/getCurrency")
       .then((res) => res.json())
-      .then((data) => setCurrency(data.cur))
+      .then((data) =>{
+        console.log(data,"checking pirce")
+        setCurrency(data)
+      })
       .catch((err) => console.log(err));
 
     fetch("/api/getCustomers")

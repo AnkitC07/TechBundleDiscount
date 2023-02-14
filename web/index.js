@@ -312,7 +312,7 @@ app.get("/api/getCurrency", async (req, res) => {
       session: res.locals.shopify.session,
     });
     // console.log(shop[0].money_format.split("{{amount}}")[0]);
-    res.status(200).send({ cur: shop[0].money_format.split("{{amount}}")[0] });
+    res.status(200).send({ curr: shop[0].money_format.split("{{amount}}")[0],currency:shop[0].currency});
   } catch (error) {
     res.status(200).send({ error: error });
   }
