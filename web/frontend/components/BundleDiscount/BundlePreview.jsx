@@ -88,7 +88,7 @@ const BundlePreviewPro = ({ bundle, currency, design }) => {
     for (let i = 0; i < obj.length; i++) {
       if (
         bundle.bundleDiscount.addDiscount.status == true &&
-        bundle.bundleDiscount.addDiscount.discountType == `${currency}OFF`
+        bundle.bundleDiscount.addDiscount.discountType == `${currency.curr}OFF`
       ) {
         count = count + Number(price[obj[i]].price);
       } else {
@@ -100,7 +100,7 @@ const BundlePreviewPro = ({ bundle, currency, design }) => {
     setTotal((Math.round(count * 100) / 100).toFixed(2));
     if (
       bundle.bundleDiscount.addDiscount.status == true &&
-      bundle.bundleDiscount.addDiscount.discountType == `${currency}OFF`
+      bundle.bundleDiscount.addDiscount.discountType == `${currency.curr}OFF`
     ) {
       setDisTotal(
         (
@@ -337,9 +337,9 @@ const BundlePreviewPro = ({ bundle, currency, design }) => {
                 : bundle.bundleDiscount.noDiscount.status
                 ? ""
                 : bundle.bundleDiscount.addDiscount.discountType ==
-                  `${currency}OFF`
+                  `${currency.curr}OFF`
                 ? replaceDiscount(
-                    `${currency}${bundle.bundleDiscount.addDiscount.discountValue}`,
+                    `${currency.curr}${bundle.bundleDiscount.addDiscount.discountValue}`,
                     design.priceSavings.SaveTag
                   )
                 : replaceDiscount(
@@ -369,12 +369,17 @@ const BundlePreviewPro = ({ bundle, currency, design }) => {
                   {bundle.bundleDiscount.noDiscount.status
                     ? ""
                     : total > 0
-                    ? `${currency} ${total}`
+                    ?  <PriceFormate 
+                    price={total}
+                    code={currency.currency}
+                    />
                     : ""}
                 </span>
                 <span className="bundleAppTotal">
-                  {currency}
-                  {disTotal}
+                <PriceFormate 
+                  price={disTotal}
+                  code={currency.currency}
+                  />
                 </span>
               </span>
             </div>
@@ -424,19 +429,25 @@ const Price = ({ design, data, bundle, currency, priceStates }) => {
             <div className="bundle-app-dlt-price">
               <span style={{color:design.priceSavings.ComparePriceColor}}>
                 <del>
-                  {currency} {pr?.comparePrice}
+                  <PriceFormate 
+                  price={pr?.comparePrice}
+                  code={currency.currency}
+                  />
                 </del>
               </span>
             </div>
           ) : bundle.bundleDiscount.addDiscount.status &&
             bundle.bundleDiscount.addDiscount.discountType ==
-              `${currency}OFF` ? (
+              `${currency.curr}OFF` ? (
             ""
           ) : (
             <div className="bundle-app-dlt-price">
               <span style={{color:design.priceSavings.ComparePriceColor}}>
                 <del>
-                  {currency} {pr?.comparePrice}
+                <PriceFormate 
+                  price={pr?.comparePrice}
+                  code={currency.currency}
+                  />
                 </del>
               </span>
             </div>
@@ -458,13 +469,37 @@ const Price = ({ design, data, bundle, currency, priceStates }) => {
           ) : pr?.price == undefined ? (
             ""
           ) : (
-            `${currency} ${pr?.price}`
+            <PriceFormate 
+            price={pr?.price}
+            code={currency.currency}
+            />
           )}
         </div>
       </div>
     </>
   );
 };
+
+const PriceFormate = ({price,code}) =>{
+      let curr = new Intl.NumberFormat('en-US', {
+        style: 'currency',
+        currency: code,
+      })
+
+    return(
+      <>
+      {curr.format(price)}
+      </>
+    )
+}
+  // async function currencyFormate(price,code){
+  //  let curr = new Intl.NumberFormat('en-US', {
+  //       style: 'currency',
+  //       currency: code,
+  //   });
+  //   console.log(curr.format(price))
+  //   return curr.format(price);
+  // }
 
 const Variants = ({
   v,
