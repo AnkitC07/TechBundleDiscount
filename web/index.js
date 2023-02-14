@@ -15,12 +15,14 @@ import bundleRouter from "./routes/SetBundle.js";
 import "./database/config.js";
 import AllDiscount from "./routes/AllDiscount.js";
 import GetDatabyId from "./routes/GetDatabyId.js";
-import createHmac from "create-hmac";
+// import createHmac from "create-hmac";
 import addStore, { updatePlan, updateStore } from "./model/Controller/store.js";
 import Stores from "./model/Stores.js";
 import ThemeExtension from "./routes/themeExtension.js";
+import * as dotenv from 'dotenv' // see https://github.com/motdotla/dotenv#how-do-i-use-dotenv-with-import
+dotenv.config();
 const PORT = parseInt(process.env.BACKEND_PORT || process.env.PORT, 10);
-
+console.log("bundle app is running")
 const STATIC_PATH =
   process.env.NODE_ENV === "production"
     ? `${process.cwd()}/frontend/dist`
@@ -139,6 +141,10 @@ app.get("/api/paymenturl", async (req, res) => {
 });
 // CRON FOR PLAN DECRIMENT
 app.use("/api", ThemeExtension);
+
+app.post("/api/checking",async (req,res)=>{
+  res.send("api is working succesfully")
+})
 
 // run every 10 sec */10 * * * * * and run every day 0 0 0 * * *
 cron.schedule("0 0 0 * * *", function () {

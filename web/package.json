@@ -19,6 +19,7 @@
     "cors": "^2.8.5",
     "create-hmac": "^1.1.7",
     "cross-env": "^7.0.3",
+    "dotenv": "^16.0.3",
     "html-react-parser": "^3.0.8",
     "mongoose": "^6.8.4",
     "node-cron": "^3.0.2",

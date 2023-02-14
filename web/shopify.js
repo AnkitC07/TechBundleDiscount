@@ -2,9 +2,11 @@ import { BillingInterval, LATEST_API_VERSION } from "@shopify/shopify-api";
 import { shopifyApp } from "@shopify/shopify-app-express";
 import { SQLiteSessionStorage } from "@shopify/shopify-app-session-storage-sqlite";
 import { restResources } from "@shopify/shopify-api/rest/admin/2023-01";
+import * as dotenv from 'dotenv' // see https://github.com/motdotla/dotenv#how-do-i-use-dotenv-with-import
+dotenv.config()
 
 const DB_PATH = `${process.cwd()}/database.sqlite`;
-
+console.log(DB_PATH)
 // The transactions with Shopify will always be marked as test transactions, unless NODE_ENV is production.
 // See the ensureBilling helper to learn more about billing in this template.
 const billingConfig = {
@@ -31,6 +33,9 @@ const shopify = shopifyApp({
   },
   // This should be replaced with your preferred storage strategy
   sessionStorage: new SQLiteSessionStorage(DB_PATH),
+  // sessionStorage:checkingData(),
 });
+
+
 
 export default shopify;

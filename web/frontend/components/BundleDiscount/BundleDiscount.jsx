@@ -393,7 +393,7 @@ const BundleDiscount = () => {
     <>
       <section className="product_main_page">
         <div className="containerCustom mb-5">
-          <div className="row sticky">
+          <div className="row sticky py-4">
             <div className="col-md-12">
               <div className="Polaris-Page-Header Polaris-Page-Header--hasNavigation Polaris-Page-Header--hasActionMenu Polaris-Page-Header--mediumTitle">
                 <div className="Polaris-Page-Header__Row">
@@ -421,7 +421,7 @@ const BundleDiscount = () => {
                       </NavLink>
                     </nav>
                   </div>
-                  <div className="Polaris-Page-Header__TitleWrapper">
+                  <div className="Polaris-Page-Header__TitleWrapper mx-3">
                     <div>
                       <div className="Polaris-Header-Title__TitleAndSubtitleWrapper">
                         <div className="Polaris-Header-Title__TitleWithMetadataWrapper">
