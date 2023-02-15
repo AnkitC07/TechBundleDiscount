@@ -30,9 +30,9 @@ const ProductBadgeSettings = ({states}) => {
   ];
 
   // const handleSelectChange = useCallback((value) => setSelected(value), []);
-  // const UpdateState = (key, value) => {
-  //   settingState({ ...settings, [key]: value });
-  // };
+  const UpdateState = (key, value) => {
+    settingState({ ...settings, [key]: value });
+  };
 
   const updateRadio = (key, subkey, value) => {
     const data = settings.Design[key];

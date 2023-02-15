@@ -4,19 +4,6 @@ import { TitleBar } from "@shopify/app-bridge-react";
 export default function Help() {
   return (
     <Page>
-      {/* <TitleBar
-        title="Page name"
-        primaryAction={{
-          content: "Primary action",
-          onAction: () => console.log("Primary action"),
-        }}
-        secondaryActions={[
-          {
-            content: "Secondary action",
-            onAction: () => console.log("Secondary action"),
-          },
-        ]}
-      /> */}
       <section className="help_section">
         <div className="container">
           <h2 className="text-center">Help</h2>
@@ -74,7 +61,7 @@ export default function Help() {
                                 data-bs-toggle="collapse"
                                 href="#collapseOne"
                               >
-                                Timer not showing - Main reasons and solutions
+                                Bundle widget not showing
                               </a>
                             </div>
                             <div
@@ -83,13 +70,15 @@ export default function Help() {
                               data-bs-parent="#accordion"
                             >
                               <div className="card-body">
-                                The main reason why a product page timer not
-                                appear on your product page is that it conflicts
-                                with other apps on your theme. By default, a
-                                timer appears below the add-to-cart button. If
-                                your theme supports app embed, please turn on
-                                the app embedded. Or Contact our support by
-                                email{" "}
+                                The main reason why a product page bundle widget
+                                not appear on your product page is that it
+                                conflicts with other apps on your theme. By
+                                default, a bundle widget appears above the
+                                add-to-cart button. If your theme supports app
+                                embed, please turn on the app embedded. Or
+                                Contact our support by email support@cancode.io
+                                or live chat to help you display the bundle
+                                widget.{" "}
                                 <a
                                   href="mailto:support@cancode.io"
                                   target={"_blank"}
@@ -109,7 +98,7 @@ export default function Help() {
                                 data-bs-toggle="collapse"
                                 href="#collapseTwo"
                               >
-                                What are the timer placement options?
+                                What are the bundle widget placement options?
                               </a>
                             </div>
                             <div
@@ -118,17 +107,9 @@ export default function Help() {
                               data-bs-parent="#accordion"
                             >
                               <div className="card-body">
-                                <ul>
-                                  <li>Product Page Timer</li>
-                                  <li>Top Bar Countdown Timer </li>
-                                  <li>
-                                    Landing Page Countdown Timer 
-                                    <br/>
-                                    To learn more
-                                    information please go to our Countdown timer
-                                    FAQ
-                                  </li>
-                                </ul>
+                                Product page above the add-cart-button. You can
+                                display with all products page or selected
+                                product pages.
                               </div>
                             </div>
                           </div>
@@ -140,7 +121,7 @@ export default function Help() {
                                 data-bs-toggle="collapse"
                                 href="#collapseThree"
                               >
-                                What are the timer types?
+                                What are the bundle discount types?
                               </a>
                             </div>
                             <div
@@ -149,18 +130,33 @@ export default function Help() {
                               data-bs-parent="#accordion"
                             >
                               <div className="card-body">
-                                <ul>
-                                  <li>Countdown to a date</li>
-                                  <li>Daily Recurring Timer</li>
-                                  <li>
-                                    Fixed minutes countdown <br />To learn more
-                                    information please go to our Countdown timer
-                                    FAQ
-                                  </li>
-                                </ul>
+                                You can add discount by how many % off, include
+                                free shipping, free gift or no discount.
                               </div>
                             </div>
                           </div>
+
+                          <div className="card">
+                            <div className="card-header">
+                              <a
+                                className="collapsed btn"
+                                data-bs-toggle="collapse"
+                                href="#collapseFour"
+                              >
+                               What is badge?
+                              </a>
+                            </div>
+                            <div
+                              id="collapseFour"
+                              className="collapse"
+                              data-bs-parent="#accordion"
+                            >
+                              <div className="card-body">
+                              Customize your discount's product badge to display on your product carousel across homepage and collection page If our automated placement is lackluster, please contact support for assistance. Some themes required a custom touch - we stand ready to support any necessary optimizations.
+                              </div>
+                            </div>
+                          </div>
+
                         </div>
                         <div className="faq-wrap">
                           <span>Didn’t find your question? </span>

@@ -149,12 +149,13 @@ const Plan = () => {
             <Card sectioned>
               <div className="d-flex align-items-center">
                 <div>
-                  <Text variant="bodyLg" fontWeight="bold" as="p">
+                  {/* <Text variant="bodyLg" fontWeight="bold" as="p">
                     Logo
-                  </Text>
+                  </Text> */}
+                  <img src="./planPageLogo.png" width={80}/>
                 </div>
 
-                <div className="px-5">
+                <div className="px-3">
                   <div>
                     <Text variant="bodyMd" fontWeight="semibold" as="p">
                       30 Day Money Back Guarantee - No questions asked!
