@@ -470,39 +470,6 @@ const Design = ({ states }) => {
                   }}
                 />
               </div>
-
-              <div className="mt-4">
-                <Checkbox
-                  label="Show total"
-                  checked={designSettings.priceSavings.showTotal}
-                  onChange={(e) => {
-                    designSettings.priceSavings.showTotal = e;
-                    designSatte({ ...designSettings });
-                  }}
-                />
-              </div>
-
-              <div className="mt-4">
-                <Checkbox
-                  label="Show price per unit"
-                  checked={designSettings.priceSavings.ShowPriceUnit}
-                  onChange={(e) => {
-                    designSettings.priceSavings.ShowPriceUnit = e;
-                    designSatte({ ...designSettings });
-                  }}
-                />
-              </div>
-
-              <div className="mt-4">
-                <Checkbox
-                  label="Show compare price"
-                  checked={designSettings.priceSavings.ShowComparePrice}
-                  onChange={(e) => {
-                    designSettings.priceSavings.ShowComparePrice = e;
-                    designSatte({ ...designSettings });
-                  }}
-                />
-              </div>
             </Card>
           </div>
         </div>

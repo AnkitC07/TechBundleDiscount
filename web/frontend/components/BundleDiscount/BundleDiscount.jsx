@@ -151,9 +151,6 @@ const BundleDiscount = () => {
       tagColor: "#008060",
       priceColor: "#050505",
       ComparePriceColor: "#797979",
-      showTotal: false,
-      ShowPriceUnit: false,
-      ShowComparePrice: false,
     },
   });
   const [settings, settingState] = useState({
@@ -184,6 +181,10 @@ const BundleDiscount = () => {
     },
   });
   /************************************/
+  useEffect(()=>{
+      const htmlData = document.querySelector('#getHTMLData').innerHTML
+      setHtml(htmlData)
+  },[designSettings,bundle,placement])
 
   useEffect(() => {
     fetch(`/api/products?id=${lastId}`)
@@ -396,7 +397,7 @@ const BundleDiscount = () => {
     <>
       <section className="product_main_page">
         <div className="containerCustom mb-5">
-          <div className="row sticky py-4">
+          <div className="row sticky">
             <div className="col-md-12">
               <div className="Polaris-Page-Header Polaris-Page-Header--hasNavigation Polaris-Page-Header--hasActionMenu Polaris-Page-Header--mediumTitle">
                 <div className="Polaris-Page-Header__Row">
