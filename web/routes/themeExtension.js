@@ -259,8 +259,12 @@ ThemeExtension.post("/getBadge", async (req, res) => {
     $or: badgeQuery,
   });
 
-  console.log(body,"------------------")
+
   if(body.page == "product"){
+    const productIds = data.Content.bundleProducts.map(x=>x.id)
+    
+    const products = await getproductsById(productIds,session)
+    data.Content.bundleProducts = products
     res.send({ store, data });
   }else{
     res.send(data);
