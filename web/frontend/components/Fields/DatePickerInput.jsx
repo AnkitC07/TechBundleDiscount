@@ -13,8 +13,6 @@ export default function DatePickerExample(props) {
     year: d.getFullYear(),
   })
 
-  useEffect(() => {
-  }, [])
 
   // console.log(props.state1, 'timed')
   const handleMonthChange = useCallback(

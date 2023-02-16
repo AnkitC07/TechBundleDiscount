@@ -42,7 +42,7 @@ const InputWithTags = ({ states, label, placeholder }) => {
                 className="Polaris-TextField__VerticalContent"
                 id="addTagsData"
               >
-                <div className="Polaris-Stack Polaris-Stack--spacingExtraTight Polaris-Stack--alignmentCenter">
+                <div div className="Polaris-Stack Polaris-Stack--spacingExtraTight Polaris-Stack--alignmentCenter">
                   <Stack spacing="tight">{tagMarkup}</Stack>
                 </div>
                 <input

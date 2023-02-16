@@ -482,6 +482,7 @@ const Variants = ({
       <div style={{ margin: "10px 0px", width: "100%" }}>
         <select
           id="select1"
+          className="bundle-app-select"
           data-index={xIndex}
           style={{
             width: "100%",
