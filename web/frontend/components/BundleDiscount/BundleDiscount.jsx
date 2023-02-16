@@ -338,19 +338,17 @@ const BundleDiscount = () => {
       type: statusUpdate,
       status: true,
     });
-    setHtml(document.querySelector("#getHTMLData") !== null ? document.querySelector("#getHTMLData").innerHTML : '')
-    const previewhtml = document.querySelector("#getHTMLData") !== null ? document.querySelector("#getHTMLData").innerHTML : ''
-    // console.log('PUBLISH==>', document.querySelector("#getHTMLData").innerHTML)
+
     const body = {
       content: bundle,
       design: designSettings,
       placement: placement,
-      Html: previewhtml,
+      Html: Html,
       BadgeHtml: badgeHtml,
       badge: settings,
       ispublished: statusUpdate == "save" ? ispublished : statusUpdate,
     };
-
+    console.log(body)
     fetch(`/api/setBundle?status=${statusUpdate}&id=${id}`, {
       method: "POST",
       headers: {

@@ -219,6 +219,11 @@ ThemeExtension.post("/getBadge", async (req, res) => {
   };
   const prod = await getProductByhandle(body.handle, session);
   
+  let date = new Date()
+//   let month = date.getMonth() + 1
+//   console.log(month.length)
+//  date = `${date.getFullYear()}-${month.length == 1?`0${month}`:month}-${date.getDate()}`
+date = date.toISOString()
   const badgeQuery = [
     {
       "Placement.selectProduct.customPosition": { $eq: true },
@@ -256,16 +261,37 @@ ThemeExtension.post("/getBadge", async (req, res) => {
   const data = await Bundle.findOne({
     Store: body.shop,
     IsPublished: "published",
-    $or: badgeQuery,
+    $and: [
+      {$or:badgeQuery},
+      {$or:[
+        {$and:[
+          {"Content.advanceSetting.startDate.status":{$eq:true}},
+          {"Content.advanceSetting.startDate.date.start":{$lte:date}}
+        ]},
+        {"Content.advanceSetting.startDate.status":{$eq:false}}
+      ]},
+      {$or:[
+        {$and:[
+          {"Content.advanceSetting.endDate.status":{$eq:true}},
+          {"Content.advanceSetting.endDate.date.start":{$gte:date}}
+        ]},
+        {"Content.advanceSetting.endDate.status":{$eq:false}}
+      ]}
+    ],
   });
 
+  console.log(date,data,new Date().toDateString())
 
   if(body.page == "product"){
-    const productIds = data.Content.bundleProducts.map(x=>x.id)
-    
-    const products = await getproductsById(productIds,session)
-    data.Content.bundleProducts = products
-    res.send({ store, data });
+    try{
+      const productIds = data.Content.bundleProducts.map(x=>x.id)
+      const products = await getproductsById(productIds,session)
+      data.Content.bundleProducts = products
+      res.send({ store, data });
+    }catch(err){
+      res.send({ store, data });
+    }
+
   }else{
     res.send(data);
   }
