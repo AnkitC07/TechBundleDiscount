@@ -333,19 +333,19 @@ const BundleDiscount = () => {
   ];
 
   const handelPublish = async (statusUpdate) => {
-    console.log("Html=> ", Html)
+    // console.log("Html=> ", Html)
     setBtnLoading({
       type: statusUpdate,
       status: true,
     });
-    setHtml(document.querySelector("#getHTMLData") !== null ? document.querySelector("#getHTMLData").innerHTML : '')
-    const previewhtml = document.querySelector("#getHTMLData") !== null ? document.querySelector("#getHTMLData").innerHTML : ''
-    // console.log('PUBLISH==>', document.querySelector("#getHTMLData").innerHTML)
+    // setHtml(document.querySelector("#getHTMLData") !== null ? document.querySelector("#getHTMLData").innerHTML : '')
+    // const previewhtml = document.querySelector("#getHTMLData") !== null ? document.querySelector("#getHTMLData").innerHTML : ''
+    // // console.log('PUBLISH==>', document.querySelector("#getHTMLData").innerHTML)
     const body = {
       content: bundle,
       design: designSettings,
       placement: placement,
-      Html: previewhtml,
+      Html: Html,
       BadgeHtml: badgeHtml,
       badge: settings,
       ispublished: statusUpdate == "save" ? ispublished : statusUpdate,
@@ -398,7 +398,7 @@ const BundleDiscount = () => {
       <section className="product_main_page">
         <div className="containerCustom mb-5">
           <div className="row sticky">
-            <div className="col-md-12">
+            <div className="col-md-12 py-4">
               <div className="Polaris-Page-Header Polaris-Page-Header--hasNavigation Polaris-Page-Header--hasActionMenu Polaris-Page-Header--mediumTitle">
                 <div className="Polaris-Page-Header__Row">
                   <div className="Polaris-Page-Header__BreadcrumbWrapper">

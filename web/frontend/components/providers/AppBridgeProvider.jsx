@@ -40,11 +40,11 @@ export function AppBridgeProvider({ children }) {
       window.__SHOPIFY_DEV_HOST;
 
     window.__SHOPIFY_DEV_HOST = host;
-
+    console.log(host)
     return {
       host,
       apiKey: process.env.SHOPIFY_API_KEY,
-      forceRedirect: true,
+      // forceRedirect: true,
     };
   });
 
