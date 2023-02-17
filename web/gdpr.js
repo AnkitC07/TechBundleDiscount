@@ -1,4 +1,6 @@
 import { DeliveryMethod } from "@shopify/shopify-api";
+import Stores from "./model/Stores.js";
+import shopify from "./shopify.js";
 
 export default {
   /**
@@ -12,27 +14,8 @@ export default {
     callbackUrl: "/api/webhooks",
     callback: async (topic, shop, body, webhookId) => {
       const payload = JSON.parse(body);
-      // console.log(payload)
       console.log("customer Request data");
-      return true;
-      // Payload has the following shape:
-      // {
-      //   "shop_id": 954889,
-      //   "shop_domain": "{shop}.myshopify.com",
-      //   "orders_requested": [
-      //     299938,
-      //     280263,
-      //     220458
-      //   ],
-      //   "customer": {
-      //     "id": 191167,
-      //     "email": "john@example.com",
-      //     "phone": "555-625-1199"
-      //   },
-      //   "data_request": {
-      //     "id": 9999
-      //   }
-      // }
+      return 200;
     },
   },
 
@@ -65,11 +48,7 @@ export default {
     callback: async (topic, shop, body, webhookId) => {
       const payload = JSON.parse(body);
       console.log("shop deleted");
-      // Payload has the following shape:
-      // {
-      //   "shop_id": 954889,
-      //   "shop_domain": "{shop}.myshopify.com"
-      // }
+      return 200;
     },
   },
   ORDERS_CREATE: {
@@ -77,7 +56,27 @@ export default {
     callbackUrl: "/api/webhooks",
     callback: async (topic, shop, body, webhookId) => {
       const payload = JSON.parse(body);
-      console.log("order created");
+      if (body.includes("bundleDiscount") == true) {
+        let shopData = payload.order_status_url;
+        shopData = shopData.split("https://");
+        shopData = shopData[1].split("/");
+        shopData = shopData[0];
+        const store = await Stores.findOne({ storename: shopData });
+        const session = {
+          shop: store.storename,
+          accessToken: store.storetoken,
+        };
+        try {
+          const order = new shopify.api.rest.Order({
+            session: session,
+          });
+          order.id = payload.id;
+          order.tags = "Bundle Discount app";
+          await order.save({
+            update: true,
+          });
+        } catch (err) {}
+      }
       return 200;
     },
   },

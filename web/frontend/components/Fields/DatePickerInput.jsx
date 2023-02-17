@@ -73,6 +73,7 @@ export default function DatePickerExample(props) {
             month={month}
             year={year}
             onChange={props.onChange}
+            {...props.dates}
             onMonthChange={handleMonthChange}
             selected={{
               start: new Date(props.state1.start),

@@ -1,22 +1,14 @@
-import {
-  Button,
-  Card,
-  Checkbox,
-  Icon,
-  InlineError,
-  Popover,
-  TextField,
-} from "@shopify/polaris";
-import React, { useCallback, useEffect, useRef, useState } from "react";
+import { Card, Checkbox, Icon, InlineError } from "@shopify/polaris";
+import React, { useEffect, useState } from "react";
 import CheckBoxComponent from "../Fields/CheckBoxComponent";
-import ChoiceListComp from "../Fields/ChoiceListComp";
+// import ChoiceListComp from "../Fields/ChoiceListComp";
 import DatePickerExample from "../Fields/DatePickerInput";
 import InputComponent from "../Fields/InputComponent";
 import InputSelect from "../Fields/InputSelect";
-import SearchFilter from "../Fields/SearchFilter";
-import TextFieldComp from "../Fields/TextFieldComp";
-import { SearchMinor, CirclePlusMajor } from "@shopify/polaris-icons";
-import ResourcePickerComp from "../Fields/ResourcePickerComp";
+// import SearchFilter from "../Fields/SearchFilter";
+// import TextFieldComp from "../Fields/TextFieldComp";
+import { CirclePlusMajor } from "@shopify/polaris-icons";
+// import ResourcePickerComp from "../Fields/ResourcePickerComp";
 import ComboBoxComp from "../Fields/ComboBoxComp";
 import BundlePreview from "./BundlePreview";
 
@@ -36,23 +28,23 @@ const Content = ({
   // bundle.bundleProducts = bundleDiv;
 
   useEffect(() => {
-
-    setbundleDiv(bundle.bundleProducts.length == 0
-      ? ["", ""]
-      : bundle.bundleProducts.length > 0 && bundle.bundleProducts.length < 2
+    setbundleDiv(
+      bundle.bundleProducts.length == 0
+        ? ["", ""]
+        : bundle.bundleProducts.length > 0 && bundle.bundleProducts.length < 2
         ? [...bundle.bundleProducts, ""]
-        : [...bundle.bundleProducts])
-  }, [bundle])
+        : [...bundle.bundleProducts]
+    );
+  }, [bundle]);
 
   // const ref = useRef()
   // setTimeout(() => {
   //   setHtml(ref.current.innerHTML)
   // }, 100);
 
-
   const updateRadio = (key) => {
-    if (key !== 'addDiscount') {
-      bundle.bundleDiscount.freeGift.freeGiftSlected = []
+    if (key !== "addDiscount") {
+      bundle.bundleDiscount.freeGift.freeGiftSlected = [];
     }
     const data = bundle.bundleDiscount;
     Object.keys(data).forEach((x) => {
@@ -94,7 +86,6 @@ const Content = ({
     },
   ];
 
-
   const removeTag = (i) => {
     if (bundle.bundleProducts[i] != "") {
       productsState([bundle.bundleProducts[i], ...products]);
@@ -102,14 +93,14 @@ const Content = ({
         bundle.bundleProducts[i] = "";
       } else {
         bundle.bundleProducts.splice(i, 1);
-        bundleDiv.splice(i, 1)
+        bundleDiv.splice(i, 1);
       }
     } else {
       bundle.bundleProducts.splice(i, 1);
-      bundleDiv.splice(i, 1)
+      bundleDiv.splice(i, 1);
     }
-    console.log(bundle, " Bundless")
-    console.log(bundleDiv, " DIvv")
+    console.log(bundle, " Bundless");
+    console.log(bundleDiv, " DIvv");
 
     setBundle({ ...bundle });
   };
@@ -130,8 +121,8 @@ const Content = ({
         productsState([...products]);
       }
     }
-    console.log(products, "Checking Productss")
-    console.log(bundle, "Checking Bundless")
+    console.log(products, "Checking Productss");
+    console.log(bundle, "Checking Bundless");
 
     setBundle({ ...bundle });
   };
@@ -226,7 +217,6 @@ const Content = ({
                             )}
 
                             <div class="Polaris-TextContainer ">
-                              {/* <TextFieldComp label={item} prefix={<Icon source={SearchMinor} />} placeholder={'Select a product'} /> */}
                               <div className="searchBoxTag">
                                 {" "}
                                 <ComboBoxComp
@@ -246,7 +236,10 @@ const Content = ({
                                 className="position_center pointerclass"
                                 onClick={() => {
                                   bundleDiv.push("");
-                                  bundle.bundleProducts = [...bundle.bundleProducts, ""]
+                                  bundle.bundleProducts = [
+                                    ...bundle.bundleProducts,
+                                    "",
+                                  ];
                                   setBundle({ ...bundle });
                                 }}
                               >
@@ -267,7 +260,10 @@ const Content = ({
                             class="mt-4 add_another_pro"
                             onClick={() => {
                               bundleDiv.push("");
-                              bundle.bundleProducts = [...bundle.bundleProducts, ""]
+                              bundle.bundleProducts = [
+                                ...bundle.bundleProducts,
+                                "",
+                              ];
                               setBundle({ ...bundle });
                             }}
                           >
@@ -333,12 +329,17 @@ const Content = ({
                             />
                           </div>
 
-                          {bundle.bundleDiscount.addDiscount.discountType == "% OFF" && (bundle.bundleDiscount.addDiscount.discountValue ===
-                            "" ||
-                            bundle.bundleDiscount.addDiscount.discountValue >
-                            100) && (
-                              <div style={{ margin: '10px' }}>
-                                <InlineError message="Please fill out this field. Value lessthan or equal to 100." fieldID="myFieldID" />
+                          {bundle.bundleDiscount.addDiscount.discountType ==
+                            "% OFF" &&
+                            (bundle.bundleDiscount.addDiscount.discountValue ===
+                              "" ||
+                              bundle.bundleDiscount.addDiscount.discountValue >
+                                100) && (
+                              <div style={{ margin: "10px" }}>
+                                <InlineError
+                                  message="Please fill out this field. Value lessthan or equal to 100."
+                                  fieldID="myFieldID"
+                                />
                               </div>
                             )}
                         </div>
@@ -380,9 +381,9 @@ const Content = ({
                                           checked={bundle.bundleDiscount.freeGift.freeGiftSlected.includes(
                                             x.id
                                           )}
-                                          onChange={(e) =>
-                                            handleFreeGift(x.id, e)
-                                          }
+                                          onChange={(e) => {
+                                            handleFreeGift(x.id, e);
+                                          }}
                                         />
                                       ) : (
                                         ""
@@ -394,8 +395,17 @@ const Content = ({
                             </div>
                             {/* // } */}
                           </div>
-
                           <div className="Polaris-FormLayout__Item">
+                            {bundle.bundleProducts.length ==
+                              bundle.bundleDiscount.freeGift.freeGiftSlected
+                                .length && (
+                              <div className="my-2">
+                                <InlineError
+                                  message="Can not select all products"
+                                  fieldID="myFieldID"
+                                />
+                              </div>
+                            )}
                             <div
                               className="Polaris-Text--subdued"
                               id="nameHelpText"
@@ -435,22 +445,20 @@ const Content = ({
             </div>
           </div>
         </div>
-        <div className="col-lg-6 col-md-6 col-sm-6" >
-          <BundlePreview bundle={bundle} currency={currency} design={design} setHtml={setHtml} />
+        <div className="col-lg-6 col-md-6 col-sm-6">
+          <BundlePreview
+            bundle={bundle}
+            currency={currency}
+            design={design}
+            setHtml={setHtml}
+          />
         </div>
       </div>
     </>
   );
 };
 
-const AdvanceSettings = ({
-  bundle,
-  setBundle,
-  products,
-  productsState,
-  customer,
-  setCustomer,
-}) => {
+const AdvanceSettings = ({ bundle, setBundle, customer, setCustomer }) => {
   const roundDiscountSelect = [
     {
       data: ".00",
@@ -473,37 +481,10 @@ const AdvanceSettings = ({
       value: ".99",
     },
   ];
-  //---Childrens in choicelists---//
-  // const specificChild = () => {
-  //   return (
-  //     <>
-  //       <div className=" Polaris-Text--subdued mt-2">
-  //         Select at least one product
-  //       </div>
-  //       <div className="selected_product_list">
-  //         {bundle.bundleProducts.map((x, i) => {
-  //           return (
-  //             <>
-  //               {x !== "" ? (
-  //                 <Checkbox
-  //                   label={`Product #${i + 1}`}
-  //                   checked={bundle.advanceSetting.specific.specificSlected.includes(
-  //                     x.id
-  //                   )}
-  //                   onChange={(e) => handleSpecificCheck(x.id, e)}
-  //                 />
-  //               ) : (
-  //                 ""
-  //               )}
-  //             </>
-  //           );
-  //         })}
-  //       </div>
-  //     </>
-  //   );
-  // };
 
   const startDateChild = () => {
+    var yesterday = new Date();
+    yesterday.setDate(yesterday.getDate() - 1);
     return (
       <div className="row">
         <div className="col-lg-8 col-md-18 col-sm-12 mt-1">
@@ -514,8 +495,7 @@ const AdvanceSettings = ({
                 bundle.advanceSetting.startDate.date = e;
                 setBundle({ ...bundle });
               }}
-              disableBefore={bundle.advanceSetting.startDate.date}
-            // disable={!modal.isEnabled}
+              dates={{ disableDatesBefore: yesterday }}
             />
             <span id="start_date_err" className="err"></span>
           </div>
@@ -531,11 +511,11 @@ const AdvanceSettings = ({
           <div className="mb-0">
             <DatePickerExample
               state1={bundle.advanceSetting.endDate.date}
+              dates={{ disableDatesBefore: new Date() }}
               onChange={(e) => {
                 bundle.advanceSetting.endDate.date = e;
                 setBundle({ ...bundle });
               }}
-            // disable={!modal.isEnabled}
             />
             <span id="end_date_err" className="err"></span>
           </div>
@@ -552,7 +532,6 @@ const AdvanceSettings = ({
             id="round_discount"
             option={roundDiscountSelect}
             value={bundle.advanceSetting.roundDiscount.roundDiscountSelected}
-            // placeholder="Unpublish timer"
             onChange={(e) => {
               bundle.advanceSetting.roundDiscount.roundDiscountSelected =
                 e.target.value;
@@ -565,7 +544,7 @@ const AdvanceSettings = ({
   };
 
   const targetDiscountChild = () => {
-    console.log(customer, "checkign customer data")
+    console.log(customer, "checkign customer data");
     const removeTag = (i) => {
       setCustomer([
         bundle.advanceSetting.targetCustomer.targetCustomerSelected[i],
@@ -605,29 +584,11 @@ const AdvanceSettings = ({
     } catch (err) {
       return (
         <div className="targetSearch">
-          <div className="searchBoxTag">
-
-          </div>
+          <div className="searchBoxTag"></div>
         </div>
       );
     }
-
   };
-
-  // const handleSpecificCheck = (value, status) => {
-  //   if (status == true) {
-  //     bundle.advanceSetting.specific.specificSlected = [
-  //       ...bundle.advanceSetting.specific.specificSlected,
-  //       value,
-  //     ];
-  //   } else {
-  //     let deleted = bundle.advanceSetting.specific.specificSlected;
-  //     const index = deleted.findIndex((x) => x == value);
-  //     deleted.splice(index, 1);
-  //     bundle.advanceSetting.specific.specificSlected = deleted;
-  //   }
-  //   setBundle({ ...bundle });
-  // };
 
   const choiceListArray = [
     {
@@ -646,13 +607,6 @@ const AdvanceSettings = ({
       checked: bundle.advanceSetting.hideStorefront.status,
       key: "hideStorefront",
     },
-    // {
-    //   label: "Show only on specific product pages",
-    //   value: "specific",
-    //   renderChildren: specificChild,
-    //   checked: bundle.advanceSetting.specific.status,
-    //   key: "specific",
-    // },
     {
       label: "Set start time",
       value: "startTime",
@@ -674,15 +628,15 @@ const AdvanceSettings = ({
       checked: bundle.advanceSetting.roundDiscount.status,
       key: "roundDiscount",
     },
-    {
-      label: "Target customers",
-      value: "target",
-      helpText:
-        "To enable this feature, please create customer tags to customers your customer in “Customer” menu",
-      renderChildren: targetDiscountChild,
-      checked: bundle.advanceSetting.targetCustomer.status,
-      key: "targetCustomer",
-    },
+    // {
+    //   label: "Target customers",
+    //   value: "target",
+    //   helpText:
+    //     "To enable this feature, please create customer tags to customers your customer in “Customer” menu",
+    //   renderChildren: targetDiscountChild,
+    //   checked: bundle.advanceSetting.targetCustomer.status,
+    //   key: "targetCustomer",
+    // },
   ];
 
   const UpdateStatus = (key, status) => {
@@ -691,7 +645,6 @@ const AdvanceSettings = ({
   };
   return (
     <>
-      {/* <Card sectioned> */}
       <Card.Section title="Advanced Settings">
         {choiceListArray.map((x, i) => {
           return (
@@ -711,11 +664,19 @@ const AdvanceSettings = ({
               ) : (
                 ""
               )}
+              {x.value == "hide" &&
+                bundle.advanceSetting.customerOption.status == true && bundle.advanceSetting.hideStorefront.status == true && (
+                  <div>
+                    <InlineError
+                      message="You need to uncheck the 'Customer must choose an option' for enabled this functionlaity"
+                      fieldID="myFieldID"
+                    />
+                  </div>
+                )}
             </div>
           );
         })}
       </Card.Section>
-      {/* </Card> */}
     </>
   );
 };
