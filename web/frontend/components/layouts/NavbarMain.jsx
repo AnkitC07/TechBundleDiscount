@@ -100,10 +100,12 @@ const NavbarMain = ({
         <Outlet />
       </div>
       <div className="topSpace">
-       {loading == true?<div className="gettingData">
+       {loading == true?
+       <div className="gettingData">
           <Spinner size="small"/>
           <p className="px-3 text-secondary">Loading</p>
-        </div>:""}
+        </div>
+        :""}
         {navRender(selectedTab)}
       </div>
       {/* <Content /> */}

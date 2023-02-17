@@ -365,6 +365,8 @@ const Content = ({
                         checked={bundle.bundleDiscount.freeGift.status}
                         onChange={(e) => {
                           updateRadio("freeGift");
+                          bundle.bundleDiscount.freeGift.freeGiftSlected = [...bundle.bundleDiscount.freeGift.freeGiftSlected,bundle.bundleProducts[0].id]
+                          console.log(bundle.bundleDiscount.freeGift)
                         }}
                       />
                       {bundle.bundleDiscount.freeGift.status ? (

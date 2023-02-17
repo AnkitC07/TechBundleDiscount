@@ -681,8 +681,8 @@ div#accordion .card {
   overflow: hidden!important;
 }
 .gettingData{
-  position: fixed;
-  top: calc(100vh - 518px);
+  position: absolute;
+  top: 143px;
   z-index: 999999;
   background: #aed8e9;
   border-radius: 5px;
