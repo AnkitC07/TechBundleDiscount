@@ -10,7 +10,6 @@ export default function CustomModal({
     onClose
 }) {
   const [active, setActive] = useState(state);
-
   const handleChange = useCallback(() => setActive(!active), [active]);
 
   return (

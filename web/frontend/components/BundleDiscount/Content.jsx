@@ -328,7 +328,10 @@ const Content = ({
                               }}
                             />
                           </div>
-
+                          <div className="my-2 Polaris-Text--root Polaris-Text--bodyMd Polaris-Text--regular Polaris-Text--subdued">
+                              A discount code will be created after the customer
+                              adds the bundle to the cart.
+                            </div>
                           {bundle.bundleDiscount.addDiscount.discountType ==
                             "% OFF" &&
                             (bundle.bundleDiscount.addDiscount.discountValue ===
@@ -365,8 +368,11 @@ const Content = ({
                         checked={bundle.bundleDiscount.freeGift.status}
                         onChange={(e) => {
                           updateRadio("freeGift");
-                          bundle.bundleDiscount.freeGift.freeGiftSlected = [...bundle.bundleDiscount.freeGift.freeGiftSlected,bundle.bundleProducts[0].id]
-                          console.log(bundle.bundleDiscount.freeGift)
+                          bundle.bundleDiscount.freeGift.freeGiftSlected = [
+                            ...bundle.bundleDiscount.freeGift.freeGiftSlected,
+                            bundle.bundleProducts[0].id,
+                          ];
+                          console.log(bundle.bundleDiscount.freeGift);
                         }}
                       />
                       {bundle.bundleDiscount.freeGift.status ? (
@@ -667,7 +673,8 @@ const AdvanceSettings = ({ bundle, setBundle, customer, setCustomer }) => {
                 ""
               )}
               {x.value == "hide" &&
-                bundle.advanceSetting.customerOption.status == true && bundle.advanceSetting.hideStorefront.status == true && (
+                bundle.advanceSetting.customerOption.status == true &&
+                bundle.advanceSetting.hideStorefront.status == true && (
                   <div>
                     <InlineError
                       message="You need to uncheck the 'Customer must choose an option' for enabled this functionlaity"

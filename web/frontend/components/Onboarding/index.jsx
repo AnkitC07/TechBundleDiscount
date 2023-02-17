@@ -249,6 +249,12 @@ Bundle Discount Manager work?`,
     }
   };
 
+  useEffect(()=>{
+    document.querySelector(".Polaris-Modal-CloseButton").style.display = "none"
+    return()=>{
+      document.querySelector(".Polaris-Modal-CloseButton").style.removeProperty('display')
+    } 
+  },[])
   return (
     <Modal
       open={active}
