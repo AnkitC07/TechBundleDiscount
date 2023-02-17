@@ -19,7 +19,6 @@ const Placement = ({ states }) => {
       selectedPro[key] = false;
     });
     selectedPro[keyData] = true;
-    console.log(selectedPro);
     setProducts(selectedPro);
     setPlacement({ ...placement, selectProduct: selectedPro });
 

@@ -100,7 +100,7 @@ function Installation() {
       <div className="image">
         {imgLoading == true ? <p className="loading"></p> : ""}
         <img
-          src={"4_App-on-boarding-Art-Work 3.svg"}
+          src={"themeextension.png"}
           onLoad={() => loadingstate(false)}
           style={{ width: "100%" }}
           className={imgLoading == true ? "isloading" : ""}

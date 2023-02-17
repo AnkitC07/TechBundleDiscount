@@ -17,7 +17,6 @@ function ComboBoxComp(props) {
     setPopoverActive((popoverActive) => !popoverActive);
 
   const handleTextFieldChange = (value) => {
-    console.log(search());
     setTextFieldValue(value);
   };
 
@@ -127,7 +126,6 @@ function ComboBoxComp(props) {
       {popoverActive ? (
         <div className="product_show">
           <ul className="products_li selected_pro">
-            {console.log(search())}
             {search().map((x, i) => (
               <li
                 key={`${x.id.toString()}`}

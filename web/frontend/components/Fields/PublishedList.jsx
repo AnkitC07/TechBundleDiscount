@@ -9,7 +9,7 @@ import React from "react";
 import BadgeCustom from "./BadgeCustom";
 
 function PublishedList({ item }) {
-  console.log(item);
+
   
   return (
     <Card>

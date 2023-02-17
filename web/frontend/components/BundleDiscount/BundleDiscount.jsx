@@ -182,15 +182,15 @@ const BundleDiscount = () => {
   });
   /************************************/
   useEffect(()=>{
-      const htmlData = document.querySelector('#getHTMLData').innerHTML
-      setHtml(htmlData)
+    try{
+      setHtml(()=>document.querySelector('#getHTMLData').innerHTML)
+    }catch(err){}
   },[designSettings,bundle,placement])
 
   useEffect(() => {
     fetch(`/api/products?id=${lastId}`)
       .then((res) => res.json())
       .then((x) => {
-        // console.log(x, "products ids");
         const len = x.length - 1;
         const id = x[len].id;
         const pro = products.concat(x);
@@ -225,7 +225,6 @@ const BundleDiscount = () => {
       });
       const data = await res.json();
       const products = { ...data.data.Content };
-      console.log("Data: ", data);
       setTimeout(() => {
         designSatte(data.data.Design);
         setPlacement(data.data.Placement);
@@ -333,22 +332,26 @@ const BundleDiscount = () => {
   ];
 
   const handelPublish = async (statusUpdate) => {
-    console.log("Html=> ", Html)
     setBtnLoading({
       type: statusUpdate,
       status: true,
     });
 
+    let htmlData = false
+    try{
+       htmlData = document.querySelector('#getHTMLData').innerHTML
+    }catch(err){
+    }
+    console.log(htmlData,"cehcking html data")
     const body = {
       content: bundle,
       design: designSettings,
       placement: placement,
-      Html: Html,
+      Html: htmlData !== false ?htmlData:Html,
       BadgeHtml: badgeHtml,
       badge: settings,
       ispublished: statusUpdate == "save" ? ispublished : statusUpdate,
     };
-    console.log(body)
     fetch(`/api/setBundle?status=${statusUpdate}&id=${id}`, {
       method: "POST",
       headers: {
@@ -358,7 +361,6 @@ const BundleDiscount = () => {
     })
       .then((res) => res.json())
       .then((data) => {
-        console.log("Response form Publish=> ", data);
         setBtnLoading({
           type: statusUpdate,
           status: false,

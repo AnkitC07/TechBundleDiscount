@@ -91,7 +91,6 @@ const ProductBadgeSettings = ({states}) => {
                 checked={settings.Design.BadgePosition.right}
                 name="right"
                 onChange={(e) => {
-                  console.log(e);
                   updateRadio("BadgePosition", "right", e);
                 }}
               />
@@ -102,7 +101,7 @@ const ProductBadgeSettings = ({states}) => {
                 checked={settings.Design.BadgePosition.left}
                 name="left"
                 onChange={(e) => {
-                  console.log(e);
+
                   updateRadio("BadgePosition", "left", e);  
                 }}
               />
@@ -130,7 +129,6 @@ const ProductBadgeSettings = ({states}) => {
                 checked={settings.Design.Style.rectangle}
                 name="rectangle"
                 onChange={(e) => {
-                  console.log(e);
                   settings.Design.Width = 55
                   settings.Design.Height = 47
                   settings.Design.Radius = 0
@@ -147,7 +145,6 @@ const ProductBadgeSettings = ({states}) => {
               state={{ settings,settingState}}
               value={"Color"}
               pickerChanges={(e)=>{
-                console.log('update state values')
                 const data = settings.Design
                 data['Color'] = hsbToHex(e)
                 settingState({...settings})
@@ -167,7 +164,6 @@ const ProductBadgeSettings = ({states}) => {
               state={{ settings, settingState }}
               value={"Border"}
               pickerChanges={(e)=>{
-                console.log('update state values')
                 const data = settings.Design
                 data['Border'] = hsbToHex(e)
                 settingState({...settings})
@@ -224,7 +220,6 @@ const ProductBadgeSettings = ({states}) => {
               state={{ settings, settingState }}
               value={"Font"}
               pickerChanges={(e)=>{
-                console.log('update state values')
                 const data = settings.Design
                 data['Font'] = hsbToHex(e)
                 settingState({...settings})
