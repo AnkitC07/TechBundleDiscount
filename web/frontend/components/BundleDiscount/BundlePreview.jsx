@@ -13,7 +13,7 @@ export default function BundlePreview({ bundle, currency, design, setHtml }) {
             <div
               style={{
                 background: "white",
-                padding: "0px 10px 10px 10px",
+                padding: "1px 10px 10px 10px",
                 color: `${settings.FontColor}`,
                 fontSize: `${settings.FontSize}px`,
                 fontFamily: settings.FontFamily,
@@ -80,7 +80,6 @@ const BundlePreviewPro = ({ bundle, currency, design }) => {
   const [vIndex, setVIndex] = useState(0);
 
   const getTotal = () => {
-    // console.log(price, "GEtTotal");
     let count = 0;
     let disCount = 0;
 
@@ -208,7 +207,6 @@ const BundlePreviewPro = ({ bundle, currency, design }) => {
           }}
         >
           {bundle.bundleProducts.map((x, i) => {
-            // console.log(price[x.id], "checking price obj");
             return x != "" ? (
               <>
                 <div className={`bundleAppProductRow`} data-variant={x.variants[0].id} data-id={x.id} style={{ width: "100%" }}>

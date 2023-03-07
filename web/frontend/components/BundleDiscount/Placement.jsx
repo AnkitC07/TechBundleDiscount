@@ -19,12 +19,10 @@ const Placement = ({ states }) => {
       selectedPro[key] = false;
     });
     selectedPro[keyData] = true;
-    console.log(selectedPro);
     setProducts(selectedPro);
     setPlacement({ ...placement, selectProduct: selectedPro });
-
   };
-  
+
   return (
     <>
       <div className="row">
@@ -48,6 +46,20 @@ const Placement = ({ states }) => {
                         updateState("allProducts");
                       }}
                     />
+                    {selectedPro.allProducts == true && (
+                      <div className="my-2 mx-4 Polaris-Text--root Polaris-Text--bodyMd Polaris-Text--regular Polaris-Text--subdued">
+                        <p className="my-1">
+                          Each product page can set up 1 widget only.
+                        </p>
+                        <p>
+                          Please check your previous placement setting for the
+                          widget, if you had set a bundle discount for another
+                          active bundle widget, to display on all products
+                          pages, the bundle discount at specific products
+                          placement will not able to display.
+                        </p>
+                      </div>
+                    )}
                     <CheckBoxComponent
                       id="spcProduct"
                       name="products"

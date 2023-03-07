@@ -34,6 +34,7 @@ const NavbarMain = ({
     loading
   } = states;
   const navRender = (title) => {
+
     switch (title) {
       case "Content":
         return (
@@ -87,6 +88,7 @@ const NavbarMain = ({
                 id={x.title}
                 onClick={() => {
                   setTabState(x.title);
+
                 }}
                 className={`countdown_tab ${
                   x.title === selectedTab ? "NavTabActive" : ""
@@ -100,6 +102,10 @@ const NavbarMain = ({
         <Outlet />
       </div>
       <div className="topSpace">
+      {/* <div className="gettingData">
+          <Spinner size="small"/>
+          <p className="px-3 text-secondary">Loading</p>
+        </div> */}
        {loading == true?
        <div className="gettingData">
           <Spinner size="small"/>

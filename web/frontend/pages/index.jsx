@@ -24,7 +24,6 @@ export default function HomePage() {
       const fetchData = await fetch(`/api/getDetails`);
       const getdata = await fetchData.json();
       themeState(getdata.theme)
-      console.log(getdata,"checking")
       if(getdata.data.plan.trialDays == "0" && getdata.data.plan.type == "Free Plan"){
         Navigate("/Plan")
       }

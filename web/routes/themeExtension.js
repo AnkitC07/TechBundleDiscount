@@ -278,10 +278,8 @@ date = date.toISOString()
         {"Content.advanceSetting.endDate.status":{$eq:false}}
       ]}
     ],
-  });
-
-  console.log(date,data,new Date().toDateString())
-
+  }).sort({createdAt:-1});
+  
   if(body.page == "product"){
     try{
       const productIds = data.Content.bundleProducts.map(x=>x.id)

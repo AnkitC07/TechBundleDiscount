@@ -11,7 +11,6 @@ const InputWithTags = ({ states, label, placeholder }) => {
     setPlacement({ ...placement });
   };
 
-  console.log(placement);
   const tagMarkup = tags.map((option) => {
     return (
       <>

@@ -99,8 +99,6 @@ const Content = ({
       bundle.bundleProducts.splice(i, 1);
       bundleDiv.splice(i, 1);
     }
-    console.log(bundle, " Bundless");
-    console.log(bundleDiv, " DIvv");
 
     setBundle({ ...bundle });
   };
@@ -121,8 +119,7 @@ const Content = ({
         productsState([...products]);
       }
     }
-    console.log(products, "Checking Productss");
-    console.log(bundle, "Checking Bundless");
+
 
     setBundle({ ...bundle });
   };
@@ -322,9 +319,10 @@ const Content = ({
                               }
                               placeholder="Unpublish timer"
                               onChange={(e) => {
-                                bundle.bundleDiscount.addDiscount.discountType =
-                                  e.target.value;
+                                
+                                bundle.bundleDiscount.addDiscount.discountType =e.target.value;
                                 setBundle({ ...bundle });
+              
                               }}
                             />
                           </div>
@@ -372,7 +370,6 @@ const Content = ({
                             ...bundle.bundleDiscount.freeGift.freeGiftSlected,
                             bundle.bundleProducts[0].id,
                           ];
-                          console.log(bundle.bundleDiscount.freeGift);
                         }}
                       />
                       {bundle.bundleDiscount.freeGift.status ? (
@@ -552,7 +549,6 @@ const AdvanceSettings = ({ bundle, setBundle, customer, setCustomer }) => {
   };
 
   const targetDiscountChild = () => {
-    console.log(customer, "checkign customer data");
     const removeTag = (i) => {
       setCustomer([
         bundle.advanceSetting.targetCustomer.targetCustomerSelected[i],

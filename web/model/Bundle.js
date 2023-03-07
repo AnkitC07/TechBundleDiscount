@@ -23,6 +23,6 @@ const bundleSchema = new mongoose.Schema({
   Store: {
     type: String,
   },
-});
+},{timestamps: true});
 
 export default mongoose.model("bundleSchema", bundleSchema);

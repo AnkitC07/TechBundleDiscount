@@ -30,10 +30,8 @@ const Plan = () => {
       storeState(getdata);
     }
   }, []);
-
-  console.log(store);
   let days = Math.abs(14 - store.plan.trialDays + 1);
-  console.log(days);
+
   const freeplan = [
     {
       icon: TickMinor,
@@ -196,7 +194,7 @@ const PlanCard = ({
     price: price == "Free" ? "0" : price,
   };
   const handleButton = async () => {
-    console.log(plan_subscribed, "Plan");
+
     setLoadingPlan(true);
     await fetch(`/api/payment-api`, {
       method: "POST",
@@ -207,19 +205,18 @@ const PlanCard = ({
     })
       .then((response) => response.json())
       .then((data) => {
-        console.log(data.data.data);
+
         setLoadingPlan(false);
         if (data.data.data !== undefined) {
           states(data.data.data);
         } else if (data.data.url !== undefined) {
           const url = data.data.url;
-          console.log(url);
+
           window.top.location.href = url;
         }
       })
       .catch((error) => {
         setLoadingPlan(false);
-        console.log(error);
       });
   };
 

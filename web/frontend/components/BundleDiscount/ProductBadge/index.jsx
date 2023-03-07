@@ -13,7 +13,6 @@ const ProductBadge = ({ states }) => {
   useEffect(() => {
     setBadgeHtlml(document.querySelector('#PreviewHtml_Get')?.innerHTML)
   }, [settings])
-  console.log("checking")
   return (
     <>
       <div className="mb-5">
