@@ -156,6 +156,7 @@ function TabsExample({ content, state, all, displayState }) {
                     <div
                       onClick={() => {
                         state.setIndex(i);
+                        console.log(i)
                       }}
                       className={`subdots ${state.index == i ? "active" : ""}`}
                     ></div>
@@ -244,9 +245,15 @@ Bundle Discount Manager work?`,
         onclick()
       }
     }
+
+    console.log(index,"next button click")
     if (content.length - 1 > index) {
       setIndex(index + 1);
+    }else if(content.length >index){
+      console.log("checking index",index)
+      document.querySelector("#install").click()
     }
+
   };
 
   useEffect(()=>{

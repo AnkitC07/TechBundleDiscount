@@ -51,6 +51,27 @@ export default {
       return 200;
     },
   },
+  APP_UNINSTALLED:{
+    deliveryMethod: DeliveryMethod.Http,
+    callbackUrl: "/api/webhooks",
+    callback: async (topic, shop, body, webhookId) => {
+      try {
+      const get = await Stores.findOne({storename:shop})
+        const update = await Stores.findOneAndUpdate({storename:shop},{
+          "plan.type":"Free Plan",
+          "plan.id":null,
+          "plan.price":"0"
+        })
+        return 200;
+      } catch (err) {
+        console.log(err)
+        return 200;
+      }
+
+
+      
+    }
+  },
   ORDERS_CREATE: {
     deliveryMethod: DeliveryMethod.Http,
     callbackUrl: "/api/webhooks",

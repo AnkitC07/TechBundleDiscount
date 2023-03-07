@@ -47,7 +47,7 @@ export const updateStore = async (shopName) => {
   }
 };
 
-export const updatePlan = async (shopName, planType, planPrice) => {
+export const updatePlan = async (shopName, planType, planPrice,id) => {
   try {
     let findShop = await Stores.findOne({ storename: shopName });
 
@@ -57,7 +57,7 @@ export const updatePlan = async (shopName, planType, planPrice) => {
 
     findShop.plan.type = planType;
     findShop.plan.price = planPrice;
-
+    findShop.plan.id = id
     return await findShop.save();
     
   } catch (error) {}

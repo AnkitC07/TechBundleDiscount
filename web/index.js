@@ -32,12 +32,21 @@ const app = express();
 
 
 // Set up Shopify authentication and webhook handling
-app.get(shopify.config.auth.path, shopify.auth.begin());
+app.get(shopify.config.auth.path,shopify.auth.begin());
+
 app.get(
   shopify.config.auth.callbackPath,
   shopify.auth.callback(),
+  (req,res,next)=>{
+      const session = res.locals.shopify.session
+      addStore(session.shop,session.accessToken)
+      next()
+  },  
   shopify.redirectToShopifyOrAppRoot()
 );
+
+
+
 app.post(
   shopify.config.webhooks.path,
   shopify.processWebhooks({ webhookHandlers: GDPRWebhookHandlers })
@@ -130,7 +139,7 @@ app.get("/api/paymenturl", async (req, res) => {
     console.log("Plan--", recurring_application_charge);
 
     // database entry
-    await updatePlan(session.shop, req.query.planType, req.query.planPrice);
+    await updatePlan(session.shop, req.query.planType, req.query.planPrice,chargeId);
     res.redirect(`/api/auth?shop=${req.query.shop}`);
   } catch (error) {
     res.status(500).json({
@@ -224,6 +233,7 @@ app.get('/api/getStorePlan', async (req, res) => {
   const findshop = await Stores.findOne({
     storename: shop,
   });
+  console.log(res.locals.shopify.session)
   res.status(200).json(findshop)
 })
 

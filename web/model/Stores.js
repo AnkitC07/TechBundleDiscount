@@ -20,6 +20,10 @@ const storeSchema = new mongoose.Schema({
     trialDays: {
       type: String,
     },
+    id:{
+      type:Number,
+      default:null
+    }
   },
 });
 
